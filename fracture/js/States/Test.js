@@ -7,11 +7,12 @@ var Test = {
 
     create:function()
     {
-        game.add.sprite(100, 100, 'caretaker');
+        game.physics.startSystem(Phaser.Physics.P2JS);
+        this.player = new Player(game, 100, 200, 'caretaker');
     },
 
     update:function()
     {
-
+        this.player.update();
     }
 }

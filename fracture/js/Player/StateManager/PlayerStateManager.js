@@ -3,14 +3,16 @@
 // state manager that plays one player behavior state at a time
 class PlayerStateManager 
 {
+ 
+    // references
     currentState;// the currently running state
+    inputManager;// the player's InputManager instance
 
-    transitionCooldownLength = 50;// how long in ms to wait after transitioning before allowing another transition
-    transitionTime = 0;// the time when we can next transition
 
     constructor(player) 
     {
         this.player = player;
+        this.inputManager = player.inputManager;
         this.createStateHierarchy();
     }
 
@@ -40,27 +42,37 @@ class PlayerStateManager
         }
     }
 
+    // tries to fire a shard and sends the current state a message so that the state can respond correctly
+    tryFireShard()
+    { 
+        if(this.currentState.fireShard())
+        {
+
+        }
+    }
+
+
     // do housekeeping to transition to the given state
     transitionToState(state) 
     {
-        if(this.player.game.time.now > this.transitionTime)// if it's been long enough since the last scene transition
-        {
-            this.currentState.deinitialize();
-            state.initialize();
-            this.currentState = state;
-        }
-        this.transitionTime = this.player.game.time.now + this.transitionCooldownLength;
+        this.currentState.deinitialize();
+        state.initialize();
+        this.currentState = state;
     }
     
     // setup all states
     createStateHierarchy() 
     {
-        var climbing = new Climbing(this);
-        climbing.defaultLocation = this.player.body.y;
-        this.currentState = climbing;
-        var swapSides = new SwapSides(this);
-        climbing.adjacentStates.push(swapSides);
-        swapSides.climbingState = climbing;
+        // create states
+        var ground = new Ground(this);
+        var jump = new Jump(this);
+
+        // set up Ground state
+        this.currentState = ground;
+        ground.adjacentStates.push(jump);
+
+        // set up Jump state
+        jump.ground = ground;
     }
 
 }
