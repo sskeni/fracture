@@ -18,23 +18,31 @@ var Test = {
         //create tileset and set collisions
         this.map = game.add.tilemap('test');
         this.map.addTilesetImage('testtileset', 'tilesheet');
-        this.map.setCollisionByExclusion([]);
-
-        //add tilset to map layer
+        
+        //add tileset to map layer
         this.mapLayer = this.map.createLayer('Tile Layer 1');
         this.mapLayer.resizeWorld();
-
+        
         //add p2 physics to tilemap
+        this.map.setCollisionByExclusion([]);
         game.physics.p2.convertTilemap(this.map, this.mapLayer);
+        this.tilemapCollisionGroup = game.physics.p2.createCollisionGroup();
+        var tilemapBodies = game.physics.p2.convertTilemap(this.map, this.mapLayer);
 
-        this.player = new Player(game, 100, 200, 'caretaker');
+        this.player = new Player(game, this.mapLayer, this.tilemapCollisionGroup, 100, 200, 'caretaker');
+
+        for(let index in tilemapBodies)
+        {
+            tilemapBodies[index].setCollisionGroup(this.tilemapCollisionGroup);
+            tilemapBodies[index].collides(this.player.collisionGroup);
+            tilemapBodies[index].collides(this.player.shardCollisionGroup);
+        }
+        
+        
     },
 
     update:function()
     {
-        //check collisions
-
-
         this.player.update();
     }
 }

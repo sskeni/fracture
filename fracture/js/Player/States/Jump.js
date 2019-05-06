@@ -9,13 +9,20 @@ class Jump extends PlayerState
     upHoldGravity = 500;// The gravity to apply while the player is going up and the jump button is held
     downGravity = 1300;// The gravity to apply while the player is falling
     maxVelocity = 200;// the maximum velocity the player can fall at
-
+    fallDamageHeight = 30;// the height the player can fall before taking fall damage (will be multiplied by the current number of shards)
+    groundRaycastDistance = 20;// the distance to raycast for checking if we've hit the ground or not
+    groundRaycastWidth = 16;
+    
     // references
-    ground;
-
+    ground;// the player's ground state
+    
     // flags
-    buttonReleased;
-    landed;
+    buttonReleased;// whether the jump button has been released
+    landed;// whether the player should transition to the ground state on the next update
+    initializeFalling;// whether the player fell off of a ledge to initialize the falling state
+
+    // runtime variables
+    maxHeight;// the lowest y value (greatest height) the player has had while jumping
     
     constructor(stateManager) 
     {
@@ -53,11 +60,22 @@ class Jump extends PlayerState
             }
         }
 
+        // update how high our max height was
+        if(this.player.body.y < this.maxHeight)
+        {
+            this.maxHeight = this.player.body.y;
+        }
+
         this.ground.move();
 
         if(this.landed)
         {
-            console.log("hello");
+            // check to see if we've fallen too far
+            if(this.player.body.y - this.maxHeight > this.fallDamageHeight * this.player.shardCount)
+            {
+                this.player.die();
+            }
+            
             this.stateManager.transitionToState(this.ground);
         }
     }
@@ -71,17 +89,27 @@ class Jump extends PlayerState
     // called when a state is being transitioned to
     initialize() 
     {
-        // gain initial vertical momentum
-        this.player.body.velocity.y = -this.initialVelocity;
-        this.player.body.force.y = this.upHoldGravity;
+        if(!this.initializeFalling)// if we pressed the jump button to begin this jump
+        {
+            // gain initial vertical momentum
+            this.player.body.velocity.y = -this.initialVelocity;
+            this.player.body.force.y = this.upHoldGravity;
+        }
+
+        // initialize flags
         this.buttonReleased = false;
         this.landed = false;
+        this.maxHeight = 10000;
 
-        this.player.body.onBeginContact.addOnce(this.onBeginContact, this);
+        // make sure that we're subscribing to the player's collision event to check if we've hit the ground
+        if(!this.player.body.onBeginContact.has(this.onBeginContact, this))
+        {
+            this.player.body.onBeginContact.add(this.onBeginContact, this);
+        }
     }
 
     /**
-    * From the Phaser documentation
+    * From the Phaser documentation:
     * Dispatched when a first contact is created between shapes in two bodies.
     * This event is fired during the step, so collision has already taken place.
     *
@@ -93,14 +121,79 @@ class Jump extends PlayerState
     * The Shape from the contact body.
     * The Contact Equation data array.
     */
+    // 
     onBeginContact(abstractContactedBody, contactedBody, myShape, theirShape, contactEquation)
     {
-        this.landed = true;
+        if(contactedBody.tag == 'shard')
+        {
+            var shard = contactedBody.shard;
+            if(shard.direction = ShardDirection.UR || ShardDirection.BL)
+            {
+                var direction = StandingDirection.RIGHT;
+                if(this.onGround(direction))
+                {
+                    this.ground.direction = direction;
+                    this.landed = true;
+                }
+            }
+            else if(shard.direction = ShardDirection.UL || ShardDirection.BR)
+            {
+                var direction = StandingDirection.LEFT;
+                if(this.onGround(direction))
+                {
+                    this.ground.direction = direction;
+                    this.landed = true;
+                }
+            }
+        }
+
+        if(this.onGround())
+        {
+            this.landed = true;
+        }
+    }
+
+    // returns whether there's ground under the player or not
+    onGround(direction)
+    {
+        //adjust these raycasts so they can have diagonal directions (for checking against shards)
+
+        // raycast from the player's origin towards the ground
+        var targetX = this.player.body.x - this.groundRaycastWidth;
+        var targetY = this.player.body.y + this.groundRaycastDistance;
+        var line = new Phaser.Line(this.player.body.x, this.player.body.y, targetX, targetY);
+        var raycastTileList = this.player.tilemapLayer.getRayCastTiles(line, this.player.tilemapLayer.rayStepRate, true);
+
+        if(raycastTileList.length > 0)// if we hit at least one tile
+        {
+            return true;
+        }
+
+        targetX = this.player.body.x + this.groundRaycastWidth;
+        line = new Phaser.Line(this.player.body.x, this.player.body.y, targetX, targetY);
+        raycastTileList = this.player.tilemapLayer.getRayCastTiles(line, this.player.tilemapLayer.rayStepRate, true);
+
+        if(raycastTileList.length > 0)
+        {
+            return true;
+        }
+
+        return false;
     }
 
     // called when this state appears as an adjacent state for another state
     transitionConditionsMet() 
     {
+        if(!this.onGround())
+        {
+            this.initializeFalling = true;
+            return true;
+        }
+        else
+        {
+            this.initializeFalling = false;
+        }
+
         return this.inputManager.jumpButtonIsDown();
     }
 

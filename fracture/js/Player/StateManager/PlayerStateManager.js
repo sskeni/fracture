@@ -27,6 +27,7 @@ class PlayerStateManager
     {
         this.currentState.run();// run the current state's behavior
         this.transitionUnderConditions(this.currentState);// check to see if we need to transition to a new state
+        this.tryFireShard();
     }
 
     // checks the current state's adjacents states for their transition conditions and transition if they are met
@@ -45,15 +46,15 @@ class PlayerStateManager
     // tries to fire a shard and sends the current state a message so that the state can respond correctly
     tryFireShard()
     { 
-        if(this.currentState.fireShard())
+        if(this.inputManager.shardButtonJustDown() && this.currentState.fireShard())
         {
-
+            var shard = new Shard(game, this.player.body.x, this.player.body.y, this.player, this.inputManager.getInputAsShardDirection());
         }
     }
 
 
     // do housekeeping to transition to the given state
-    transitionToState(state) 
+    transitionToState(state)
     {
         this.currentState.deinitialize();
         state.initialize();
@@ -61,7 +62,7 @@ class PlayerStateManager
     }
     
     // setup all states
-    createStateHierarchy() 
+    createStateHierarchy()
     {
         // create states
         var ground = new Ground(this);

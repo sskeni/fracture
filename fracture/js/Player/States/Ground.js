@@ -1,5 +1,11 @@
 "use strict";
 
+var StandingDirection = {
+    RIGHT: 0,
+    LEFT: 1,
+    DOWN: 2
+}
+
 // Behavior for when the player is on the ground and walking around.
 class Ground extends PlayerState
 {
@@ -11,10 +17,13 @@ class Ground extends PlayerState
     velocityThreshold = 20;
     gravity = 1000;
 
+    direction;
+
 
     constructor(stateManager) 
     {
         super(stateManager);
+        this.direction = StandingDirection.DOWN;
     }
 
     // called every frame
