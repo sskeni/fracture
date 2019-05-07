@@ -29,16 +29,13 @@ class Ground extends PlayerState
     // called every frame
     run() 
     {
-        //console.log(this.standingDirection);
         if(this.standingDirection == StandingDirection.DOWN)
         {
-            //console.log("heydsf");
             this.move();
             this.player.body.force.y = this.gravity;
         }
         else
         {
-            //console.log("moving slanted");
             this.moveSlanted(this.standingDirection);
         }
     }
@@ -93,7 +90,6 @@ class Ground extends PlayerState
         
         //remove all velocity normal to the surface
         var normalVelocity = velocityVector.sum(velocityVector.projectOnto(inputVector).multiply(-1));
-        //console.log(normalVelocity);
         this.player.body.velocity.x -= normalVelocity.x/50;
         this.player.body.velocity.y -= normalVelocity.y/50;
         
@@ -103,7 +99,6 @@ class Ground extends PlayerState
             // a fast acceleration towards max speed
             if(velocityVector.magnitude() > this.maxSpeed)// if we've reached max speed
             {
-                console.log("ho");
                 velocityVector.setMagnitude(this.maxSpeed);
                 this.player.body.velocity.x = velocityVector.x;
                 this.player.body.velocity.y = velocityVector.y;
@@ -123,8 +118,6 @@ class Ground extends PlayerState
                 this.player.body.force.y = inputVector.y * this.deceleration;
             }
         }
-
-        //console.log(inputVector.magnitude);
         if(inputVector.magnitude() == 0 && !this.player.launched)// if the player wants to stop moving
         {
             if(Math.abs(this.player.body.velocity.x) < this.velocityThreshold)// if we've slowed down enough, stop altogether
@@ -134,7 +127,6 @@ class Ground extends PlayerState
             else// otherwise slow down
             {
                 velocityVector.setMagnitude(1);
-                console.log(velocityVector);
                 this.player.body.force.x = velocityVector.x * -this.stationaryDeceleration;
                 this.player.body.force.y = velocityVector.y * -this.stationaryDeceleration;
             }
@@ -147,10 +139,7 @@ class Ground extends PlayerState
     // called when a state is being transitioned to
     initialize()
     {
-        this.stoppedMoving = false;//TODO unused flag
         this.player.body.velocity.y = 0;
-
-        console.log(this.standingDirection);
     }
 
     fireShard()

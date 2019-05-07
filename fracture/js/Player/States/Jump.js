@@ -132,7 +132,6 @@ class Jump extends PlayerState
     {
         if(abstractContactedBody.tag == 'shard' && !this.player.onShard)
         {
-            console.log("hit shard");
             this.player.body.velocity.x = 0;
             this.player.body.velocity.y = 0;
             var shard = abstractContactedBody.shard;
@@ -198,10 +197,8 @@ class Jump extends PlayerState
     // called when this state appears as an adjacent state for another state
     transitionConditionsMet() 
     {
-        //if(this.inputManager.jumpButtonIsDown()) console.log('jump button pressed');
         if(!this.onGround() && !this.player.onShard)
         {
-            //console.log('init falling');
             this.initializeFalling = true;
             return true;
         }

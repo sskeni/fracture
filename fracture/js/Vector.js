@@ -64,7 +64,6 @@ class Vector
         if(magnitude != 0)
         {
             var copy = this.copy();
-            //console.log(copy);
             var product = this.dot(vector)/(magnitude * magnitude);
             copy.multiply(product);
             return copy;
