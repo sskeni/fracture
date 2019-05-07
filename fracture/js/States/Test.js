@@ -3,6 +3,7 @@ var Test = {
     {
         game.load.path = 'assets/img/';
         game.load.image('caretaker', 'Caretaker.png');
+        game.load.image('shard', 'Shard.png');
 
         //tileset assets
         game.load.tilemap('test', 'test16x16.json', null, Phaser.Tilemap.TILED_JSON);
@@ -36,6 +37,7 @@ var Test = {
             tilemapBodies[index].setCollisionGroup(this.tilemapCollisionGroup);
             tilemapBodies[index].collides(this.player.collisionGroup);
             tilemapBodies[index].collides(this.player.shardCollisionGroup);
+            tilemapBodies[index].tag = 'tile';
         }
         
         

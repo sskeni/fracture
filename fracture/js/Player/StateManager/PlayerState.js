@@ -9,6 +9,7 @@ class PlayerState
     inputManager;// the player's input manager
 
     adjacentStates;// a list of states which should check conditions for transition from this one
+
     
     constructor(stateManager) 
     {
@@ -38,5 +39,19 @@ class PlayerState
     fireShard()
     {
         return false;
+    }
+
+    launch(direction)
+    {
+        this.player.body.velocity.x = -Math.sin((direction + 90) * Math.PI / 180) * this.player.shardLaunchVelocity;
+        this.player.body.velocity.y = -Math.cos((direction + 90) * Math.PI / 180) * this.player.shardLaunchVelocity;
+        this.player.launched = true;
+        game.time.events.add(Phaser.Timer.SECOND * 0.3, this.clearLaunchState, this)
+    }
+
+    clearLaunchState()
+    {
+        console.log("unyeet");
+        this.player.launched = false;
     }
 }

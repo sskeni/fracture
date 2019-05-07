@@ -10,12 +10,12 @@ var StandingDirection = {
 class Ground extends PlayerState
 {
     // behavior variables
-    maxSpeed = 200;
-    acceleration = 700;
-    deceleration = 2000;
-    stationaryDeceleration = 1000;
-    velocityThreshold = 20;
-    gravity = 1000;
+    maxSpeed = 200;// maximum movement velocity
+    acceleration = 700;// force to apply when accelerating to max speed
+    deceleration = 2000;// force to apply when input is counter to the current velocity
+    stationaryDeceleration = 1000;// force to apply against motion when player is giving no input
+    velocityThreshold = 20;// the speed under which the player's velocity should be set directly to zero
+    gravity = 1000;// the force of gravity on the player
 
     direction;
 
@@ -56,10 +56,13 @@ class Ground extends PlayerState
         else
         {
             // a faster acceleration towards zero speed in order to help the player switch directions
-            this.player.body.force.x = horizontalInput * this.deceleration;
+            if(!this.player.launched)
+            {
+                this.player.body.force.x = horizontalInput * this.deceleration;
+            }
         }
 
-        if(horizontalInput == 0)// if the player wants to stop moving
+        if(horizontalInput == 0 && !this.player.launched)// if the player wants to stop moving
         {
             if(Math.abs(this.player.body.velocity.x) < this.velocityThreshold)// if we've slowed down enough, stop altogether
             {

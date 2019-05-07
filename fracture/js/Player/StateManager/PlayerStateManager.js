@@ -26,6 +26,7 @@ class PlayerStateManager
     update()
     {
         this.currentState.run();// run the current state's behavior
+        //console.log(this.currentState);
         this.transitionUnderConditions(this.currentState);// check to see if we need to transition to a new state
         this.tryFireShard();
     }
@@ -50,6 +51,12 @@ class PlayerStateManager
         {
             var shard = new Shard(game, this.player.body.x, this.player.body.y, this.player, this.inputManager.getInputAsShardDirection());
         }
+    }
+
+    // launches player in the given direction
+    launch(direction)
+    {
+        this.currentState.launch(direction);
     }
 
 

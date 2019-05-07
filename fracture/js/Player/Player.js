@@ -2,6 +2,7 @@ class Player extends Phaser.Sprite
 {
     // behavior values
     shardCount = 3;
+    shardLaunchVelocity = 500;
 
     // references
     inputManager;
@@ -10,6 +11,9 @@ class Player extends Phaser.Sprite
     collisionGroup;
     tilemapCollisionGroup;
     shardCollisionGroup;
+
+    // flags
+    launched;
 
     constructor(game, tilemapLayer, tilemapCollisionGroup, x, y, key) {
         
@@ -39,8 +43,11 @@ class Player extends Phaser.Sprite
         this.shardCollisionGroup = game.physics.p2.createCollisionGroup();
         this.body.collides(this.tilemapCollisionGroup);
         this.body.collides(this.shardCollisionGroup);
+        this.body.tag = 'player';
 
         this.body.fixedRotation = true;
+
+        this.launched = false;
     }
 
     update()

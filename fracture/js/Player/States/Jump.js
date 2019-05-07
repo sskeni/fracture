@@ -11,7 +11,7 @@ class Jump extends PlayerState
     maxVelocity = 200;// the maximum velocity the player can fall at
     fallDamageHeight = 30;// the height the player can fall before taking fall damage (will be multiplied by the current number of shards)
     groundRaycastDistance = 20;// the distance to raycast for checking if we've hit the ground or not
-    groundRaycastWidth = 16;
+    groundRaycastWidth = 15;
     
     // references
     ground;// the player's ground state
@@ -20,6 +20,7 @@ class Jump extends PlayerState
     buttonReleased;// whether the jump button has been released
     landed;// whether the player should transition to the ground state on the next update
     initializeFalling;// whether the player fell off of a ledge to initialize the falling state
+    onShard;// whether the player is standing on a shard currently
 
     // runtime variables
     maxHeight;// the lowest y value (greatest height) the player has had while jumping
@@ -75,9 +76,11 @@ class Jump extends PlayerState
             {
                 this.player.die();
             }
-            
+            //console.log("hesrdf");
             this.stateManager.transitionToState(this.ground);
         }
+
+        //TODO if launched by shard, allow double jump
     }
 
     // called when a state is being transitioned away from
@@ -106,6 +109,10 @@ class Jump extends PlayerState
         {
             this.player.body.onBeginContact.add(this.onBeginContact, this);
         }
+        if(!this.player.body.onEndContact.has(this.onEndContact, this))
+        {
+            this.player.body.onEndContact.add(this.onEndContact, this);
+        }
     }
 
     /**
@@ -124,13 +131,20 @@ class Jump extends PlayerState
     // 
     onBeginContact(abstractContactedBody, contactedBody, myShape, theirShape, contactEquation)
     {
-        if(contactedBody.tag == 'shard')
+
+        console.log(contactEquation);
+       /* console.log(contactEquation[0].bodyA == contactedBody);*/
+        console.log(contactEquation[0].contactPointA[0]);
+        /*console.log(abstractContactedBody);
+        console.log(contactedBody);*/
+        if(abstractContactedBody.tag == 'shard')
         {
-            var shard = contactedBody.shard;
+            //console.log("sup");
+            var shard = abstractContactedBody.shard;
             if(shard.direction = ShardDirection.UR || ShardDirection.BL)
             {
                 var direction = StandingDirection.RIGHT;
-                if(this.onGround(direction))
+                if(abstractContactedBody.y > this.player.body.y)//this.onGround(direction)
                 {
                     this.ground.direction = direction;
                     this.landed = true;
@@ -145,16 +159,29 @@ class Jump extends PlayerState
                     this.landed = true;
                 }
             }
+
+            this.onShard = true;
         }
 
         if(this.onGround())
         {
+            //console.log("not what I expected");
             this.landed = true;
         }
     }
 
+    onEndContact(body, bodyB, shapeA, shapeB, equation)
+    {
+        /*console.log("hey its ");
+        console.log(body);*/
+        if(body.tag == 'shard')
+        {   
+            this.onShard = false;
+        }
+    }
+
     // returns whether there's ground under the player or not
-    onGround(direction)
+    onGround()
     {
         //adjust these raycasts so they can have diagonal directions (for checking against shards)
 
@@ -184,8 +211,10 @@ class Jump extends PlayerState
     // called when this state appears as an adjacent state for another state
     transitionConditionsMet() 
     {
-        if(!this.onGround())
+        //if(this.inputManager.jumpButtonIsDown()) console.log('jump button pressed');
+        if(!this.onGround() && !this.onShard)
         {
+            //console.log('init falling');
             this.initializeFalling = true;
             return true;
         }

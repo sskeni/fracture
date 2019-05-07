@@ -13,6 +13,7 @@ class Shard extends Phaser.Sprite
 {
     // behavior variables
     velocity = 500;
+    launchDistance = 45;
 
     direction;
     
@@ -29,42 +30,63 @@ class Shard extends Phaser.Sprite
 
         this.direction = direction;
         this.player = player;
-
         // set up physics
-        game.physics.p2.enable(this);
-        this.body.setCollisionGroup(this.player.shardCollisionGroup);
-        this.body.fixedRotation = true;
+        game.physics.p2.enable(this, true);
         
         // set to collide with tileset
         
         // configure hitbox shape
-        //this.body.setRectangle(64, 16);
         
         // set anchor
+        this.anchor.x = 0.5;
         this.anchor.y = 0.5;
         
         // set rotation
-        this.angle = direction;
+        console.log(direction);
+        this.angle = -direction;
+        this.body.angle = -direction;
         
         // set velocity
         this.body.velocity.x = Math.sin((direction + 90) * Math.PI / 180) * this.velocity;
         this.body.velocity.y = Math.cos((direction + 90) * Math.PI / 180) * this.velocity;
         
+        // set position
+        this.body.x += Math.sin((direction + 90) * Math.PI / 180) * 20;
+        this.body.y += Math.cos((direction + 90) * Math.PI / 180) * 20;
+        
+        this.body.setRectangle(64, 16);
+        this.body.setCollisionGroup(this.player.shardCollisionGroup);
         this.body.collides(this.player.tilemapCollisionGroup);
         this.body.onBeginContact.add(this.onBeginContact, this);
-
+        
+        this.body.fixedRotation = true;
         this.body.tag = 'shard';
         this.body.shard = this;
     }
 
-    onBeginContact()
+    onBeginContact(abstractContactedBody, contactedBody, myShape, theirShape, contactEquation)
     {
-        this.planted = true;
-        this.body.dynamic = false;
-        this.body.velocity.x = 0;
-        this.body.velocity.y = 0;
+        if(abstractContactedBody.tag != 'player')
+        {
+            this.planted = true;
+            this.body.dynamic = false;
+            this.body.velocity.x = 0;
+            this.body.velocity.y = 0;
+            
+            // check distance to player
+            //TODO this approach is naive: replace with check for if player origin is within certain bounds instead
+            if(game.math.distance(this.body.x, this.body.y, this.player.body.x, this.player.body.y) < this.launchDistance)
+            {
+                this.player.stateManager.launch(this.direction);
+            }
+    
+            game.time.events.add(Phaser.Timer.SECOND * 0.1, this.collidePlayer, this)
+        }
+    }
 
-        // set this to collide with player
+    // set this shard to collide with player
+    collidePlayer()
+    {
         this.body.collides(this.player.collisionGroup);
     }
 }
