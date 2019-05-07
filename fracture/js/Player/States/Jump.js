@@ -72,11 +72,10 @@ class Jump extends PlayerState
         if(this.landed)
         {
             // check to see if we've fallen too far
-            if(this.player.body.y - this.maxHeight > this.fallDamageHeight * this.player.shardCount)
+            if(this.player.body.y - this.maxHeight > this.fallDamageHeight * this.player.shardCount && !this.player.onShard)
             {
                 this.player.die();
             }
-            //console.log("hesrdf");
             this.stateManager.transitionToState(this.ground);
         }
 
@@ -84,7 +83,7 @@ class Jump extends PlayerState
     }
 
     // called when a state is being transitioned away from
-    deinitialize() 
+    deinitialize()
     {
 
     }
@@ -131,52 +130,40 @@ class Jump extends PlayerState
     // 
     onBeginContact(abstractContactedBody, contactedBody, myShape, theirShape, contactEquation)
     {
-
-        console.log(contactEquation);
-       /* console.log(contactEquation[0].bodyA == contactedBody);*/
-        console.log(contactEquation[0].contactPointA[0]);
-        /*console.log(abstractContactedBody);
-        console.log(contactedBody);*/
-        if(abstractContactedBody.tag == 'shard')
+        if(abstractContactedBody.tag == 'shard' && !this.player.onShard)
         {
-            //console.log("sup");
+            console.log("hit shard");
+            this.player.body.velocity.x = 0;
+            this.player.body.velocity.y = 0;
             var shard = abstractContactedBody.shard;
-            if(shard.direction = ShardDirection.UR || ShardDirection.BL)
+            if(shard.direction == ShardDirection.UR || shard.direction == ShardDirection.BL)
             {
-                var direction = StandingDirection.RIGHT;
-                if(abstractContactedBody.y > this.player.body.y)//this.onGround(direction)
-                {
-                    this.ground.direction = direction;
-                    this.landed = true;
-                }
+                this.ground.standingDirection = StandingDirection.RIGHT;
+                this.landed = true;
             }
-            else if(shard.direction = ShardDirection.UL || ShardDirection.BR)
+            else if(shard.direction == ShardDirection.UL || shard.direction == ShardDirection.BR)
             {
-                var direction = StandingDirection.LEFT;
-                if(this.onGround(direction))
-                {
-                    this.ground.direction = direction;
-                    this.landed = true;
-                }
+                this.ground.standingDirection = StandingDirection.LEFT;
+                this.landed = true;
             }
 
-            this.onShard = true;
+            this.player.onShard = true;
+            this.landed = true;
         }
 
         if(this.onGround())
         {
-            //console.log("not what I expected");
+            this.ground.standingDirection = StandingDirection.DOWN;
             this.landed = true;
         }
     }
 
     onEndContact(body, bodyB, shapeA, shapeB, equation)
     {
-        /*console.log("hey its ");
-        console.log(body);*/
         if(body.tag == 'shard')
         {   
-            this.onShard = false;
+            //game.time.events.add(Phaser.Timer.SECOND * 0.2, function() {this.player.onShard = false;}, this)
+            this.player.onShard = false;
         }
     }
 
@@ -212,7 +199,7 @@ class Jump extends PlayerState
     transitionConditionsMet() 
     {
         //if(this.inputManager.jumpButtonIsDown()) console.log('jump button pressed');
-        if(!this.onGround() && !this.onShard)
+        if(!this.onGround() && !this.player.onShard)
         {
             //console.log('init falling');
             this.initializeFalling = true;

@@ -14,6 +14,7 @@ class Player extends Phaser.Sprite
 
     // flags
     launched;
+    onShard;
 
     constructor(game, tilemapLayer, tilemapCollisionGroup, x, y, key) {
         
@@ -37,7 +38,9 @@ class Player extends Phaser.Sprite
         this.tilemapCollisionGroup = tilemapCollisionGroup;
         
         // set up physics
-        game.physics.p2.enable(this);
+        game.physics.p2.enable(this, true);
+        //this.body.setRectangle(16, 30);
+        this.body.setCircle(15);
         this.collisionGroup = game.physics.p2.createCollisionGroup();
         this.body.setCollisionGroup(this.collisionGroup);
         this.shardCollisionGroup = game.physics.p2.createCollisionGroup();
@@ -48,6 +51,7 @@ class Player extends Phaser.Sprite
         this.body.fixedRotation = true;
 
         this.launched = false;
+        this.onShard = false;
     }
 
     update()

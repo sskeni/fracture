@@ -1,8 +1,8 @@
 "use strict";
 
 var StandingDirection = {
-    RIGHT: 0,
-    LEFT: 1,
+    RIGHT: 45,
+    LEFT: -45,
     DOWN: 2
 }
 
@@ -17,25 +17,36 @@ class Ground extends PlayerState
     velocityThreshold = 20;// the speed under which the player's velocity should be set directly to zero
     gravity = 1000;// the force of gravity on the player
 
-    direction;
+    standingDirection;
 
 
     constructor(stateManager) 
     {
         super(stateManager);
-        this.direction = StandingDirection.DOWN;
+        this.standingDirection = StandingDirection.DOWN;
     }
 
     // called every frame
     run() 
     {
-        this.move();
-        this.player.body.force.y = this.gravity;
+        //console.log(this.standingDirection);
+        if(this.standingDirection == StandingDirection.DOWN)
+        {
+            //console.log("heydsf");
+            this.move();
+            this.player.body.force.y = this.gravity;
+        }
+        else
+        {
+            //console.log("moving slanted");
+            this.moveSlanted(this.standingDirection);
+        }
     }
 
     // accelerate to move according to the player's input
     move()
     {
+
         // listen for horizontal input
         var horizontalInput = this.inputManager.getHorizontalInput();
 
@@ -64,7 +75,7 @@ class Ground extends PlayerState
 
         if(horizontalInput == 0 && !this.player.launched)// if the player wants to stop moving
         {
-            if(Math.abs(this.player.body.velocity.x) < this.velocityThreshold)// if we've slowed down enough, stop altogether
+            if(Math.abs(this.player.body.velocity.x) < this.velocityThreshold + 20)// if we've slowed down enough, stop altogether
             {
                 this.player.body.velocity.x = 0;
             }
@@ -75,14 +86,71 @@ class Ground extends PlayerState
         }
     }
 
+    moveSlanted(standingDirection)
+    {
+        var velocityVector = new Vector(this.player.body.velocity.x, this.player.body.velocity.y);
+        var inputVector = Vector.createVectorFromAngle(standingDirection);
+        
+        //remove all velocity normal to the surface
+        var normalVelocity = velocityVector.sum(velocityVector.projectOnto(inputVector).multiply(-1));
+        //console.log(normalVelocity);
+        this.player.body.velocity.x -= normalVelocity.x/50;
+        this.player.body.velocity.y -= normalVelocity.y/50;
+        
+        inputVector.setMagnitude(this.inputManager.getHorizontalInput());
+        if(velocityVector.sameDirection(inputVector) || velocityVector.magnitude() == 0)
+        {
+            // a fast acceleration towards max speed
+            if(velocityVector.magnitude() > this.maxSpeed)// if we've reached max speed
+            {
+                console.log("ho");
+                velocityVector.setMagnitude(this.maxSpeed);
+                this.player.body.velocity.x = velocityVector.x;
+                this.player.body.velocity.y = velocityVector.y;
+            } 
+            else
+            {
+                this.player.body.force.x = inputVector.x * this.acceleration;
+                this.player.body.force.y = inputVector.y * this.acceleration;
+            }
+        }
+        else
+        {
+            // a faster acceleration towards zero speed in order to help the player switch directions
+            if(!this.player.launched)
+            {
+                this.player.body.force.x = inputVector.x * this.deceleration;
+                this.player.body.force.y = inputVector.y * this.deceleration;
+            }
+        }
+
+        //console.log(inputVector.magnitude);
+        if(inputVector.magnitude() == 0 && !this.player.launched)// if the player wants to stop moving
+        {
+            if(Math.abs(this.player.body.velocity.x) < this.velocityThreshold)// if we've slowed down enough, stop altogether
+            {
+                this.player.body.velocity.x = 0;
+            }
+            else// otherwise slow down
+            {
+                velocityVector.setMagnitude(1);
+                console.log(velocityVector);
+                this.player.body.force.x = velocityVector.x * -this.stationaryDeceleration;
+                this.player.body.force.y = velocityVector.y * -this.stationaryDeceleration;
+            }
+        }
+    }
+
     // called when a state is being transitioned away from
     deinitialize() {}
 
     // called when a state is being transitioned to
     initialize()
     {
-        this.stoppedMoving = false;
+        this.stoppedMoving = false;//TODO unused flag
         this.player.body.velocity.y = 0;
+
+        console.log(this.standingDirection);
     }
 
     fireShard()
