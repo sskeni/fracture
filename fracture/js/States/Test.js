@@ -5,6 +5,7 @@ var Test = {
         game.load.image('caretaker', 'Caretaker.png');
 
         //tileset assets
+        game.load.image('platform', 'testplatform.png');
         game.load.tilemap('test', 'test16x16.json', null, Phaser.Tilemap.TILED_JSON);
         game.load.spritesheet('tilesheet', 'testtileset.png');
     },
@@ -20,6 +21,12 @@ var Test = {
         this.map.addTilesetImage('testtileset', 'tilesheet');
         this.map.setCollisionByExclusion([]);
 
+        this.platforms = game.add.group();
+        this.platforms.enableBody = true;
+        this.platforms.physicsBodyType = Phaser.Physics.P2JS;
+        this.map.createFromObjects('Platforms', 2, 'platform', 0, true, false, this.platforms);
+        this.platforms.setAll('body.static', true);
+
         //add tilset to map layer
         this.mapLayer = this.map.createLayer('Tile Layer 1');
         this.mapLayer.resizeWorld();
@@ -32,9 +39,6 @@ var Test = {
 
     update:function()
     {
-        //check collisions
-
-
         this.player.update();
     }
 }
