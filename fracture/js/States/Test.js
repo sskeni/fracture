@@ -31,22 +31,34 @@ var Test = {
         this.platforms.enableBody = true;
         this.platforms.physicsBodyType = Phaser.Physics.P2JS;
         this.map.createFromObjects('smallplatforms', 5, 'smallplatform', 0, true, false, this.platforms);
-        this.platforms.setAll('body.static', true);
 
-        //the next line changes the sprite to be set to the right position
-        //this.platforms.setAll('anchor', 0);
+        //move platforms to account for anchor
+        this.platforms.forEach(this.changeBody, this);
 
-        //I tried the next line, but it didn't seem to do anything
-        //this.platforms.setAll('body.anchor', null, 0);
+        //set platforms to kinematic
+        this.platforms.setAll('body.kinematic', true);
 
         //add p2 physics to tilemap
         game.physics.p2.convertTilemap(this.map, this.mapLayer);
 
+        //set colors for map
+        color = Math.random() * 0xffffff;
+        this.mapLayer.tint = color;
+        this.platforms.setAll('tint', color);
+
+        //create player
         this.player = new Player(game, 100, 200, 'caretaker');
     },
 
     update:function()
     {
         this.player.update();
+    },
+
+    //move each platform to account for anchor
+    changeBody:function(platform)
+    {
+        platform.body.x = platform.x+platform.width/2;
+        platform.body.y = platform.y+platform.height/2;
     }
 }
