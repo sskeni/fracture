@@ -40,11 +40,15 @@ var Test = {
             tilemapBodies[index].tag = 'tile';
         }
         
-        
     },
 
     update:function()
     {
-        this.player.update();
+
+    },
+
+    render:function()
+    {
+        
     }
 }

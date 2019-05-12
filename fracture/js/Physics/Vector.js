@@ -16,6 +16,12 @@ class Vector
         return new Vector(x, y);
     }
 
+    // returns the distance between this vector and the given vector
+    distance(vector)
+    {
+        return Math.sqrt((this.x - vector.x)*(this.x - vector.x) + (this.y - vector.y)*(this.y - vector.y));
+    }
+
     // checks if this vector is in the same hemisphere as the other vector
     sameDirection(vector)
     {
@@ -46,10 +52,7 @@ class Vector
     // multiplies this vector by the given scalar
     multiply(scalar)
     {
-        this.x *= scalar;
-        this.y *= scalar;
-
-        return this;
+        return new Vector(this.x * scalar, this.y * scalar);
     }
 
     // returns a copy of this vector
@@ -75,6 +78,16 @@ class Vector
     sum(vector)
     {
         return new Vector(this.x + vector.x, this.y + vector.y);
+    }
+
+    // returns the result of rotating this vector clockwise by the given degrees
+    rotate(angle)
+    {
+        //rotate the vector clockwise by the given degrees
+        var x = this.x * Math.cos(angle * Math.PI / 180) - this.y * Math.sin(angle * Math.PI / 180);
+        var y = this.x * Math.sin(angle * Math.PI / 180) + this.y * Math.cos(angle * Math.PI / 180);
+
+        return new Vector(x, y);
     }
 
 }

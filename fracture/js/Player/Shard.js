@@ -15,10 +15,14 @@ class Shard extends Phaser.Sprite
     velocity = 500;
     launchDistance = 45;
 
+    hitboxWidth = 64;
+    hitboxHeight = 15;
+
     direction;
     
     // references
     player;
+    rectangle;
 
     // flags
     planted = false;
@@ -54,7 +58,7 @@ class Shard extends Phaser.Sprite
         this.body.x += Math.sin((direction + 90) * Math.PI / 180) * 20;
         this.body.y += Math.cos((direction + 90) * Math.PI / 180) * 20;
         
-        this.body.setRectangle(64, 16);
+        this.body.setRectangle(this.hitboxWidth, this.hitboxHeight);
         this.body.setCollisionGroup(this.player.shardCollisionGroup);
         this.body.collides(this.player.tilemapCollisionGroup);
         this.body.onBeginContact.add(this.onBeginContact, this);
@@ -62,6 +66,8 @@ class Shard extends Phaser.Sprite
         this.body.fixedRotation = true;
         this.body.tag = 'shard';
         this.body.shard = this;
+
+        this.rectangle = Rectangle.createFromSprite(this);
     }
 
     onBeginContact(abstractContactedBody, contactedBody, myShape, theirShape, contactEquation)
