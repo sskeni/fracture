@@ -67,7 +67,7 @@ class Shard extends Phaser.Sprite
         this.body.tag = 'shard';
         this.body.shard = this;
 
-        this.rectangle = Rectangle.createFromSprite(this);
+        //this.rectangle = Rectangle.createFromSprite(this);
     }
 
     onBeginContact(abstractContactedBody, contactedBody, myShape, theirShape, contactEquation)
@@ -86,6 +86,9 @@ class Shard extends Phaser.Sprite
                 this.player.stateManager.launch(this.direction);
             }
     
+            this.rectangle = Rectangle.createFromSprite(this);
+            this.player.addRaycastTarget(this);
+
             game.time.events.add(Phaser.Timer.SECOND * 0.1, this.collidePlayer, this)
         }
     }

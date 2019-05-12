@@ -69,7 +69,7 @@ class Jump extends PlayerState
 
         this.ground.move();
 
-        if(this.landed)
+        if(this.player.onGround())//this.landed
         {
             // check to see if we've fallen too far
             if(this.player.body.y - this.maxHeight > this.fallDamageHeight * this.player.shardCount && !this.player.onShard)
@@ -104,14 +104,14 @@ class Jump extends PlayerState
         this.maxHeight = 10000;
 
         // make sure that we're subscribing to the player's collision event to check if we've hit the ground
-        if(!this.player.body.onBeginContact.has(this.onBeginContact, this))
+        /*if(!this.player.body.onBeginContact.has(this.onBeginContact, this))
         {
             this.player.body.onBeginContact.add(this.onBeginContact, this);
-        }
-        if(!this.player.body.onEndContact.has(this.onEndContact, this))
+        }*/
+        /*if(!this.player.body.onEndContact.has(this.onEndContact, this))
         {
             this.player.body.onEndContact.add(this.onEndContact, this);
-        }
+        }*/
     }
 
     /**
@@ -150,7 +150,7 @@ class Jump extends PlayerState
             this.landed = true;
         }
 
-        if(this.onGround())
+        if(this.player.onGround())
         {
             this.ground.standingDirection = StandingDirection.DOWN;
             this.landed = true;

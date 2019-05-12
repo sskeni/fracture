@@ -49,7 +49,7 @@ class PlayerStateManager
     { 
         if(this.inputManager.shardButtonJustDown() && this.currentState.fireShard())
         {
-            var shard = new Shard(game, this.player.body.x, this.player.body.y, this.player, this.inputManager.getInputAsShardDirection());
+            this.player.fireShard();
         }
     }
 

@@ -22,6 +22,18 @@ class Vector
         return Math.sqrt((this.x - vector.x)*(this.x - vector.x) + (this.y - vector.y)*(this.y - vector.y));
     }
 
+    // returns whether this vector is equal to the given vector
+    equals(vector)
+    {
+        return this.x == vector.x && this.y == vector.y;
+    }
+
+    // returns the square of the distance between this vector and the given vector
+    squareDistance(vector)
+    {
+        return (this.x - vector.x)*(this.x - vector.x) + (this.y - vector.y)*(this.y - vector.y);
+    }
+
     // checks if this vector is in the same hemisphere as the other vector
     sameDirection(vector)
     {
@@ -44,9 +56,7 @@ class Vector
     setMagnitude(magnitude)
     {
         var oldMagnitude = this.magnitude();
-        this.x = (this.x/oldMagnitude) * magnitude;
-        this.y = (this.y/oldMagnitude) * magnitude;
-        return this;
+        return new Vector((this.x/oldMagnitude) * magnitude, (this.y/oldMagnitude) * magnitude);
     }
 
     // multiplies this vector by the given scalar

@@ -37,6 +37,10 @@ var Test = {
             tilemapBodies[index].setCollisionGroup(this.tilemapCollisionGroup);
             tilemapBodies[index].collides(this.player.collisionGroup);
             tilemapBodies[index].collides(this.player.shardCollisionGroup);
+            //console.log(tilemapBodies[index].x + ", " + tilemapBodies[index].y);
+            tilemapBodies[index].rectangle = Rectangle.createFromBody(tilemapBodies[index], 16, 16);
+            //console.log(tilemapBodies[index].rectangle)
+            this.player.addRaycastTarget(tilemapBodies[index]);
             tilemapBodies[index].tag = 'tile';
         }
         

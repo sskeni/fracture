@@ -11,21 +11,37 @@ class Rectangle
         this.points.push(pointD);
     }
 
-    // assumes that the sprite has the fields hitboxWidth and hitboxHeight, as well as a p2 Body
-    static createFromSprite(sprite)
+    // assumes that the sprite has a p2 Body
+    static createFromSprite(sprite, hitboxWidth, hitboxHeight)
     {
         var xAxis = new Vector(1, 0).rotate(sprite.body.angle);
         var yAxis = xAxis.rotate(90);
         
         var cornerLocation = new Vector(sprite.body.x, sprite.body.y);
-        cornerLocation = cornerLocation.sum(xAxis.multiply(-sprite.anchor.x * sprite.hitboxWidth));
-        cornerLocation = cornerLocation.sum(yAxis.multiply(-sprite.anchor.y * sprite.hitboxHeight))
+        cornerLocation = cornerLocation.sum(xAxis.multiply(-sprite.anchor.x * hitboxWidth));
+        cornerLocation = cornerLocation.sum(yAxis.multiply(-sprite.anchor.y * hitboxHeight))
         
         var pointA = cornerLocation;
-        console.log(sprite.hitboxWidth);
-        var pointB = cornerLocation.sum(xAxis.multiply(sprite.hitboxWidth));
-        var pointC = pointB.sum(yAxis.multiply(sprite.hitboxHeight));
-        var pointD = cornerLocation.sum(yAxis.multiply(sprite.hitboxHeight));
+        var pointB = cornerLocation.sum(xAxis.multiply(hitboxWidth));
+        var pointC = pointB.sum(yAxis.multiply(hitboxHeight));
+        var pointD = cornerLocation.sum(yAxis.multiply(hitboxHeight));
+
+        return new Rectangle(pointA, pointB, pointC, pointD);
+    }
+
+    static createFromBody(body, hitboxWidth, hitboxHeight)
+    {
+        var xAxis = new Vector(1, 0).rotate(body.angle);
+        var yAxis = new Vector(0, 1).rotate(body.angle);
+        
+        var cornerLocation = new Vector(body.x, body.y);
+        //cornerLocation = cornerLocation.sum(xAxis.multiply(-sprite.anchor.x * hitboxWidth));
+        //cornerLocation = cornerLocation.sum(yAxis.multiply(-sprite.anchor.y * hitboxHeight))
+        
+        var pointA = cornerLocation;
+        var pointB = cornerLocation.sum(xAxis.multiply(hitboxWidth));
+        var pointC = pointB.sum(yAxis.multiply(hitboxHeight));
+        var pointD = cornerLocation.sum(yAxis.multiply(hitboxHeight));
 
         return new Rectangle(pointA, pointB, pointC, pointD);
     }

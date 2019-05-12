@@ -51,7 +51,6 @@ class PlayerState
 
     clearLaunchState()
     {
-        console.log("unyeet");
         this.player.launched = false;
     }
 }
