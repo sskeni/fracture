@@ -14,6 +14,9 @@ var Test = {
 
     create:function()
     {
+        //background color to see textures better
+        game.stage.backgroundColor = "#FFFFFF";
+
         //set up physics
         game.physics.startSystem(Phaser.Physics.P2JS);
         game.physics.p2.setImpactEvents(true);
