@@ -90,6 +90,11 @@ class Vector
         return new Vector(this.x + vector.x, this.y + vector.y);
     }
 
+    difference(vector)
+    {
+        return new Vector(this.x - vector.x, this.y - vector.y);
+    }
+
     // returns the result of rotating this vector clockwise by the given degrees
     rotate(angle)
     {
@@ -98,6 +103,12 @@ class Vector
         var y = this.x * Math.sin(angle * Math.PI / 180) + this.y * Math.cos(angle * Math.PI / 180);
 
         return new Vector(x, y);
+    }
+
+    // returns a copy of this vector with both components positive
+    makePositive()
+    {
+        return new Vector(Math.abs(this.x), Math.abs(this.y));
     }
 
 }

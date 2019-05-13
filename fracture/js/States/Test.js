@@ -28,20 +28,18 @@ var Test = {
         this.map.setCollisionByExclusion([]);
         game.physics.p2.convertTilemap(this.map, this.mapLayer);
         this.tilemapCollisionGroup = game.physics.p2.createCollisionGroup();
-        var tilemapBodies = game.physics.p2.convertTilemap(this.map, this.mapLayer);
+        var tilemapBodies = game.physics.p2.convertTilemap(this.map, this.mapLayer, true, false);
 
         this.player = new Player(game, this.mapLayer, this.tilemapCollisionGroup, 100, 200, 'caretaker');
 
-        for(let index in tilemapBodies)
+        for(let body of tilemapBodies)
         {
-            tilemapBodies[index].setCollisionGroup(this.tilemapCollisionGroup);
-            tilemapBodies[index].collides(this.player.collisionGroup);
-            tilemapBodies[index].collides(this.player.shardCollisionGroup);
-            //console.log(tilemapBodies[index].x + ", " + tilemapBodies[index].y);
-            tilemapBodies[index].rectangle = Rectangle.createFromBody(tilemapBodies[index], 16, 16);
-            //console.log(tilemapBodies[index].rectangle)
-            this.player.addRaycastTarget(tilemapBodies[index]);
-            tilemapBodies[index].tag = 'tile';
+            body.setCollisionGroup(this.tilemapCollisionGroup);
+            body.collides(this.player.collisionGroup);
+            body.collides(this.player.shardCollisionGroup);
+            body.rectangle = Rectangle.createFromBody(body, 16, 16);
+            this.player.addRaycastTarget(body);
+            body.tag = 'tile';
         }
         
     },
@@ -53,6 +51,9 @@ var Test = {
 
     render:function()
     {
-        
+        for(let shard of this.player.shards)
+        {
+            if(shard.planted) shard.rectangle.drawPoints();
+        }
     }
 }

@@ -4,8 +4,9 @@ class Player extends Phaser.Sprite
     shardCount = 3;
     shardLaunchVelocity = 500;
     raycastRadius = 150;
-    groundRaycastDistance = 60;
-    groundRaycastWidth = 15;
+    groundRaycastDistance = 18;
+    shardRaycastDistance = 30;
+    groundRaycastWidth = 10;
 
     // references
     inputManager;
@@ -19,7 +20,7 @@ class Player extends Phaser.Sprite
 
     // flags
     launched;
-    onShard;
+    standingOnShard;
 
     constructor(game, tilemapLayer, tilemapCollisionGroup, x, y, key) 
     {
@@ -60,7 +61,7 @@ class Player extends Phaser.Sprite
         this.body.fixedRotation = true;
 
         this.launched = false;
-        this.onShard = false;
+        this.standingOnShard = false;
     }
 
     update()
@@ -71,14 +72,13 @@ class Player extends Phaser.Sprite
     fireShard()
     {
         var shard = new Shard(game, this.body.x, this.body.y, this, this.inputManager.getInputAsShardDirection());
-        this.shards.add(shard);
+        this.shards.push(shard);
         this.shardCount -= 1;
     }
 
     // returns whether the player should behave like they are on the ground
     onGround()
     {
-        console.log("onGround");
         var position = new Vector(this.body.x, this.body.y);
         var direction = new Vector(0, this.groundRaycastDistance);
         var leftPosition = new Vector(this.body.x - this.groundRaycastWidth, this.body.y);
@@ -86,6 +86,7 @@ class Player extends Phaser.Sprite
         // raycast down for floor tiles
         for(var index in this.raycastTargets)
         {
+            //console.log(index);
             var target = this.raycastTargets[index];
             
             //console.log(position.distance(target.x, target.y) < this.raycastRadius);
@@ -108,24 +109,34 @@ class Player extends Phaser.Sprite
     onShard()
     {
         var position = new Vector(this.body.x, this.body.y);
-        var direction = new Vector(0, this.groundRaycastDistance);
+        var direction = new Vector(0, this.shardRaycastDistance);
         var leftPosition = new Vector(this.body.x - this.groundRaycastWidth, this.body.y);
         var rightPosition = new Vector(this.body.x + this.groundRaycastWidth, this.body.y);
 
-        if(shards.length == 0)
+        if(this.shards.length == 0)
         {
             return false;
         }
 
-        for(var shard in shards)
+        for(var shard of this.shards)
         {
-            if(Raycast.raycastToRectangle(target, leftPosition, direction) != false)
+            if(shard.planted == true)
             {
-                return true;
-            }
-            if(Raycast.raycastToRectangle(target, rightPosition, direction) != false)
-            {
-                return true;
+                if(Raycast.raycastToRectangle(shard.rectangle, position, direction) != false)
+                {
+                    console.log("sup");
+                    return true;
+                }
+                /*if(Raycast.raycastToRectangle(shard.rectangle, leftPosition, direction) != false)
+                {
+                    console.log("sup");
+                    return true;
+                }
+                if(Raycast.raycastToRectangle(shard.rectangle, rightPosition, direction) != false)
+                {
+                    console.log("sup");
+                    return true;
+                }*/
             }
         }
     }

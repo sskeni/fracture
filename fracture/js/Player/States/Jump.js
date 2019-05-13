@@ -59,6 +59,19 @@ class Jump extends PlayerState
             {
                 this.player.body.force.y = this.downGravity;
             }
+
+            console.log("here");
+
+            if(this.onGround())//this.player.onGround())
+            {
+                this.landed = true;
+            }
+            if(this.player.onShard())
+            {
+                console.log("on a shard");
+                this.player.standingOnShard = true;
+                this.landed = true;
+            }
         }
 
         // update how high our max height was
@@ -69,10 +82,10 @@ class Jump extends PlayerState
 
         this.ground.move();
 
-        if(this.player.onGround())//this.landed
+        if(this.landed)//this.landed
         {
             // check to see if we've fallen too far
-            if(this.player.body.y - this.maxHeight > this.fallDamageHeight * this.player.shardCount && !this.player.onShard)
+            if(this.player.body.y - this.maxHeight > this.fallDamageHeight * this.player.shardCount && !this.player.standingOnShard)
             {
                 this.player.die();
             }
@@ -91,6 +104,8 @@ class Jump extends PlayerState
     // called when a state is being transitioned to
     initialize() 
     {
+        this.player.standingOnShard = false;
+
         if(!this.initializeFalling)// if we pressed the jump button to begin this jump
         {
             // gain initial vertical momentum
@@ -128,7 +143,7 @@ class Jump extends PlayerState
     * The Contact Equation data array.
     */
     // 
-    onBeginContact(abstractContactedBody, contactedBody, myShape, theirShape, contactEquation)
+    /*onBeginContact(abstractContactedBody, contactedBody, myShape, theirShape, contactEquation)
     {
         if(abstractContactedBody.tag == 'shard' && !this.player.onShard)
         {
@@ -155,16 +170,16 @@ class Jump extends PlayerState
             this.ground.standingDirection = StandingDirection.DOWN;
             this.landed = true;
         }
-    }
+    }*/
 
-    onEndContact(body, bodyB, shapeA, shapeB, equation)
+    /*onEndContact(body, bodyB, shapeA, shapeB, equation)
     {
         if(body.tag == 'shard')
         {   
             //game.time.events.add(Phaser.Timer.SECOND * 0.2, function() {this.player.onShard = false;}, this)
             this.player.onShard = false;
         }
-    }
+    }*/
 
     // returns whether there's ground under the player or not
     onGround()
@@ -197,7 +212,7 @@ class Jump extends PlayerState
     // called when this state appears as an adjacent state for another state
     transitionConditionsMet() 
     {
-        if(!this.onGround() && !this.player.onShard)
+        /*if(!this.player.onGround() && !this.player.onShard())
         {
             this.initializeFalling = true;
             return true;
@@ -205,7 +220,7 @@ class Jump extends PlayerState
         else
         {
             this.initializeFalling = false;
-        }
+        }*/
 
         return this.inputManager.jumpButtonIsDown();
     }

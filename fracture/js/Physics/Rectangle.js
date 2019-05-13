@@ -45,4 +45,13 @@ class Rectangle
 
         return new Rectangle(pointA, pointB, pointC, pointD);
     }
+
+    // debug method, draws points on the screen for the four points of this rectangle
+    drawPoints()
+    {
+        for(let point of this.points)
+        {
+            game.debug.pixel(point.x, point.y);
+        }
+    }
 }

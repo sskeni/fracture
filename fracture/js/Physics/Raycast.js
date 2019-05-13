@@ -11,13 +11,11 @@ class Raycast
         var hits = new Array();
         var hit;
         
-        //console.log("hey");
         for(let i = 0; i < 4; i++)
         {
-            //console.log(rectangle.points[i]);
-            //console.log(rectangle.points[(i+1)%4]);
+            console.log(i + ", " + (i + 1));
             hit = Raycast.raycastToLineSegment(rectangle.points[i], rectangle.points[(i+1)%4], origin, vector);
-            //console.log(hit);
+
             if(hit != false)
             {
                 hits.push(hit);
@@ -29,9 +27,9 @@ class Raycast
             return false;
         }
 
-        closerIntersection = (hits[0].distance(origin) < hits[1].distance(origin) ? hits[0] : hits[1]);
+        var closerIntersection = (hits[0].distance(origin) < hits[1].distance(origin) ? hits[0] : hits[1]);
 
-        if(origin.distance(closerIntersection) < vector.magnitude())
+        if(origin.distance(closerIntersection) > vector.magnitude())
         {
             return false;
         }
@@ -47,29 +45,30 @@ class Raycast
     // vector: a vector indicating the direction and distance to raycast at
     static raycastToLineSegment(pointA, pointB, origin, vector)
     {
-        //console.log(pointA);
-        //console.log(pointB);
+        //console.log('hefsd');
         var lineA = Line.createFromPoints(pointA, pointB);
-        //console.log(lineA);
-        var lineB = Line.createFromPoints(origin, origin.sum(vector));
-        //console.log(lineB);
+        var lineB = new Line(origin, vector);
+
         var intersectionPoint = Line.findIntersectionPoint(lineA, lineB);
         if(intersectionPoint == false)
         {
             return false;
         }
-
-        console.log(intersectionPoint.distance(pointA) + intersectionPoint.distance(pointB));
+        
+        console.log(intersectionPoint);
+        console.log(pointA);
+        console.log(pointB);
+        console.log(intersectionPoint.distance(pointA) + intersectionPoint.distance(pointB)); 
         console.log(pointA.distance(pointB) + 0.01);
         
         if(intersectionPoint.distance(pointA) + intersectionPoint.distance(pointB) < pointA.distance(pointB) + 0.01)
         {
-            //console.log("happy");
+            //console.log("returning an intersection point");
             return intersectionPoint;
         }
         else
         {
-            console.log("sad");
+            console.log("too far");
             return false;
         }
     }
