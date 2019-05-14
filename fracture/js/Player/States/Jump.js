@@ -59,16 +59,13 @@ class Jump extends PlayerState
             {
                 this.player.body.force.y = this.downGravity;
             }
-
-            console.log("here");
-
-            if(this.onGround())//this.player.onGround())
+            
+            if(this.player.onGround())//this.player.onGround())
             {
                 this.landed = true;
             }
             if(this.player.onShard())
             {
-                console.log("on a shard");
                 this.player.standingOnShard = true;
                 this.landed = true;
             }

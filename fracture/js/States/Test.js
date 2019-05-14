@@ -51,9 +51,9 @@ var Test = {
 
     render:function()
     {
-        for(let shard of this.player.shards)
+        /*for(let shard of this.player.shards)
         {
             if(shard.planted) shard.rectangle.drawPoints();
-        }
+        }*/
     }
 }

@@ -13,7 +13,6 @@ class Raycast
         
         for(let i = 0; i < 4; i++)
         {
-            console.log(i + ", " + (i + 1));
             hit = Raycast.raycastToLineSegment(rectangle.points[i], rectangle.points[(i+1)%4], origin, vector);
 
             if(hit != false)
@@ -45,7 +44,6 @@ class Raycast
     // vector: a vector indicating the direction and distance to raycast at
     static raycastToLineSegment(pointA, pointB, origin, vector)
     {
-        //console.log('hefsd');
         var lineA = Line.createFromPoints(pointA, pointB);
         var lineB = new Line(origin, vector);
 
@@ -55,20 +53,13 @@ class Raycast
             return false;
         }
         
-        console.log(intersectionPoint);
-        console.log(pointA);
-        console.log(pointB);
-        console.log(intersectionPoint.distance(pointA) + intersectionPoint.distance(pointB)); 
-        console.log(pointA.distance(pointB) + 0.01);
-        
         if(intersectionPoint.distance(pointA) + intersectionPoint.distance(pointB) < pointA.distance(pointB) + 0.01)
         {
-            //console.log("returning an intersection point");
             return intersectionPoint;
         }
         else
         {
-            console.log("too far");
+            //console.log("nope");
             return false;
         }
     }

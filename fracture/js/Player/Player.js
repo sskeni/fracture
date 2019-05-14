@@ -62,6 +62,11 @@ class Player extends Phaser.Sprite
 
         this.launched = false;
         this.standingOnShard = false;
+
+
+        //TEMP
+
+        this.drawLocation = new Vector(0, 0);
     }
 
     update()
