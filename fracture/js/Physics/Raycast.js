@@ -7,7 +7,6 @@ class Raycast
     // vector: a vector indicating the direction and distance to raycast at
     static raycastToRectangle(rectangle, origin, vector)
     {
-        //console.log(rectangle);
         var hits = new Array();
         var hit;
         

@@ -10,8 +10,6 @@ class Jump extends PlayerState
     downGravity = 1300;// The gravity to apply while the player is falling
     maxVelocity = 200;// the maximum velocity the player can fall at
     fallDamageHeight = 30;// the height the player can fall before taking fall damage (will be multiplied by the current number of shards)
-    groundRaycastDistance = 20;// the distance to raycast for checking if we've hit the ground or not
-    groundRaycastWidth = 15;
     
     // references
     ground;// the player's ground state
@@ -124,105 +122,14 @@ class Jump extends PlayerState
         this.buttonReleased = false;
         this.landed = false;
         this.maxHeight = 10000;
-
-        // make sure that we're subscribing to the player's collision event to check if we've hit the ground
-        /*if(!this.player.body.onBeginContact.has(this.onBeginContact, this))
-        {
-            this.player.body.onBeginContact.add(this.onBeginContact, this);
-        }*/
-        /*if(!this.player.body.onEndContact.has(this.onEndContact, this))
-        {
-            this.player.body.onEndContact.add(this.onEndContact, this);
-        }*/
-    }
-
-    /**
-    * From the Phaser documentation:
-    * Dispatched when a first contact is created between shapes in two bodies.
-    * This event is fired during the step, so collision has already taken place.
-    *
-    * The event will be sent 5 arguments in this order:
-    *
-    * The Phaser.Physics.P2.Body it is in contact with. *This might be null* if the Body was created directly in the p2 world.
-    * The p2.Body this Body is in contact with.
-    * The Shape from this body that caused the contact.
-    * The Shape from the contact body.
-    * The Contact Equation data array.
-    */
-    // 
-    /*onBeginContact(abstractContactedBody, contactedBody, myShape, theirShape, contactEquation)
-    {
-        if(abstractContactedBody.tag == 'shard' && !this.player.onShard)
-        {
-            this.player.body.velocity.x = 0;
-            this.player.body.velocity.y = 0;
-            var shard = abstractContactedBody.shard;
-            if(shard.direction == ShardDirection.UR || shard.direction == ShardDirection.BL)
-            {
-                this.ground.standingDirection = StandingDirection.RIGHT;
-                this.landed = true;
-            }
-            else if(shard.direction == ShardDirection.UL || shard.direction == ShardDirection.BR)
-            {
-                this.ground.standingDirection = StandingDirection.LEFT;
-                this.landed = true;
-            }
-
-            this.player.onShard = true;
-            this.landed = true;
-        }
-
-        if(this.player.onGround())
-        {
-            this.ground.standingDirection = StandingDirection.DOWN;
-            this.landed = true;
-        }
-    }*/
-
-    /*onEndContact(body, bodyB, shapeA, shapeB, equation)
-    {
-        if(body.tag == 'shard')
-        {   
-            //game.time.events.add(Phaser.Timer.SECOND * 0.2, function() {this.player.onShard = false;}, this)
-            this.player.onShard = false;
-        }
-    }*/
-
-    // returns whether there's ground under the player or not
-    onGround()
-    {
-        //adjust these raycasts so they can have diagonal directions (for checking against shards)
-
-        // raycast from the player's origin towards the ground
-        var targetX = this.player.body.x - this.groundRaycastWidth;
-        var targetY = this.player.body.y + this.groundRaycastDistance;
-        var line = new Phaser.Line(this.player.body.x, this.player.body.y, targetX, targetY);
-        var raycastTileList = this.player.tilemapLayer.getRayCastTiles(line, this.player.tilemapLayer.rayStepRate, true);
-
-        if(raycastTileList.length > 0)// if we hit at least one tile
-        {
-            return true;
-        }
-
-        targetX = this.player.body.x + this.groundRaycastWidth;
-        line = new Phaser.Line(this.player.body.x, this.player.body.y, targetX, targetY);
-        raycastTileList = this.player.tilemapLayer.getRayCastTiles(line, this.player.tilemapLayer.rayStepRate, true);
-
-        if(raycastTileList.length > 0)
-        {
-            return true;
-        }
-
-        return false;
     }
 
     // called when this state appears as an adjacent state for another state
     transitionConditionsMet() 
     {
-        if(!this.player.onGround() && !this.player.onShard())
+        if(!this.player.onGround() && !this.player.onShard())// if I'm not on the ground or on a shard, I should enter free fall
         {
             this.initializeFalling = true;
-            console.log("ssdlfhsdk");
             return true;
         }
         else
@@ -234,6 +141,7 @@ class Jump extends PlayerState
         return this.inputManager.jumpButtonIsDown();
     }
 
+    // what this state should do in response to a shard being fired
     fireShard()
     {
         // gain impulse based on shard fire direction

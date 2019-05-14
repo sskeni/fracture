@@ -30,7 +30,7 @@ var Test = {
         this.tilemapCollisionGroup = game.physics.p2.createCollisionGroup();
         var tilemapBodies = game.physics.p2.convertTilemap(this.map, this.mapLayer, true, false);
 
-        this.player = new Player(game, this.mapLayer, this.tilemapCollisionGroup, 100, 200, 'caretaker');
+        this.player = new Player(game, this.tilemapCollisionGroup, 100, 200, 'caretaker');
 
         for(let body of tilemapBodies)
         {

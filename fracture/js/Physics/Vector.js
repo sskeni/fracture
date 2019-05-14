@@ -71,6 +71,7 @@ class Vector
         return new Vector(this.x, this.y);
     }
 
+    // returns the vector projection of this vector onto the given vector
     projectOnto(vector)
     {
         var magnitude = this.magnitude();
@@ -82,14 +83,15 @@ class Vector
             return copy;
         }
         else return new Vector(0, 0);
-        
     }
 
+    // returns the sum of this vector and the given vector
     sum(vector)
     {
         return new Vector(this.x + vector.x, this.y + vector.y);
     }
 
+    // returns the difference of this vector and the given vector
     difference(vector)
     {
         return new Vector(this.x - vector.x, this.y - vector.y);

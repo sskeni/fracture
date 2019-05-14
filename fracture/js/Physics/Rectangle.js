@@ -12,6 +12,7 @@ class Rectangle
     }
 
     // assumes that the sprite has a p2 Body
+    // creates a rectangle with the given dimentions by referencing the position and rotation of the given sprite's body
     static createFromSprite(sprite, hitboxWidth, hitboxHeight)
     {
         var xAxis = new Vector(1, 0).rotate(sprite.body.angle);
@@ -29,14 +30,13 @@ class Rectangle
         return new Rectangle(pointA, pointB, pointC, pointD);
     }
 
+    // creates a rectangle with the given dimentions by referencing the position and rotation of the given body
     static createFromBody(body, hitboxWidth, hitboxHeight)
     {
         var xAxis = new Vector(1, 0).rotate(body.angle);
         var yAxis = new Vector(0, 1).rotate(body.angle);
         
         var cornerLocation = new Vector(body.x, body.y);
-        //cornerLocation = cornerLocation.sum(xAxis.multiply(-sprite.anchor.x * hitboxWidth));
-        //cornerLocation = cornerLocation.sum(yAxis.multiply(-sprite.anchor.y * hitboxHeight))
         
         var pointA = cornerLocation;
         var pointB = cornerLocation.sum(xAxis.multiply(hitboxWidth));

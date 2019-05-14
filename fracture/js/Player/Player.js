@@ -1,17 +1,15 @@
 class Player extends Phaser.Sprite
 {
     // behavior values
-    shardCount = 3;
-    shardLaunchVelocity = 500;
-    raycastRadius = 150;
-    groundRaycastDistance = 18;
-    shardRaycastDistance = 30;
-    groundRaycastWidth = 10;
+    shardCount = 3;// the number of shards the player can fire
+    shardLaunchVelocity = 500;// the velocity at which the player is launched when a shard grows right next to them
+    raycastRadius = 150;// the radius under which tiles are raycasted. Ensures that tiles we're guaranteed not to hit are not tested 
+    groundRaycastDistance = 18;// the distance to raycast for ground tiles
+    groundRaycastWidth = 10;// the horizontal offset to the left and right that raycasts for ground should be made at
 
     // references
     inputManager;
     stateManager;
-    tileMapLayer;
     collisionGroup;
     tilemapCollisionGroup;
     shardCollisionGroup;
@@ -22,7 +20,7 @@ class Player extends Phaser.Sprite
     launched;
     standingOnShard;
 
-    constructor(game, tilemapLayer, tilemapCollisionGroup, x, y, key) 
+    constructor(game, tilemapCollisionGroup, x, y, key) 
     {
         
         // properly inherit Phaser.Sprite
@@ -42,14 +40,11 @@ class Player extends Phaser.Sprite
 
         this.raycastTargets = new Array();
         this.shards = new Array();
-        
-        // save reference to tileMap layer (for raycasting tiles)
-        this.tilemapLayer = tilemapLayer;
+
         this.tilemapCollisionGroup = tilemapCollisionGroup;
         
         // set up physics
         game.physics.p2.enable(this, true);
-        //this.body.setRectangle(16, 30);
         this.body.setCircle(15);
         this.collisionGroup = game.physics.p2.createCollisionGroup();
         this.body.setCollisionGroup(this.collisionGroup);
@@ -60,13 +55,9 @@ class Player extends Phaser.Sprite
 
         this.body.fixedRotation = true;
 
+        // set flags
         this.launched = false;
         this.standingOnShard = false;
-
-
-        //TEMP
-
-        this.drawLocation = new Vector(0, 0);
     }
 
     update()
@@ -76,9 +67,12 @@ class Player extends Phaser.Sprite
 
     fireShard()
     {
-        var shard = new Shard(game, this.body.x, this.body.y, this, this.inputManager.getInputAsShardDirection());
-        this.shards.push(shard);
-        this.shardCount -= 1;
+        if(this.shardCount > 0)
+        {
+            var shard = new Shard(game, this.body.x, this.body.y, this, this.inputManager.getInputAsShardDirection());
+            this.shards.push(shard);
+            this.shardCount -= 1;
+        }
     }
 
     // returns whether the player should behave like they are on the ground
@@ -114,7 +108,7 @@ class Player extends Phaser.Sprite
     onShard()
     {
         var position = new Vector(this.body.x, this.body.y);
-        var direction = new Vector(0, this.shardRaycastDistance);
+        var direction = new Vector(0, this.groundRaycastDistance);
         var leftPosition = new Vector(this.body.x - this.groundRaycastWidth, this.body.y);
         var rightPosition = new Vector(this.body.x + this.groundRaycastWidth, this.body.y);
 

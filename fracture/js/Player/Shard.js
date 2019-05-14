@@ -12,8 +12,8 @@ var ShardDirection = {
 class Shard extends Phaser.Sprite
 {
     // behavior variables
-    velocity = 500;
-    launchDistance = 45;
+    velocity = 500;// the velocity at which to fly
+    launchDistance = 45;// the distance from the player under which we should launch the player when we plant ourselves
 
     hitboxWidth = 64;
     hitboxHeight = 15;
@@ -22,10 +22,10 @@ class Shard extends Phaser.Sprite
     
     // references
     player;
-    rectangle;
+    rectangle;// a rectangle for raycasting
 
     // flags
-    planted = false;
+    planted = false;// whether this shard has planted itself in wall
 
     constructor(game, x, y, player, direction)
     {
@@ -46,7 +46,6 @@ class Shard extends Phaser.Sprite
         this.anchor.y = 0.5;
         
         // set rotation
-        console.log(direction);
         this.angle = -direction;
         this.body.angle = -direction;
         
@@ -66,13 +65,11 @@ class Shard extends Phaser.Sprite
         this.body.fixedRotation = true;
         this.body.tag = 'shard';
         this.body.shard = this;
-
-        //this.rectangle = Rectangle.createFromSprite(this, this.hitboxWidth, this.hitboxHeight);
     }
 
-    onBeginContact(abstractContactedBody, contactedBody, myShape, theirShape, contactEquation)
+    onBeginContact(bodyA, bodyB, myShape, theirShape, contactEquation)
     {
-        if(abstractContactedBody.tag != 'player')
+        if(bodyA.tag != 'player')
         {
             this.planted = true;
             this.body.dynamic = false;
@@ -86,10 +83,10 @@ class Shard extends Phaser.Sprite
                 this.player.stateManager.launch(this.direction);
             }
     
+            // add a rectangle for raycasting based on the current position
             this.rectangle = Rectangle.createFromSprite(this, this.hitboxWidth, this.hitboxHeight);
-            console.log(this.rectangle);
-            this.player.addRaycastTarget(this);
 
+            // start colliding with the player on a delay to allow time for the player to be launched a bit
             game.time.events.add(Phaser.Timer.SECOND * 0.1, this.collidePlayer, this)
         }
     }

@@ -17,7 +17,7 @@ class Ground extends PlayerState
     velocityThreshold = 20;// the speed under which the player's velocity should be set directly to zero
     gravity = 1000;// the force of gravity on the player
 
-    standingDirection;
+    standingDirection;// an enum representation of where the ground is
 
 
     constructor(stateManager) 
@@ -29,14 +29,14 @@ class Ground extends PlayerState
     // called every frame
     run() 
     {
-        if(this.standingDirection == StandingDirection.DOWN)
+        if(this.standingDirection == StandingDirection.DOWN)// if we're on flat ground
         {
-            this.move();
+            this.move();// move like normal
             this.player.body.force.y = this.gravity;
         }
         else
         {
-            this.moveSlanted(this.standingDirection);
+            this.moveSlanted(this.standingDirection);// otherwise we're on a shard and should move diagonal
         }
     }
 
@@ -96,7 +96,6 @@ class Ground extends PlayerState
         inputVector = inputVector.setMagnitude(this.inputManager.getHorizontalInput());
         if(velocityVector.sameDirection(inputVector) || velocityVector.magnitude() == 0)
         {
-            console.log("hey");
             // a fast acceleration towards max speed
             if(velocityVector.magnitude() > this.maxSpeed)// if we've reached max speed
             {
