@@ -38,7 +38,7 @@ class Player extends Phaser.Sprite
         this.tilemapCollisionGroup = tilemapCollisionGroup;
         
         // set up physics
-        game.physics.p2.enable(this, true);
+        game.physics.p2.enable(this);
         //this.body.setRectangle(16, 30);
         this.body.setCircle(15);
         this.collisionGroup = game.physics.p2.createCollisionGroup();

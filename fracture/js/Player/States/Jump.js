@@ -91,8 +91,11 @@ class Jump extends PlayerState
     // called when a state is being transitioned to
     initialize() 
     {
+        
         if(!this.initializeFalling)// if we pressed the jump button to begin this jump
         {
+            var jumpSound = game.add.audio('jump');
+            jumpSound.play('', 0, 0.05);
             // gain initial vertical momentum
             this.player.body.velocity.y = -this.initialVelocity;
             this.player.body.force.y = this.upHoldGravity;
