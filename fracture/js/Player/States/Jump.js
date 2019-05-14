@@ -59,13 +59,23 @@ class Jump extends PlayerState
             {
                 this.player.body.force.y = this.downGravity;
             }
-            
-            if(this.player.onGround())//this.player.onGround())
+
+            if(this.player.onGround())
             {
+                this.ground.standingDirection = StandingDirection.DOWN;
                 this.landed = true;
             }
-            if(this.player.onShard())
+            var shard = this.player.onShard();
+            if(shard != false)
             {
+                if(shard.direction == ShardDirection.UR || shard.direction == ShardDirection.BL)
+                {
+                    this.ground.standingDirection = StandingDirection.RIGHT;
+                }
+                else if(shard.direction == ShardDirection.UL || shard.direction == ShardDirection.BR)
+                {
+                    this.ground.standingDirection = StandingDirection.LEFT;
+                }
                 this.player.standingOnShard = true;
                 this.landed = true;
             }
@@ -209,15 +219,17 @@ class Jump extends PlayerState
     // called when this state appears as an adjacent state for another state
     transitionConditionsMet() 
     {
-        /*if(!this.player.onGround() && !this.player.onShard())
+        if(!this.player.onGround() && !this.player.onShard())
         {
             this.initializeFalling = true;
+            console.log("ssdlfhsdk");
             return true;
         }
         else
         {
             this.initializeFalling = false;
-        }*/
+        }
+
 
         return this.inputManager.jumpButtonIsDown();
     }

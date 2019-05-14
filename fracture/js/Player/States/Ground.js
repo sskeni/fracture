@@ -93,13 +93,14 @@ class Ground extends PlayerState
         this.player.body.velocity.x -= normalVelocity.x/50;
         this.player.body.velocity.y -= normalVelocity.y/50;
         
-        inputVector.setMagnitude(this.inputManager.getHorizontalInput());
+        inputVector = inputVector.setMagnitude(this.inputManager.getHorizontalInput());
         if(velocityVector.sameDirection(inputVector) || velocityVector.magnitude() == 0)
         {
+            console.log("hey");
             // a fast acceleration towards max speed
             if(velocityVector.magnitude() > this.maxSpeed)// if we've reached max speed
             {
-                velocityVector.setMagnitude(this.maxSpeed);
+                velocityVector = velocityVector.setMagnitude(this.maxSpeed);
                 this.player.body.velocity.x = velocityVector.x;
                 this.player.body.velocity.y = velocityVector.y;
             } 
@@ -123,10 +124,11 @@ class Ground extends PlayerState
             if(Math.abs(this.player.body.velocity.x) < this.velocityThreshold)// if we've slowed down enough, stop altogether
             {
                 this.player.body.velocity.x = 0;
+                this.player.body.velocity.y = 0;
             }
             else// otherwise slow down
             {
-                velocityVector.setMagnitude(1);
+                velocityVector = velocityVector.setMagnitude(1);
                 this.player.body.force.x = velocityVector.x * -this.stationaryDeceleration;
                 this.player.body.force.y = velocityVector.y * -this.stationaryDeceleration;
             }

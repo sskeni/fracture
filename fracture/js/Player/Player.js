@@ -129,21 +129,20 @@ class Player extends Phaser.Sprite
             {
                 if(Raycast.raycastToRectangle(shard.rectangle, position, direction) != false)
                 {
-                    console.log("sup");
-                    return true;
+                    return shard;
                 }
-                /*if(Raycast.raycastToRectangle(shard.rectangle, leftPosition, direction) != false)
+                if(Raycast.raycastToRectangle(shard.rectangle, leftPosition, direction) != false)
                 {
-                    console.log("sup");
-                    return true;
+                    return shard;
                 }
                 if(Raycast.raycastToRectangle(shard.rectangle, rightPosition, direction) != false)
                 {
-                    console.log("sup");
-                    return true;
-                }*/
+                    return shard;
+                }
             }
         }
+
+        return false;
     }
 
 
