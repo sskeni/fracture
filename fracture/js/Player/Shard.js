@@ -60,6 +60,7 @@ class Shard extends Phaser.Sprite
         this.body.setRectangle(this.hitboxWidth, this.hitboxHeight);
         this.body.setCollisionGroup(this.player.shardCollisionGroup);
         this.body.collides(this.player.tilemapCollisionGroup);
+        this.body.collides(this.player.shardCollisionGroup);
         this.body.onBeginContact.add(this.onBeginContact, this);
         
         this.body.fixedRotation = true;
