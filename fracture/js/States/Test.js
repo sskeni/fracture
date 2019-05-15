@@ -83,6 +83,5 @@ var Test = {
     {
         platform.body.x = platform.x+platform.width/2;
         platform.body.y = platform.y+platform.height/2;
-        platform.angle = platform.body.angle;
     }
 }
