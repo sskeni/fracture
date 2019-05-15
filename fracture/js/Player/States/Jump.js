@@ -35,10 +35,8 @@ class Jump extends PlayerState
         // experience gravity
         // floats at top
         // falls quickly
-        if(this.player.body.velocity.y < -0.01)// if we are going up
+        if(this.player.body.velocity.y < 0)// if we are going up
         {
-            console.log(this.player.body.velocity.y );
-
             if(this.inputManager.jumpButtonIsDown() && !this.buttonReleased)
             {
                 this.player.body.force.y = this.upHoldGravity;
@@ -51,7 +49,6 @@ class Jump extends PlayerState
         }
         else// if we are going down
         {          
-            console.log("sdfds");
             if(this.player.body.velocity.y < -this.maxVelocity)
             {
                 this.player.body.force.y = -this.maxVelocity;
