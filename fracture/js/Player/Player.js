@@ -20,7 +20,7 @@ class Player extends Phaser.Sprite
     launched;
     standingOnShard;
 
-    constructor(game, tilemapCollisionGroup, x, y, key) 
+    constructor(game, x, y, key) 
     {
         
         // properly inherit Phaser.Sprite
@@ -41,15 +41,12 @@ class Player extends Phaser.Sprite
         this.raycastTargets = new Array();
         this.shards = new Array();
 
-        this.tilemapCollisionGroup = tilemapCollisionGroup;
-        
         // set up physics
         game.physics.p2.enable(this, true);
         this.body.setCircle(15);
         this.collisionGroup = game.physics.p2.createCollisionGroup();
         this.body.setCollisionGroup(this.collisionGroup);
         this.shardCollisionGroup = game.physics.p2.createCollisionGroup();
-        this.body.collides(this.tilemapCollisionGroup);
         this.body.collides(this.shardCollisionGroup);
         this.body.tag = 'player';
 
@@ -63,6 +60,12 @@ class Player extends Phaser.Sprite
     update()
     {
         this.stateManager.update();
+    }
+
+    setTilemapCollisionGroup(tilemapCollisionGroup)
+    {
+        this.tilemapCollisionGroup = tilemapCollisionGroup;
+        this.body.collides(this.tilemapCollisionGroup);
     }
 
     fireShard()
@@ -85,7 +88,6 @@ class Player extends Phaser.Sprite
         // raycast down for floor tiles
         for(var index in this.raycastTargets)
         {
-            //console.log(index);
             var target = this.raycastTargets[index];
             
             //console.log(position.distance(target.x, target.y) < this.raycastRadius);

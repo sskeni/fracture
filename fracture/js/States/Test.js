@@ -18,74 +18,15 @@ var Test = {
         //set up physics
         game.physics.startSystem(Phaser.Physics.P2JS);
         game.physics.p2.setImpactEvents(true);
+        
+        this.player = new Player(game, 100, 200, 'caretaker');
 
-        //create tileset and set collisions
-        this.map = game.add.tilemap('test');
-        this.map.addTilesetImage('testtileset', 'tilesheet');
-        this.map.setCollisionByExclusion([]);
-
-		//add tilset to map layer
-        this.mapLayer = this.map.createLayer('walls');
-        this.mapLayer.resizeWorld();
-
-        //add small platforms
-        this.smallplatforms = game.add.group();
-        this.smallplatforms.enableBody = true;
-        this.smallplatforms.physicsBodyType = Phaser.Physics.P2JS;
-        this.map.createFromObjects('smallplatforms', 5, 'smallplatform', 0, true, false, this.smallplatforms);
-
-        //add medium platforms
-        this.mediumplatforms = game.add.group();
-        this.mediumplatforms.enableBody = true;
-        this.mediumplatforms.physicsBodyType = Phaser.Physics.P2JS;
-        this.map.createFromObjects('mediumplatforms', 6, 'mediumplatform', 0, true, false, this.mediumplatforms);
-
-        //add large platforms
-        this.largeplatforms = game.add.group();
-        this.largeplatforms.enableBody = true;
-        this.largeplatforms.physicsBodyType = Phaser.Physics.P2JS;
-        this.map.createFromObjects('largeplatforms', 7, 'largeplatform', 0, true, false, this.largeplatforms);
-
-        //move platforms to account for anchor
-        this.smallplatforms.forEach(this.changeBody, this);
-        this.mediumplatforms.forEach(this.changeBody, this);
-        this.largeplatforms.forEach(this.changeBody, this);
-
-        //set platforms to kinematic
-        this.smallplatforms.setAll('body.kinematic', true);
-        this.mediumplatforms.setAll('body.kinematic', true);
-        this.largeplatforms.setAll('body.kinematic', true);
-
-        //add p2 physics to tilemap
-        this.map.setCollisionByExclusion([]);
-        game.physics.p2.convertTilemap(this.map, this.mapLayer);
-
-        //set colors for map
-        color = Math.random() * 0xffffff;
-        this.mapLayer.tint = color;
-        this.smallplatforms.setAll('tint', color);
-        this.mediumplatforms.setAll('tint', color);
-        this.largeplatforms.setAll('tint', color);
-
-        this.tilemapCollisionGroup = game.physics.p2.createCollisionGroup();
-        var tilemapBodies = game.physics.p2.convertTilemap(this.map, this.mapLayer, true, false);
-
-        this.player = new Player(game, this.tilemapCollisionGroup, 100, 200, 'caretaker');
-
-        for(let body of tilemapBodies)
-        {
-            body.setCollisionGroup(this.tilemapCollisionGroup);
-            body.collides(this.player.collisionGroup);
-            body.collides(this.player.shardCollisionGroup);
-            body.rectangle = Rectangle.createFromBody(body, 16, 16);
-            this.player.addRaycastTarget(body);
-            body.tag = 'tile';
-        }
+        this.tilemapManager = new TilemapManager(this.player);
     },
 
     update:function()
     {
-        this.player.update();
+        //this.player.update();
     },
 
     //move each platform to account for anchor
