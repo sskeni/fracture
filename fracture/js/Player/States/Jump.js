@@ -9,13 +9,19 @@ class Jump extends PlayerState
     upHoldGravity = 500;// The gravity to apply while the player is going up and the jump button is held
     downGravity = 1300;// The gravity to apply while the player is falling
     maxVelocity = 200;// the maximum velocity the player can fall at
-
+    fallDamageHeight = 30;// the height the player can fall before taking fall damage (will be multiplied by the current number of shards)
+    
     // references
-    ground;
-
+    ground;// the player's ground state
+    
     // flags
-    buttonReleased;
-    landed;
+    buttonReleased;// whether the jump button has been released
+    landed;// whether the player should transition to the ground state on the next update
+    initializeFalling;// whether the player fell off of a ledge to initialize the falling state
+    onShard;// whether the player is standing on a shard currently
+
+    // runtime variables
+    maxHeight;// the lowest y value (greatest height) the player has had while jumping
     
     constructor(stateManager) 
     {
@@ -51,19 +57,51 @@ class Jump extends PlayerState
             {
                 this.player.body.force.y = this.downGravity;
             }
+
+            if(this.player.onGround())
+            {
+                this.ground.standingDirection = StandingDirection.DOWN;
+                this.landed = true;
+            }
+            var shard = this.player.onShard();
+            if(shard != false)
+            {
+                if(shard.direction == ShardDirection.UR || shard.direction == ShardDirection.BL)
+                {
+                    this.ground.standingDirection = StandingDirection.RIGHT;
+                }
+                else if(shard.direction == ShardDirection.UL || shard.direction == ShardDirection.BR)
+                {
+                    this.ground.standingDirection = StandingDirection.LEFT;
+                }
+                this.player.standingOnShard = true;
+                this.landed = true;
+            }
+        }
+
+        // update how high our max height was
+        if(this.player.body.y < this.maxHeight)
+        {
+            this.maxHeight = this.player.body.y;
         }
 
         this.ground.move();
 
-        if(this.landed)
+        if(this.landed)//this.landed
         {
-            console.log("hello");
+            // check to see if we've fallen too far
+            if(this.player.body.y - this.maxHeight > this.fallDamageHeight * this.player.shardCount && !this.player.standingOnShard)
+            {
+                this.player.die();
+            }
             this.stateManager.transitionToState(this.ground);
         }
+
+        //TODO if launched by shard, allow double jump
     }
 
     // called when a state is being transitioned away from
-    deinitialize() 
+    deinitialize()
     {
 
     }
@@ -71,39 +109,39 @@ class Jump extends PlayerState
     // called when a state is being transitioned to
     initialize() 
     {
-        // gain initial vertical momentum
-        this.player.body.velocity.y = -this.initialVelocity;
-        this.player.body.force.y = this.upHoldGravity;
+        this.player.standingOnShard = false;
+
+        if(!this.initializeFalling)// if we pressed the jump button to begin this jump
+        {
+            // gain initial vertical momentum
+            this.player.body.velocity.y = -this.initialVelocity;
+            this.player.body.force.y = this.upHoldGravity;
+        }
+
+        // initialize flags
         this.buttonReleased = false;
         this.landed = false;
-
-        this.player.body.onBeginContact.addOnce(this.onBeginContact, this);
-    }
-
-    /**
-    * From the Phaser documentation
-    * Dispatched when a first contact is created between shapes in two bodies.
-    * This event is fired during the step, so collision has already taken place.
-    *
-    * The event will be sent 5 arguments in this order:
-    *
-    * The Phaser.Physics.P2.Body it is in contact with. *This might be null* if the Body was created directly in the p2 world.
-    * The p2.Body this Body is in contact with.
-    * The Shape from this body that caused the contact.
-    * The Shape from the contact body.
-    * The Contact Equation data array.
-    */
-    onBeginContact(abstractContactedBody, contactedBody, myShape, theirShape, contactEquation)
-    {
-        this.landed = true;
+        this.maxHeight = 10000;
     }
 
     // called when this state appears as an adjacent state for another state
     transitionConditionsMet() 
     {
+        if(!this.player.onGround() && !this.player.onShard())// if I'm not on the ground or on a shard, I should enter free fall
+        {
+            this.initializeFalling = true;
+            return true;
+        }
+        else
+        {
+            this.initializeFalling = false;
+        }
+
+
         return this.inputManager.jumpButtonIsDown();
     }
 
+    // what this state should do in response to a shard being fired
     fireShard()
     {
         // gain impulse based on shard fire direction

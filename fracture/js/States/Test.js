@@ -3,6 +3,7 @@ var Test = {
     {
         game.load.path = 'assets/img/';
         game.load.image('caretaker', 'Caretaker.png');
+        game.load.image('shard', 'Shard.png');
 
         //tileset assets
         game.load.image('smallplatform', 'smallplatform.png');
@@ -22,7 +23,6 @@ var Test = {
         this.map = game.add.tilemap('test');
         this.map.addTilesetImage('testtileset', 'tilesheet');
         this.map.setCollisionByExclusion([]);
-
 
 		//add tilset to map layer
         this.mapLayer = this.map.createLayer('walls');
@@ -57,6 +57,7 @@ var Test = {
         this.largeplatforms.setAll('body.kinematic', true);
 
         //add p2 physics to tilemap
+        this.map.setCollisionByExclusion([]);
         game.physics.p2.convertTilemap(this.map, this.mapLayer);
 
         //set colors for map
@@ -66,8 +67,20 @@ var Test = {
         this.mediumplatforms.setAll('tint', color);
         this.largeplatforms.setAll('tint', color);
 
-        //create player
-        this.player = new Player(game, 100, 200, 'caretaker');
+        this.tilemapCollisionGroup = game.physics.p2.createCollisionGroup();
+        var tilemapBodies = game.physics.p2.convertTilemap(this.map, this.mapLayer, true, false);
+
+        this.player = new Player(game, this.tilemapCollisionGroup, 100, 200, 'caretaker');
+
+        for(let body of tilemapBodies)
+        {
+            body.setCollisionGroup(this.tilemapCollisionGroup);
+            body.collides(this.player.collisionGroup);
+            body.collides(this.player.shardCollisionGroup);
+            body.rectangle = Rectangle.createFromBody(body, 16, 16);
+            this.player.addRaycastTarget(body);
+            body.tag = 'tile';
+        }
     },
 
     update:function()
