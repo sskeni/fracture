@@ -9,6 +9,12 @@ var Test = {
         game.load.image('smallplatform', 'smallplatform.png');
         game.load.image('mediumplatform', 'mediumplatform.png');
         game.load.image('largeplatform', 'largeplatform.png');
+        game.load.image('startdoor', 'startdoor.png');
+        game.load.image('enddoor', 'enddoor.png');
+        game.load.image('button', 'button.png');
+        game.load.image('spike', 'spike.png');
+        game.load.image('door', 'door.png');
+        game.load.image('checkpoint', 'checkpoint.png');
         game.load.tilemap('test', 'test.json', null, Phaser.Tilemap.TILED_JSON);
         game.load.spritesheet('tilesheet', 'testtileset.png');
     },
