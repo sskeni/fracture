@@ -35,7 +35,7 @@ class Jump extends PlayerState
         // experience gravity
         // floats at top
         // falls quickly
-        if(this.player.body.velocity.y < 0)// if we are going up
+        if(this.player.body.velocity.y < -0.01)// if we are going up
         {
             if(this.inputManager.jumpButtonIsDown() && !this.buttonReleased)
             {
@@ -98,8 +98,6 @@ class Jump extends PlayerState
                 this.stateManager.transitionToState(this.ground);
             }
         }
-
-        //TODO if launched by shard, allow double jump
     }
 
     // called when a state is being transitioned away from
@@ -144,11 +142,11 @@ class Jump extends PlayerState
     }
 
     // what this state should do in response to a shard being fired
-    fireShard()
+    /*fireShard()
     {
         // gain impulse based on shard fire direction
         return true;
-    }
+    }*/
 
 
 }

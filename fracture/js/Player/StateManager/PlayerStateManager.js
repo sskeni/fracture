@@ -29,9 +29,7 @@ class PlayerStateManager
     update()
     {
         this.currentState.run();// run the current state's behavior
-        //console.log(this.currentState);
         this.transitionUnderConditions(this.currentState);// check to see if we need to transition to a new state
-        //this.tryFireShard();
     }
 
     // checks the current state's adjacents states for their transition conditions and transition if they are met
@@ -46,15 +44,6 @@ class PlayerStateManager
             }
         }
     }
-
-    /*// tries to fire a shard and sends the current state a message so that the state can respond correctly
-    tryFireShard()
-    { 
-        if(this.inputManager.shardButtonJustDown() && this.currentState.fireShard())
-        {
-            this.player.fireShard();
-        }
-    }*/
 
     // launches player in the given direction
     launch(direction)

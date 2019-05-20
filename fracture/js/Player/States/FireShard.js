@@ -10,7 +10,6 @@ class FireShard extends PlayerState
     // behavior variables
     duration = 500;// The amount of time in ms that the state will wait before automatically firing the shard
     cursorOffset = 32;// the offset of the base cursor's position from the center of the player
-    //cursorTipOffset = 0;// the offset of the cursor tip from the base cursor
     cursorTipMoveDistance = 10;// determines how far the cursor tip will move in the time it takes for the state to finish
     slowMotionFactor = 4;// The ratio of real time to game time while in this state(2.0 = half speed)
 
