@@ -27,7 +27,8 @@ class Raycast
 
         var closerIntersection = (hits[0].distance(origin) < hits[1].distance(origin) ? hits[0] : hits[1]);
 
-        if(origin.distance(closerIntersection) > vector.magnitude())
+        // if the point is either too far, or in the wrong direction, no hit occured
+        if(origin.distance(closerIntersection) > vector.magnitude() || !closerIntersection.difference(origin).sameDirection(vector))
         {
             return false;
         }
@@ -58,7 +59,6 @@ class Raycast
         }
         else
         {
-            //console.log("nope");
             return false;
         }
     }
