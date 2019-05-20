@@ -8,7 +8,7 @@ class FireShard extends PlayerState
     cursorTipKey = 'cursorTip';
 
     // behavior variables
-    duration = 2000;// The amount of time in ms that the state will wait before automatically firing the shard
+    duration = 500;// The amount of time in ms that the state will wait before automatically firing the shard
     cursorOffset = 32;// the offset of the base cursor's position from the center of the player
     //cursorTipOffset = 0;// the offset of the cursor tip from the base cursor
     cursorTipMoveDistance = 10;// determines how far the cursor tip will move in the time it takes for the state to finish
@@ -24,6 +24,7 @@ class FireShard extends PlayerState
     // references
     cursorBase;// the Phaser image for one half of the player's cursor
     cursorTip;// the Phaser image for the other half of the player's cursor
+    jumpState;// a reference to the player's jump state
 
     constructor(stateManager) 
     {
@@ -38,6 +39,9 @@ class FireShard extends PlayerState
     {
         // update position of cursor
         this.updateCursor();
+
+        // run the behavior of the state we transitioned from
+        this.stateManager.previousState.run();
         
         // if the button is released OR we run out of time
         if(!this.inputManager.shardButtonIsDown() || game.time.now > this.endTime)
@@ -55,6 +59,7 @@ class FireShard extends PlayerState
             }
 
             // transition to wherever we came from
+            this.jumpState.initializeFalling = true;
             this.stateManager.transitionToState(this.stateManager.previousState);
         }
     }
@@ -107,24 +112,22 @@ class FireShard extends PlayerState
     updateCursor()
     {
         var position;
+        // the angle of the cursor is in the direction of player input
         var angle = this.inputManager.getInputAsShardDirection();
-        // if the player 
+
         if(this.inputManager.getHorizontalInput() != 0 || this.inputManager.getVerticalInput() != 0)// if we're getting input, the value of angle is good
         {
-            // the angle of the cursor is in the direction of player input
-            var angle = this.inputManager.getInputAsShardDirection();
-    
-            // the position is the player's position plus an offset in the direction of player input
-            var position = new Vector(this.player.body.x, this.player.body.y);
-            position = position.sum(Vector.createVectorFromAngle(angle).multiply(this.cursorOffset));
-
+            
             this.previousInputAngle = angle;
         }
         else// otherwise we should use the previous value for angle
         {
-            var position = new Vector(this.player.body.x, this.player.body.y);
-            position = position.sum(Vector.createVectorFromAngle(this.previousInputAngle).multiply(this.cursorOffset));
+            angle = this.previousInputAngle;
         }
+
+        // the position is the player's position plus an offset in the direction of player input
+        var position = new Vector(this.player.body.x, this.player.body.y);
+        position = position.sum(Vector.createVectorFromAngle(angle).multiply(this.cursorOffset));
 
         this.cursorBase.x = position.x;
         this.cursorBase.y = position.y;
@@ -132,7 +135,7 @@ class FireShard extends PlayerState
         
         // the tip is offset a little further, based on how long it's been since the start of the state
         var tipOffset = ((game.time.now - this.startTime)/this.duration) * this.cursorTipMoveDistance;
-        position = position.setMagnitude(this.cursorOffset + tipOffset);
+        position = position.sum(Vector.createVectorFromAngle(angle).setMagnitude(tipOffset))
 
         this.cursorTip.x = position.x;
         this.cursorTip.y = position.y;

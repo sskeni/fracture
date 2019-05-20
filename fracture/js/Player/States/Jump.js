@@ -93,7 +93,10 @@ class Jump extends PlayerState
             {
                 this.player.die();
             }
-            this.stateManager.transitionToState(this.ground);
+            if(this.stateManager.currentState == this)
+            {
+                this.stateManager.transitionToState(this.ground);
+            }
         }
 
         //TODO if launched by shard, allow double jump

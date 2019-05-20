@@ -44,8 +44,8 @@ class PlayerState
     // applies an impulse to the player sprite in the given direction and disables movement briefly by setting a flag on the player
     launch(direction)
     {
-        this.player.body.velocity.x = -Math.sin((direction + 90) * Math.PI / 180) * this.player.shardLaunchVelocity;
-        this.player.body.velocity.y = -Math.cos((direction + 90) * Math.PI / 180) * this.player.shardLaunchVelocity;
+        this.player.body.velocity.x = Math.cos((direction) * Math.PI / 180) * this.player.shardLaunchVelocity;
+        this.player.body.velocity.y = Math.sin((direction) * Math.PI / 180) * this.player.shardLaunchVelocity;
         this.player.launched = true;
         game.time.events.add(Phaser.Timer.SECOND * 0.3, this.clearLaunchState, this)
     }

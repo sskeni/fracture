@@ -46,8 +46,8 @@ class Shard extends Phaser.Sprite
         this.anchor.y = 0.5;
         
         // set rotation
-        this.angle = -direction;
-        this.body.angle = -direction;
+        this.angle = direction;
+        this.body.angle = direction;
         
         // set velocity
         this.body.velocity.x = Math.cos((direction) * Math.PI / 180) * this.velocity;

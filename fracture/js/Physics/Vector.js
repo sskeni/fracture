@@ -11,8 +11,8 @@ class Vector
 
     static createVectorFromAngle(angle)
     {
-        var x = Math.sin((angle + 90) * Math.PI / 180);
-        var y = Math.cos((angle + 90) * Math.PI / 180);
+        var x = Math.cos((angle) * Math.PI / 180);
+        var y = Math.sin((angle) * Math.PI / 180);
         return new Vector(x, y);
     }
 

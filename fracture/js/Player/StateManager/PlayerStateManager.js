@@ -88,6 +88,9 @@ class PlayerStateManager
         // set up Jump state
         jump.ground = ground;
         jump.adjacentStates.push(fireShard);
+
+        // set up fire shard state
+        fireShard.jumpState = jump;
     }
 
 }

@@ -1,7 +1,7 @@
 class Player extends Phaser.Sprite
 {
     // behavior values
-    shardCount = 3;// the number of shards the player can fire
+    shardCount = 20;//3;// the number of shards the player can fire
     shardLaunchVelocity = 500;// the velocity at which the player is launched when a shard grows right next to them
     raycastRadius = 150;// the radius under which tiles are raycasted. Ensures that tiles we're guaranteed not to hit are not tested 
     groundRaycastDistance = 18;// the distance to raycast for ground tiles
