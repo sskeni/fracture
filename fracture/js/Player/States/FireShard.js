@@ -107,7 +107,7 @@ class FireShard extends PlayerState
     updateCursor()
     {
         var position;
-        var angle = this.inputManager.getInputAsShardDirection() - 90;
+        var angle = this.inputManager.getInputAsShardDirection();
         // if the player 
         if(this.inputManager.getHorizontalInput() != 0 || this.inputManager.getVerticalInput() != 0)// if we're getting input, the value of angle is good
         {

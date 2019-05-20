@@ -65,11 +65,11 @@ class Jump extends PlayerState
             var shard = this.player.onShard();
             if(shard != false)
             {
-                if(shard.direction == ShardDirection.UR || shard.direction == ShardDirection.BL)
+                if(shard.direction == ShardDirection.BR || shard.direction == ShardDirection.UL)
                 {
                     this.ground.standingDirection = StandingDirection.RIGHT;
                 }
-                else if(shard.direction == ShardDirection.UL || shard.direction == ShardDirection.BR)
+                else if(shard.direction == ShardDirection.BL || shard.direction == ShardDirection.UR)
                 {
                     this.ground.standingDirection = StandingDirection.LEFT;
                 }

@@ -1,12 +1,12 @@
 var ShardDirection = {
     MR: 0,
-    UR: 45,
-    UM: 90,
-    UL: 135,
+    BR: 45,
+    BM: 90,
+    BL: 135,
     ML: 180,
-    BL: 225,
-    BM: 270,
-    BR: 315
+    UL: 225,
+    UM: 270,
+    UR: 315
 }
 
 class Shard extends Phaser.Sprite
@@ -50,12 +50,12 @@ class Shard extends Phaser.Sprite
         this.body.angle = -direction;
         
         // set velocity
-        this.body.velocity.x = Math.sin((direction + 90) * Math.PI / 180) * this.velocity;
-        this.body.velocity.y = Math.cos((direction + 90) * Math.PI / 180) * this.velocity;
+        this.body.velocity.x = Math.cos((direction) * Math.PI / 180) * this.velocity;
+        this.body.velocity.y = Math.sin((direction) * Math.PI / 180) * this.velocity;
         
         // set position
-        this.body.x += Math.sin((direction + 90) * Math.PI / 180) * 20;
-        this.body.y += Math.cos((direction + 90) * Math.PI / 180) * 20;
+        this.body.x += Math.cos((direction) * Math.PI / 180) * 20;
+        this.body.y += Math.sin((direction) * Math.PI / 180) * 20;
         
         this.body.setRectangle(this.hitboxWidth, this.hitboxHeight);
         this.body.setCollisionGroup(this.player.shardCollisionGroup);
