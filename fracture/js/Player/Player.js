@@ -68,11 +68,11 @@ class Player extends Phaser.Sprite
         this.body.collides(this.tilemapCollisionGroup);
     }
 
-    fireShard()
+    fireShard(direction)
     {
         if(this.shardCount > 0)
         {
-            var shard = new Shard(game, this.body.x, this.body.y, this, this.inputManager.getInputAsShardDirection());
+            var shard = new Shard(game, this.body.x, this.body.y, this, direction);
             this.shards.push(shard);
             this.shardCount -= 1;
         }

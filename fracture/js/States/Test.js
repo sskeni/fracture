@@ -4,6 +4,8 @@ var Test = {
         game.load.path = 'assets/img/';
         game.load.image('caretaker', 'Caretaker.png');
         game.load.image('shard', 'Shard.png');
+        game.load.image('cursorBase', 'cursorBase.png');
+        game.load.image('cursorTip', 'cursorTip.png');
 
         //tileset assets
         game.load.image('smallplatform', 'smallplatform.png');
@@ -22,6 +24,9 @@ var Test = {
         this.player = new Player(game, 100, 200, 'caretaker');
 
         this.tilemapManager = new TilemapManager(this.player);
+
+
+        //this.cursorBase = game.add.image(200, 200, 'cursorBase');
     },
 
     update:function()

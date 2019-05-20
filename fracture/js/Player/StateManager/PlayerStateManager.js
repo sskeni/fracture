@@ -6,6 +6,9 @@ class PlayerStateManager
  
     // references
     currentState;// the currently running state
+    previousState;// the state currentState was transitioned from
+
+    player;// the player this state is attached to
     inputManager;// the player's InputManager instance
 
 
@@ -28,7 +31,7 @@ class PlayerStateManager
         this.currentState.run();// run the current state's behavior
         //console.log(this.currentState);
         this.transitionUnderConditions(this.currentState);// check to see if we need to transition to a new state
-        this.tryFireShard();
+        //this.tryFireShard();
     }
 
     // checks the current state's adjacents states for their transition conditions and transition if they are met
@@ -44,14 +47,14 @@ class PlayerStateManager
         }
     }
 
-    // tries to fire a shard and sends the current state a message so that the state can respond correctly
+    /*// tries to fire a shard and sends the current state a message so that the state can respond correctly
     tryFireShard()
     { 
         if(this.inputManager.shardButtonJustDown() && this.currentState.fireShard())
         {
             this.player.fireShard();
         }
-    }
+    }*/
 
     // launches player in the given direction
     launch(direction)
@@ -63,6 +66,7 @@ class PlayerStateManager
     // do housekeeping to transition to the given state
     transitionToState(state)
     {
+        this.previousState = this.currentState;
         this.currentState.deinitialize();
         state.initialize();
         this.currentState = state;
@@ -74,13 +78,16 @@ class PlayerStateManager
         // create states
         var ground = new Ground(this);
         var jump = new Jump(this);
+        var fireShard = new FireShard(this);
 
         // set up Ground state
         this.currentState = ground;
         ground.adjacentStates.push(jump);
-
+        ground.adjacentStates.push(fireShard);
+        
         // set up Jump state
         jump.ground = ground;
+        jump.adjacentStates.push(fireShard);
     }
 
 }
