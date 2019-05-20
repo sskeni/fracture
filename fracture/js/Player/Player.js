@@ -76,6 +76,9 @@ class Player extends Phaser.Sprite
             var shard = new Shard(game, this.body.x, this.body.y, this, direction);
             this.shards.push(shard);
             this.shardCount -= 1;
+
+            // shake the camera
+            GamefeelMaster.shakeCamera(0.00002, 0, 100, 0.000001, 100, 100);
         }
     }
 

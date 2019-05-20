@@ -87,8 +87,10 @@ class Shard extends Phaser.Sprite
             // add a rectangle for raycasting based on the current position
             this.rectangle = Rectangle.createFromSprite(this, this.hitboxWidth, this.hitboxHeight);
 
+            GamefeelMaster.shakeCamera(0.00002, 0, 100, 0.000001, 0, 0);
+
             // start colliding with the player on a delay to allow time for the player to be launched a bit
-            game.time.events.add(Phaser.Timer.SECOND * 0.1, this.collidePlayer, this)
+            game.time.events.add(Phaser.Timer.SECOND * 0.1, this.collidePlayer, this);
         }
     }
 
