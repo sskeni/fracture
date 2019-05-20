@@ -137,16 +137,6 @@ class Jump extends PlayerState
             this.initializeFalling = false;
         }
 
-
-        return this.inputManager.jumpButtonIsDown();
+        return this.inputManager.jumpButtonJustDown();
     }
-
-    // what this state should do in response to a shard being fired
-    /*fireShard()
-    {
-        // gain impulse based on shard fire direction
-        return true;
-    }*/
-
-
 }

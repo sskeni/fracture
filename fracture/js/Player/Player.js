@@ -60,6 +60,7 @@ class Player extends Phaser.Sprite
     update()
     {
         this.stateManager.update();
+        this.inputManager.update();
     }
 
     setTilemapCollisionGroup(tilemapCollisionGroup)

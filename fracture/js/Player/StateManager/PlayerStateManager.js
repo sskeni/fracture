@@ -68,6 +68,7 @@ class PlayerStateManager
         var ground = new Ground(this);
         var jump = new Jump(this);
         var fireShard = new FireShard(this);
+        var wallJump = new WallJump(this);
 
         // set up Ground state
         this.currentState = ground;
@@ -77,9 +78,14 @@ class PlayerStateManager
         // set up Jump state
         jump.ground = ground;
         jump.adjacentStates.push(fireShard);
+        jump.adjacentStates.push(wallJump);
 
         // set up fire shard state
         fireShard.jumpState = jump;
+
+        // set up wall jump state
+        wallJump.jumpState = jump;
+        wallJump.adjacentStates.push(fireShard);
     }
 
 }
