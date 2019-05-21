@@ -27,6 +27,9 @@ class Player extends Phaser.Sprite
         super(game, x, y, 'player');
         game.add.world.add(this);
 
+        var color = Math.random() * 0xffffff;
+        this.tint = color;
+
         
         // set anchor to be the center of the sprite
         this.anchor.x = 0.5;
