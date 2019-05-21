@@ -47,7 +47,6 @@ class WallJump extends PlayerState
         // jump off the wall if the player asks to
         if(this.inputManager.jumpButtonJustDown())
         {
-            console.log("hey");
             // gain momentum based on direction of wall and transition to jump
             var initialVelocity = Vector.createVectorFromAngle(this.direction).setMagnitude(this.jumpStrength);
 
@@ -93,9 +92,7 @@ class WallJump extends PlayerState
 
     initialize()
     {
-        //this.stateManager.transitionToState(this.jumpState);
         this.player.body.velocity.x = 0;
-        this.player.body.velocity.y = 0;
     }
     
     deinitialize()
