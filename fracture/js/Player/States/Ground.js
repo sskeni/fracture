@@ -28,7 +28,9 @@ class Ground extends PlayerState
 
     // called every frame
     run() 
-    {
+    {       
+        this.player.animationController.animateGround();
+
         if(this.standingDirection == StandingDirection.DOWN)// if we're on flat ground
         {
             this.move();// move like normal

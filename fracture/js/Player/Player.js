@@ -15,6 +15,7 @@ class Player extends Phaser.Sprite
     shardCollisionGroup;
     raycastTargets;
     shards;
+    animationController;
 
     // flags
     launched;
@@ -22,9 +23,8 @@ class Player extends Phaser.Sprite
 
     constructor(game, x, y, key) 
     {
-        
         // properly inherit Phaser.Sprite
-        super(game, x, y, key);
+        super(game, x, y, 'player');
         game.add.world.add(this);
 
         
@@ -41,8 +41,11 @@ class Player extends Phaser.Sprite
         this.raycastTargets = new Array();
         this.shards = new Array();
 
+        // set up animation controller
+        this.animationController = new PlayerAnimationController(this);
+
         // set up physics
-        game.physics.p2.enable(this, true);
+        game.physics.p2.enable(this, false);
         this.body.setCircle(15);
         this.collisionGroup = game.physics.p2.createCollisionGroup();
         this.body.setCollisionGroup(this.collisionGroup);
@@ -55,6 +58,12 @@ class Player extends Phaser.Sprite
         // set flags
         this.launched = false;
         this.standingOnShard = false;
+    }
+
+    // loads all assets used by the player
+    static load()
+    {
+        PlayerAnimationController.load();
     }
 
     update()

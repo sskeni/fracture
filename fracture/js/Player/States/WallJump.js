@@ -12,6 +12,7 @@ class WallJump extends PlayerState
     // behavior variables
     fallSpeed = 100;// the maximum speed at which the player can fall
     fallAcceleration = 100;// the acceleration at which the player will approach their maximum fall speed
+    riseDeceleration = 500;// the strength of deceleration when the player is moving up
     jumpStrength = 300;// the magnitude of the initial velocity the player gains when jumping from the wall
     raycastDistance = 20;// the distance under which a wall is close enough to walljump from
     cooldown = 300;// the length of time that must be waited before this state can be transitioned to again
@@ -35,7 +36,11 @@ class WallJump extends PlayerState
     run()
     {
         // slide down slowly
-        if(this.player.body.velocity.y < this.fallSpeed)
+        if(this.player.body.velocity.y < 0)
+        {
+            this.player.body.force.y = this.riseDeceleration;
+        }
+        else if(this.player.body.velocity.y < this.fallSpeed)
         {
             this.player.body.force.y = this.fallAcceleration;
         }
@@ -80,14 +85,14 @@ class WallJump extends PlayerState
                 {
                     // TODO: decide whether the player should be able to wall jump on horizontal shards
                     // if the shard is straight up and down, we are on the wall
-                    return shard.direction == ShardDirection.UM || shard.direction == ShardDirection.BM;
-                }
-                else
-                {
-                    return false;
+                    if(shard.direction == ShardDirection.UM || shard.direction == ShardDirection.BM)
+                    {
+                        return true;
+                    }
                 }
             }
         }
+        return false;
     }
 
     initialize()

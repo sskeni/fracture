@@ -13,6 +13,8 @@ var Test = {
         game.load.image('largeplatform', 'largeplatform.png');
         game.load.tilemap('test', 'test.json', null, Phaser.Tilemap.TILED_JSON);
         game.load.spritesheet('tilesheet', 'testtileset.png');
+
+        Player.load();
     },
 
     create:function()
