@@ -95,10 +95,12 @@ class Player extends Phaser.Sprite
             {
                 if(Raycast.raycastToRectangle(target.rectangle, leftPosition, direction) != false)
                 {
+                    if(target.tag == 'spike') this.die();
                     return true;
                 }
                 if(Raycast.raycastToRectangle(target.rectangle, rightPosition, direction) != false)
                 {
+                    if(target.tag == 'spike') this.die();
                     return true;
                 }
             }

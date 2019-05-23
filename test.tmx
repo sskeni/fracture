@@ -1,67 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.2" tiledversion="1.2.3" orientation="orthogonal" renderorder="right-down" width="32" height="18" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="47">
- <tileset firstgid="1" name="testtileset" tilewidth="16" tileheight="16" tilecount="4" columns="2">
-  <image source="fracture/assets/img/testtileset.png" width="32" height="32"/>
+ <tileset firstgid="1" name="testtileset" tilewidth="16" tileheight="16" tilecount="15" columns="3">
+  <image source="fracture/assets/img/testtileset.png" width="48" height="80"/>
  </tileset>
- <tileset firstgid="5" name="smallplatform" tilewidth="128" tileheight="16" tilecount="1" columns="1">
-  <image source="fracture/assets/img/smallplatform.png" width="128" height="16"/>
- </tileset>
- <tileset firstgid="6" name="mediumplatform" tilewidth="192" tileheight="16" tilecount="1" columns="1">
-  <image source="fracture/assets/img/mediumplatform.png" width="192" height="16"/>
- </tileset>
- <tileset firstgid="7" name="largeplatform" tilewidth="256" tileheight="16" tilecount="1" columns="1">
-  <image source="fracture/assets/img/largeplatform.png" width="256" height="16"/>
- </tileset>
- <tileset firstgid="8" name="button" tilewidth="32" tileheight="16" tilecount="1" columns="1">
+ <tileset firstgid="16" name="button" tilewidth="32" tileheight="16" tilecount="1" columns="1">
   <image source="fracture/assets/img/button.png" width="32" height="16"/>
  </tileset>
- <tileset firstgid="9" name="spike" tilewidth="32" tileheight="16" tilecount="1" columns="1">
+ <tileset firstgid="17" name="spike" tilewidth="32" tileheight="16" tilecount="1" columns="1">
   <image source="fracture/assets/img/spike.png" width="32" height="16"/>
  </tileset>
- <tileset firstgid="10" name="enddoor" tilewidth="32" tileheight="32" tilecount="1" columns="1">
+ <tileset firstgid="18" name="enddoor" tilewidth="32" tileheight="32" tilecount="1" columns="1">
   <image source="fracture/assets/img/enddoor.png" width="32" height="32"/>
  </tileset>
- <tileset firstgid="11" name="startdoor" tilewidth="32" tileheight="32" tilecount="1" columns="1">
+ <tileset firstgid="19" name="startdoor" tilewidth="32" tileheight="32" tilecount="1" columns="1">
   <image source="fracture/assets/img/startdoor.png" width="32" height="32"/>
  </tileset>
- <tileset firstgid="12" name="checkpoint" tilewidth="32" tileheight="48" tilecount="1" columns="1">
+ <tileset firstgid="20" name="checkpoint" tilewidth="32" tileheight="48" tilecount="1" columns="1">
   <image source="fracture/assets/img/checkpoint.png" width="32" height="48"/>
  </tileset>
- <tileset firstgid="13" name="door" tilewidth="8" tileheight="32" tilecount="1" columns="1">
+ <tileset firstgid="21" name="door" tilewidth="8" tileheight="32" tilecount="1" columns="1">
   <image source="fracture/assets/img/door.png" width="8" height="32"/>
  </tileset>
  <objectgroup id="7" name="objects">
-  <object id="34" gid="9" x="148.166" y="272.334" width="32" height="16"/>
-  <object id="37" gid="9" x="127.667" y="176.667" width="32" height="16"/>
-  <object id="39" gid="10" x="447.333" y="96.6667" width="32" height="32"/>
-  <object id="40" gid="7" x="12.3333" y="192.333" width="256" height="16"/>
-  <object id="41" gid="5" x="368.333" y="224.333" width="128" height="16"/>
-  <object id="42" gid="6" x="310" y="112" width="192" height="16"/>
-  <object id="43" gid="8" x="65" y="30" width="32" height="16"/>
-  <object id="44" gid="11" x="33.3333" y="241.667" width="32" height="32"/>
-  <object id="45" gid="12" x="447" y="210" width="32" height="48"/>
-  <object id="46" gid="13" x="340" y="96" width="8" height="32"/>
+  <object id="34" gid="17" x="148.166" y="272.334" width="32" height="16"/>
+  <object id="37" gid="17" x="127.667" y="176.667" width="32" height="16"/>
+  <object id="39" gid="18" x="447.333" y="96.6667" width="32" height="32"/>
+  <object id="43" gid="16" x="65" y="30" width="32" height="16"/>
+  <object id="44" gid="19" x="33.3333" y="241.667" width="32" height="32"/>
+  <object id="45" gid="20" x="447" y="210" width="32" height="48"/>
+  <object id="46" gid="21" x="340" y="96" width="8" height="32"/>
  </objectgroup>
  <layer id="1" name="walls" width="32" height="18">
   <data encoding="csv">
-1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,
-1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,
-1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,
-1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
+5,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,5,8,8,8,8,8,8,8,8,8,5,
+6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,15,0,0,0,0,0,0,0,0,0,4,
+6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,15,0,0,0,0,0,0,0,0,0,4,
+6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,14,0,0,0,0,0,0,0,0,0,4,
+6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,
+6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,
+6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,10,11,11,11,11,11,11,11,11,11,11,11,11,4,
+6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,
+6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,
+6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,
+6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,
+5,11,11,11,11,11,11,11,11,11,11,11,11,12,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,
+6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,
+6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,2,2,2,2,2,2,2,2,2,2,5,
+6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,5,5,5,5,5,5,5,5,5,5,5,5,
+6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,5,5,5,5,5,5,5,5,5,5,5,5,
+6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,5,5,5,5,5,5,5,5,5,5,5,5,
+5,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,5,5,5,5,5,5,5,5,5,5,5,5,5
 </data>
  </layer>
 </map>

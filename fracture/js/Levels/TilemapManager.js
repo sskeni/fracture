@@ -5,15 +5,12 @@ class TilemapManager
     player;
     collisionGroup;
 
-    SMALLPLATFORMGID = 5;
-    MEDIUMPLATFORMGID = 6;
-    LARGEPLATFORMGID = 7;
-    BUTTONGID = 8;
-    SPIKEGID = 9;
-    ENDDOORGID = 10;
-    STARTDOORGID = 11;
-    CHECKPOINTGID = 12;
-    DOORID = 13;
+    BUTTONGID = 26;
+    SPIKEGID = 27;
+    ENDDOORGID = 28;
+    STARTDOORGID = 29;
+    CHECKPOINTGID = 30;
+    DOORID = 31;
 
     constructor(player)
     {
@@ -24,30 +21,8 @@ class TilemapManager
         this.tilemap = game.add.tilemap('test');
         this.tilemap.addTilesetImage('testtileset', 'tilesheet');
         this.tilemap.setCollisionByExclusion([]);
-
-        //add tilset to map layer
-        this.mapLayer = this.tilemap.createLayer('walls');
-        this.mapLayer.resizeWorld();
         
         this.collisionGroup = game.physics.p2.createCollisionGroup();
-        
-        //add small platforms
-        this.smallplatforms = game.add.group();
-        this.smallplatforms.enableBody = true;
-        this.smallplatforms.physicsBodyType = Phaser.Physics.P2JS;
-        this.tilemap.createFromObjects('objects', this.SMALLPLATFORMGID, 'smallplatform', 0, true, false, this.smallplatforms);
-        
-        //add medium platforms
-        this.mediumplatforms = game.add.group();
-        this.mediumplatforms.enableBody = true;
-        this.mediumplatforms.physicsBodyType = Phaser.Physics.P2JS;
-        this.tilemap.createFromObjects('objects', this.MEDIUMPLATFORMGID, 'mediumplatform', 0, true, false, this.mediumplatforms);
-        
-        //add large platforms
-        this.largeplatforms = game.add.group();
-        this.largeplatforms.enableBody = true;
-        this.largeplatforms.physicsBodyType = Phaser.Physics.P2JS;
-        this.tilemap.createFromObjects('objects', this.LARGEPLATFORMGID, 'largeplatform', 0, true, false, this.largeplatforms);
 
         //add start doors
         this.startdoors = game.add.group();
@@ -86,16 +61,17 @@ class TilemapManager
         this.tilemap.createFromObjects('objects', this.DOORID, 'door', 0, true, false, this.doors);
 
         //move objects to account for anchor and configure bodies for raycasting
-        this.smallplatforms.forEach(this.configurePlatform, this);
-        this.mediumplatforms.forEach(this.configurePlatform, this);
-        this.largeplatforms.forEach(this.configurePlatform, this);
         this.startdoors.forEach(this.configureStartDoor, this);
         this.enddoors.forEach(this.configureEndDoor, this);
         this.buttons.forEach(this.configureButton, this);
         this.spikes.forEach(this.configureSpike, this);
         this.checkpoints.forEach(this.configureCheckpoint, this);
         this.doors.forEach(this.configureDoor, this);
-        
+
+        //add tilset to map layer
+        this.mapLayer = this.tilemap.createLayer('walls');
+        this.mapLayer.resizeWorld();
+
         //add p2 physics to tilemap
         this.tilemap.setCollisionByExclusion([]);
         game.physics.p2.convertTilemap(this.tilemap, this.mapLayer);
@@ -110,16 +86,18 @@ class TilemapManager
         }
     }
 
-    configurePlatform(platform)
-    {
-        this.configureBody(platform.body, platform.width, platform.height);
-        platform.body.x = platform.x+platform.width/2;
-        platform.body.y = platform.y+platform.height/2;
+    update() {
+        this.buttons.forEach(this.checkButton, this);
+    }
 
-        platform.body.kinematic = true;
+    checkButton(button) {
+        if(button.body.hit) {
+            this.doors.forEach(this.openDoor, this);
+        }
+    }
 
-        this.calculateColor(platform);
-        platform.body.tag = 'platform';
+    openDoor(door) {
+        door.destroy();
     }
 
     configureStartDoor(door)
@@ -156,6 +134,7 @@ class TilemapManager
 
     	this.calculateColor(button);
     	button.body.tag = 'button';
+        button.body.hit = false;
     }
 
     configureSpike(spike)
@@ -183,6 +162,7 @@ class TilemapManager
 
     configureDoor(door)
     {
+        this.configureBody(door.body, door.width, door.height);
     	door.body.x = door.x + door.width/2;
     	door.body.y = door.y + door.height/2;
 
@@ -197,7 +177,7 @@ class TilemapManager
         body.setCollisionGroup(this.collisionGroup);
         body.collides(this.player.collisionGroup);
         body.collides(this.player.shardCollisionGroup);
-        body.rectangle = Rectangle.createFromBody(body, width, height);
+        body.rectangle = Rectangle.createFromBody(body, width, height, body.tag);
         this.player.addRaycastTarget(body);
     }
 

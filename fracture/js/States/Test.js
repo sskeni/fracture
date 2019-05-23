@@ -6,9 +6,6 @@ var Test = {
         game.load.image('shard', 'Shard.png');
 
         //tileset assets
-        game.load.image('smallplatform', 'smallplatform.png');
-        game.load.image('mediumplatform', 'mediumplatform.png');
-        game.load.image('largeplatform', 'largeplatform.png');
         game.load.image('startdoor', 'startdoor.png');
         game.load.image('enddoor', 'enddoor.png');
         game.load.image('button', 'button.png');
@@ -16,7 +13,10 @@ var Test = {
         game.load.image('door', 'door.png');
         game.load.image('checkpoint', 'checkpoint.png');
         game.load.tilemap('test', 'test.json', null, Phaser.Tilemap.TILED_JSON);
-        game.load.spritesheet('tilesheet', 'testtileset.png');
+        game.load.spritesheet('tilesheet', 'tileset.png');
+
+        //pause assets
+        game.load.image('pause', 'pause.png');
     },
 
     create:function()
@@ -28,11 +28,13 @@ var Test = {
         this.player = new Player(game, 100, 200, 'caretaker');
 
         this.tilemapManager = new TilemapManager(this.player);
+
+        this.pause = new Pause(game, Phaser.Keyboard.P);
     },
 
     update:function()
     {
-        //this.player.update();
+        this.tilemapManager.update();
     },
 
     //move each platform to account for anchor

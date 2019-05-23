@@ -90,6 +90,11 @@ class Shard extends Phaser.Sprite
             // start colliding with the player on a delay to allow time for the player to be launched a bit
             game.time.events.add(Phaser.Timer.SECOND * 0.1, this.collidePlayer, this)
         }
+
+        if(bodyA.tag == 'button')
+        {
+        	bodyA.hit = true;
+        }
     }
 
     // set this shard to collide with player
