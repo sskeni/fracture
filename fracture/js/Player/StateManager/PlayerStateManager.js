@@ -11,6 +11,12 @@ class PlayerStateManager
     player;// the player this state is attached to
     inputManager;// the player's InputManager instance
 
+    // states
+    ground;
+    jump;
+    fireShard;
+    wallJump;
+
 
     constructor(player) 
     {
@@ -66,9 +72,13 @@ class PlayerStateManager
     {
         // create states
         var ground = new Ground(this);
+        this.ground = ground;
         var jump = new Jump(this);
+        this.jump = jump;
         var fireShard = new FireShard(this);
+        this.fireShard = fireShard;
         var wallJump = new WallJump(this);
+        this.wallJump = wallJump;
 
         // set up Ground state
         this.currentState = ground;

@@ -15,20 +15,48 @@ class PlayerAnimationController
         this.player = player;
 
         this.player.animations.add('run_right', Phaser.Animation.generateFrameNames('run_right_', 1, 8), 12, true);
+        this.player.animations.add('run_right_up_diagonal', Phaser.Animation.generateFrameNames('run_right_up_diagonal_', 1, 8), 12, true);
+        this.player.animations.add('run_right_down_diagonal', Phaser.Animation.generateFrameNames('run_right_down_diagonal_', 1, 8), 12, true);
+
         this.player.animations.add('stand_still', Phaser.Animation.generateFrameNames('run_right_', 1, 1), 12, true);
+
         this.player.animations.add('run_left', Phaser.Animation.generateFrameNames('run_left_', 1, 8), 12, true);
-        console.log(this.player.animations.getAnimation('run_right'));
+        this.player.animations.add('run_left_up_diagonal', Phaser.Animation.generateFrameNames('run_left_up_diagonal_', 1, 8), 12, true);
+        this.player.animations.add('run_left_down_diagonal', Phaser.Animation.generateFrameNames('run_left_down_diagonal_', 1, 8), 12, true);
     }
 
     animateGround()
     {
         if(this.player.inputManager.getHorizontalInput() > 0)// if the player is moving right
         {
-            this.player.animations.play('run_right');
+            if(this.player.stateManager.ground.standingDirection == StandingDirection.DOWN)
+            {
+                this.player.animations.play('run_right');
+            }
+            else if(this.player.stateManager.ground.standingDirection == StandingDirection.LEFT)// if I'm on a slant to my right
+            {
+                this.player.animations.play('run_right_up_diagonal');
+            }
+            else// if I'm on a slant to my left
+            {
+                this.player.animations.play('run_right_down_diagonal');
+            }
         }
         else if(this.player.inputManager.getHorizontalInput() < 0)// if the player is stationary
         {
-            this.player.animations.play('run_left');
+            
+            if(this.player.stateManager.ground.standingDirection == StandingDirection.DOWN)
+            {
+                this.player.animations.play('run_left');
+            }
+            else if(this.player.stateManager.ground.standingDirection == StandingDirection.RIGHT)// if I'm on a slant to my left
+            {
+                this.player.animations.play('run_left_up_diagonal');
+            }
+            else// if I'm on a slant to my right
+            {
+                this.player.animations.play('run_left_down_diagonal');
+            }
         }
         else
         {

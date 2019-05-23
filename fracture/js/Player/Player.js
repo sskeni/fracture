@@ -139,6 +139,11 @@ class Player extends Phaser.Sprite
         {
             if(shard.planted == true)
             {
+                if(!(shard.direction == ShardDirection.UM || shard.direction == ShardDirection.BM))// if the shard isn't vertical
+                {
+                    direction = new Vector(0, this.groundRaycastDistance - 5);// don't raycast as far
+                }
+
                 if(Raycast.raycastToRectangle(shard.rectangle, position, direction) != false)
                 {
                     return shard;
