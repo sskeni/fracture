@@ -75,8 +75,8 @@ class PlayerAudioManager
         {
             this.fallingSound.volume = 0;
         }
-
-        if(jump.fallenTooFar() && !this.playedShatterAnticipation)
+        
+        if(jump.fallenTooFar() && !this.aboveShard() && !this.playedShatterAnticipation)
         {
             this.fallingSound.stop();
             this.playSound('shatter_anticipation', 0.3);
@@ -84,11 +84,57 @@ class PlayerAudioManager
         }
     }
 
+    // returns whether the player is above a shard right now
+    aboveShard()
+    {
+        var position = new Vector(this.player.body.x, this.player.body.y);
+        var direction = new Vector(0, 1000);
+        var minDistance = 1000;
+
+        // determine the height of the closest shard
+        for(var shard of this.player.shards)
+        {
+            if(shard.planted)
+            {
+                var hitLocation = Raycast.raycastToRectangle(shard.rectangle, position, direction);
+                if(hitLocation != false)
+                {
+                    var distance = position.distance(hitLocation);
+                    if(minDistance > distance)
+                    {
+                        minDistance = distance;
+                    }
+                }
+            }
+        }
+
+        for(var target of this.player.raycastTargets)
+        {
+            if(target.y > this.player.body.y)
+            {
+                var hitLocation = Raycast.raycastToRectangle(target.rectangle, position, direction);
+                if(hitLocation != false)
+                {
+                    var distance = position.distance(hitLocation);
+                    if(minDistance > distance)
+                    {
+                        // if even one floor tile is closer, we're going to fall on it instead of the shard
+                        return false;
+                    }
+                }
+            }
+        }
+
+        return true;
+    }
+
+    // returns the distance to the closest object below the player
     distanceToGround()
     {
         var position = new Vector(this.player.body.x, this.player.body.y);
         var direction = new Vector(0, 1000);
         var minDistance = 1000;
+
         // raycast down for floor tiles
         for(var target of this.player.raycastTargets)
         {
@@ -124,17 +170,20 @@ class PlayerAudioManager
         return minDistance;
     }
 
+    // starts the warning sound for falling too far
     initializeJump()
     {
         this.fallingSound = this.playSound('falling', 0);
         this.playedShatterAnticipation = false;
     }
 
+    // stops the warning sound for falling to far
     deinitializeJump()
     {
         this.fallingSound.stop();
     }
 
+    // plays footstep sounds based on the current frame of animation
     updateGround()
     {
         // if we are on the heel touch frame of the animation, play a footstep sound
@@ -152,13 +201,15 @@ class PlayerAudioManager
         }
     }
 
+    // plays the windup sound for firing a shard
     playShardWindup()
     {
-        this.shardWindupSound = game.add.audio('begin_fire_shard', 0.3);
+        this.shardWindupSound = game.add.audio('begin_fire_shard', 0.3);// save the sound for later
         this.shardWindupSound.playOnce = true;
         this.shardWindupSound.play();
     }
 
+    // plays the fire shard sound. also cuts off the shard windup sound
     playFireShard()
     {
         this.shardWindupSound.stop();
@@ -167,10 +218,12 @@ class PlayerAudioManager
         this.fireShardTime = game.time.now;
     }
 
+    // plays the sound for when the a shard lands
     playShardImpact()
     {
         this.shardFlySound.stop();
 
+        // ensures that there will always be some delay between the sound for shard firing and shard impact
         if(game.time.now - this.fireShardTime > Phaser.Timer.SECOND * 0.3)
         {
             this.playSound('shard_impact', 0.3);
