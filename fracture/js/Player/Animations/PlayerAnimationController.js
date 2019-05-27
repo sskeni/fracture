@@ -109,6 +109,11 @@ class PlayerAnimationController
 
     animateGround()
     {
+        if(this.player.stateManager.currentState != this.player.stateManager.ground)
+        {
+            return;
+        }
+
         this.calculateDirection();
 
         if(this.player.inputManager.getHorizontalInput() == 0)
