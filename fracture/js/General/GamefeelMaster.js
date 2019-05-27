@@ -13,4 +13,11 @@ class GamefeelMaster
     {
         var shakeEvent = new CameraShakeEvent(intensity, attack, decay, sustain, sustainLength, release, GamefeelMaster.cameraShakeResolution);
     }
+
+    // slows down the game dramatically for the given length
+    static hitStop(length)
+    {
+        game.time.slowMotion = 20;
+        game.time.events.add(Phaser.Timer.SECOND * length, function() {game.time.slowMotion = 1;}, this);
+    }
 }

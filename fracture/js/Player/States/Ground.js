@@ -30,6 +30,7 @@ class Ground extends PlayerState
     run() 
     {       
         this.player.animationController.animateGround();
+        this.player.audioManager.updateGround();
 
         if(this.standingDirection == StandingDirection.DOWN)// if we're on flat ground
         {

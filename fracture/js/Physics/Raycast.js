@@ -13,7 +13,7 @@ class Raycast
         for(let i = 0; i < 4; i++)
         {
             hit = Raycast.raycastToLineSegment(rectangle.points[i], rectangle.points[(i+1)%4], origin, vector);
-
+            
             if(hit != false)
             {
                 hits.push(hit);
@@ -24,15 +24,16 @@ class Raycast
         {
             return false;
         }
-
+        
+        //console.log("here");
         var closerIntersection = (hits[0].distance(origin) < hits[1].distance(origin) ? hits[0] : hits[1]);
+        //console.log(closerIntersection);
 
         // if the point is either too far, or in the wrong direction, no hit occured
         if(origin.distance(closerIntersection) > vector.magnitude() || !closerIntersection.difference(origin).sameDirection(vector))
         {
             return false;
         }
-
         return closerIntersection;
     }
 

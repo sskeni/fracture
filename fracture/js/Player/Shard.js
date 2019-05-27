@@ -70,7 +70,7 @@ class Shard extends Phaser.Sprite
 
     onBeginContact(bodyA, bodyB, myShape, theirShape, contactEquation)
     {
-        if(bodyA.tag != 'player')
+        if(bodyA.tag != 'player' && !this.planted)
         {
             this.planted = true;
             this.body.dynamic = false;
@@ -91,6 +91,9 @@ class Shard extends Phaser.Sprite
 
             // start colliding with the player on a delay to allow time for the player to be launched a bit
             game.time.events.add(Phaser.Timer.SECOND * 0.1, this.collidePlayer, this);
+
+            // play sound
+            this.player.audioManager.playShardImpact();
         }
     }
 

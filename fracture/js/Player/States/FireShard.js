@@ -77,6 +77,8 @@ class FireShard extends PlayerState
         // slow down time
         game.time.slowMotion = this.slowMotionFactor;
 
+        // play sound
+        this.player.audioManager.playShardWindup();
     }
 
     deinitialize()

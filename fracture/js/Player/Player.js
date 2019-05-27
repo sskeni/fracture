@@ -1,7 +1,7 @@
 class Player extends Phaser.Sprite
 {
     // behavior values
-    shardCount = 20;//3;// the number of shards the player can fire
+    shardCount = 3;// the number of shards the player can fire
     shardLaunchVelocity = 500;// the velocity at which the player is launched when a shard grows right next to them
     raycastRadius = 150;// the radius under which tiles are raycasted. Ensures that tiles we're guaranteed not to hit are not tested 
     groundRaycastDistance = 18;// the distance to raycast for ground tiles
@@ -16,6 +16,7 @@ class Player extends Phaser.Sprite
     raycastTargets;
     shards;
     animationController;
+    audioManager;
 
     // flags
     launched;
@@ -47,6 +48,9 @@ class Player extends Phaser.Sprite
         // set up animation controller
         this.animationController = new PlayerAnimationController(this);
 
+        // set up audio manager
+        this.audioManager = new PlayerAudioManager(this);
+
         // set up physics
         game.physics.p2.enable(this, false);
         this.body.setCircle(15);
@@ -67,6 +71,7 @@ class Player extends Phaser.Sprite
     static load()
     {
         PlayerAnimationController.load();
+        PlayerAudioManager.load();
     }
 
     update()
@@ -89,6 +94,9 @@ class Player extends Phaser.Sprite
             this.shards.push(shard);
             this.shardCount -= 1;
 
+            // play firing sound
+            this.audioManager.playFireShard();
+
             // shake the camera
             GamefeelMaster.shakeCamera(0.00002, 0, 100, 0.000001, 100, 100);
         }
@@ -105,8 +113,7 @@ class Player extends Phaser.Sprite
         for(var index in this.raycastTargets)
         {
             var target = this.raycastTargets[index];
-            
-            //console.log(position.distance(target.x, target.y) < this.raycastRadius);
+
             if(target.y > this.y && position.distance(new Vector(target.x, target.y)) < this.raycastRadius)
             {
                 if(Raycast.raycastToRectangle(target.rectangle, leftPosition, direction) != false)
@@ -178,6 +185,7 @@ class Player extends Phaser.Sprite
     // restart the level after playing an animation // TODO: stub
     die()
     {
+        this.audioManager.playSound('shatter', 0.3);
         console.log("Dead");
     }
 }

@@ -19,6 +19,7 @@ class Jump extends PlayerState
     landed;// whether the player should transition to the ground state on the next update
     initializeFalling;// whether the player fell off of a ledge to initialize the falling state
     onShard;// whether the player is standing on a shard currently
+    anticipatedShatter;// whether we've already anticipated the player shattering with hitstop
 
     // runtime variables
     maxHeight;// the lowest y value (greatest height) the player has had while jumping
@@ -83,29 +84,48 @@ class Jump extends PlayerState
         {
             this.maxHeight = this.player.body.y;
         }
-
         this.player.animationController.animateJump();
+        if(this.fallenTooFar() && !this.anticipatedShatter)
+        {
+            GamefeelMaster.hitStop(0.5);
+            this.anticipatedShatter = true;
+        }
 
         this.ground.move();
+
+        this.player.audioManager.updateJump();
 
         if(this.landed)//this.landed
         {
             // check to see if we've fallen too far
-            if(this.player.body.y - this.maxHeight > this.fallDamageHeight * this.player.shardCount && !this.player.standingOnShard)
+            if(this.fallenTooFar())
             {
                 this.player.die();
             }
             if(this.stateManager.currentState == this)
             {
+                this.player.audioManager.playSound('land', 0.3);
                 this.stateManager.transitionToState(this.ground);
             }
         }
     }
 
+    // returns whether the player should shatter if they land on the ground from the current height
+    fallenTooFar()
+    {
+        return this.player.body.y - this.maxHeight > this.calculateMaxFallHeight() && !this.player.standingOnShard;
+    }
+
+    // returns how far the player can fall before shattering
+    calculateMaxFallHeight()
+    {
+        return this.fallDamageHeight * (this.player.shardCount + 1);
+    }
+
     // called when a state is being transitioned away from
     deinitialize()
     {
-
+        this.player.audioManager.deinitializeJump();
     }
 
     // called when a state is being transitioned to
@@ -116,13 +136,18 @@ class Jump extends PlayerState
         if(!this.initializeFalling)// if we pressed the jump button to begin this jump
         {
             // gain initial vertical momentum
+            this.player.audioManager.playSound('jump', 0.3);
             this.player.body.velocity.y = -this.initialVelocity;
             this.player.body.force.y = this.upHoldGravity;
         }
 
+
+        this.player.audioManager.initializeJump();
+
         // initialize flags
         this.buttonReleased = false;
         this.landed = false;
+        this.anticipatedShatter = false;
         this.maxHeight = 10000;
     }
 
