@@ -52,6 +52,9 @@ class Player extends Phaser.Sprite
         // set up audio manager
         this.audioManager = new PlayerAudioManager(this);
 
+        // set up camera controller
+        this.cameraController = new CameraController(this);
+
         // set up physics
         game.physics.p2.enable(this, false);
         this.body.setCircle(15);
@@ -236,6 +239,7 @@ class Player extends Phaser.Sprite
         GamefeelMaster.shakeCamera(0.00004, 0, 100, 0.000001, 0, 0);
         this.audioManager.playSound('shatter', 0.3);
         this.animationController.animateDeath();
+        this.cameraController.die();
         this.dead = true;
         console.log("Dead");
     }

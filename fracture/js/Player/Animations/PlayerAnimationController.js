@@ -79,17 +79,20 @@ class PlayerAnimationController
 
         var distanceToGround = this.player.distanceToGround();
 
-        if(distanceToGround < 50)
+        if(this.player.body.velocity.y > 0)
         {
-            animation = 'jump_' + this.direction + '_5';
-        }
-        else if(distanceToGround < 40)
-        {
-            animation = 'jump_' + this.direction + '_6';            
-        }
-        else if(distanceToGround < 30)
-        {
-            animation = 'jump_' + this.direction + '_7';
+            if(distanceToGround < 50)
+            {
+                animation = 'jump_' + this.direction + '_5';
+            }
+            else if(distanceToGround < 40)
+            {
+                animation = 'jump_' + this.direction + '_6';            
+            }
+            else if(distanceToGround < 30)
+            {
+                animation = 'jump_' + this.direction + '_7';
+            }
         }
 
         this.player.animations.play(animation);
