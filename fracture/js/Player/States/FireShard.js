@@ -79,6 +79,9 @@ class FireShard extends PlayerState
 
         // play sound
         this.player.audioManager.playShardWindup();
+
+        // play animation
+        this.player.animationController.animateFireShard();
     }
 
     deinitialize()

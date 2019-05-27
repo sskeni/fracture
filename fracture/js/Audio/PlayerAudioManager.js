@@ -67,7 +67,7 @@ class PlayerAudioManager
 
 
         // if falling to the platform could kill the player, warn them
-        if(this.player.body.y - jump.maxHeight + this.distanceToGround() > jump.calculateMaxFallHeight())
+        if(this.player.body.y - jump.maxHeight + this.player.distanceToGround() > jump.calculateMaxFallHeight())
         {
             this.fallingSound.volume = (this.player.body.y - jump.maxHeight)/jump.calculateMaxFallHeight();
         }
@@ -128,47 +128,6 @@ class PlayerAudioManager
         return true;
     }
 
-    // returns the distance to the closest object below the player
-    distanceToGround()
-    {
-        var position = new Vector(this.player.body.x, this.player.body.y);
-        var direction = new Vector(0, 1000);
-        var minDistance = 1000;
-
-        // raycast down for floor tiles
-        for(var target of this.player.raycastTargets)
-        {
-            if(target.y > this.player.body.y)
-            {
-                var hitLocation = Raycast.raycastToRectangle(target.rectangle, position, direction);
-                if(hitLocation != false)
-                {
-                    var distance = position.distance(hitLocation);
-                    if(minDistance > distance)
-                    {
-                        minDistance = distance;
-                    }
-                }
-            }
-        }
-        for(var shard of this.player.shards)
-        {
-            if(shard.planted)
-            {
-                var hitLocation = Raycast.raycastToRectangle(shard.rectangle, position, direction);
-                if(hitLocation != false)
-                {
-                    var distance = position.distance(hitLocation);
-                    if(minDistance > distance)
-                    {
-                        minDistance = distance;
-                    }
-                }
-            }
-        }
-
-        return minDistance;
-    }
 
     // starts the warning sound for falling too far
     initializeJump()

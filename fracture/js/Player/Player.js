@@ -21,6 +21,7 @@ class Player extends Phaser.Sprite
     // flags
     launched;
     standingOnShard;
+    dead;
 
     constructor(game, x, y, key) 
     {
@@ -65,6 +66,7 @@ class Player extends Phaser.Sprite
         // set flags
         this.launched = false;
         this.standingOnShard = false;
+        this.dead = false;
     }
 
     // loads all assets used by the player
@@ -76,8 +78,11 @@ class Player extends Phaser.Sprite
 
     update()
     {
-        this.stateManager.update();
-        this.inputManager.update();
+        if(!this.dead)
+        {
+            this.stateManager.update();
+            this.inputManager.update();
+        }
     }
 
     setTilemapCollisionGroup(tilemapCollisionGroup)
@@ -146,7 +151,7 @@ class Player extends Phaser.Sprite
         {
             if(shard.planted == true)
             {
-                if(!(shard.direction == ShardDirection.UM || shard.direction == ShardDirection.BM))// if the shard isn't vertical
+                if(shard.isDiagonal())// if the shard isn't vertical
                 {
                     direction = new Vector(0, this.groundRaycastDistance - 5);// don't raycast as far
                 }
@@ -170,6 +175,49 @@ class Player extends Phaser.Sprite
     }
 
 
+    // returns the distance to the closest object below the player
+    distanceToGround()
+    {
+        var position = new Vector(this.body.x, this.body.y);
+        var direction = new Vector(0, 1000);
+        var minDistance = 1000;
+
+        // raycast down for floor tiles
+        for(var target of this.raycastTargets)
+        {
+            if(target.y > this.body.y)
+            {
+                var hitLocation = Raycast.raycastToRectangle(target.rectangle, position, direction);
+                if(hitLocation != false)
+                {
+                    var distance = position.distance(hitLocation);
+                    if(minDistance > distance)
+                    {
+                        minDistance = distance;
+                    }
+                }
+            }
+        }
+        for(var shard of this.shards)
+        {
+            if(shard.planted)
+            {
+                var hitLocation = Raycast.raycastToRectangle(shard.rectangle, position, direction);
+                if(hitLocation != false)
+                {
+                    var distance = position.distance(hitLocation);
+                    if(minDistance > distance)
+                    {
+                        minDistance = distance;
+                    }
+                }
+            }
+        }
+
+        return minDistance;
+    }
+
+
     addRaycastTarget(target)
     {
         if('rectangle' in target)
@@ -186,6 +234,8 @@ class Player extends Phaser.Sprite
     die()
     {
         this.audioManager.playSound('shatter', 0.3);
+        this.animationController.animateDeath();
+        this.dead = true;
         console.log("Dead");
     }
 }

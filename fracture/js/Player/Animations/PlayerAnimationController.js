@@ -14,6 +14,7 @@ class PlayerAnimationController
     constructor(player)
     {
         this.player = player;
+        this.direction = 'right';
 
         this.player.animations.add('run_right', Phaser.Animation.generateFrameNames('run_right_', 1, 8), 12, true);
         this.player.animations.add('run_right_up_diagonal', Phaser.Animation.generateFrameNames('run_right_up_diagonal_', 1, 8), 12, true);
@@ -24,23 +25,28 @@ class PlayerAnimationController
         this.player.animations.add('run_left', Phaser.Animation.generateFrameNames('run_left_', 1, 8), 12, true);
         this.player.animations.add('run_left_up_diagonal', Phaser.Animation.generateFrameNames('run_left_up_diagonal_', 1, 8), 12, true);
         this.player.animations.add('run_left_down_diagonal', Phaser.Animation.generateFrameNames('run_left_down_diagonal_', 1, 8), 12, true);
+                
+        this.player.animations.add('shatter', Phaser.Animation.generateFrameNames('shatter_', 1, 11), 20, false);
         
+        this.player.animations.add('fire_shard', Phaser.Animation.generateFrameNames('fire_shard_', 1, 5), 12, false);
+
         for(let i = 1; i < 8; i++)
         {
             this.player.animations.add('jump_right_' + i, Phaser.Animation.generateFrameNames('jump_right_', i, i), 12, true);
             this.player.animations.add('jump_left_' + i, Phaser.Animation.generateFrameNames('jump_left_', i, i), 12, true);
         }
 
-        this.direction = 'right';
-        //this.player.animations.add('jump_a',  Phaser.Animation.generateFrameNames('run_right_', i, ), 12, true);
     }
 
     animateJump()
     {
+        if(this.player.stateManager.currentState != this.player.stateManager.jump)
+        {
+            return;
+        }
+
         this.calculateDirection();
-        console.log(this.player.body.velocity.y);
-        //this.player.animations.play('jump_1');
-        //this.player.animations.play('jump_' + this.direction + '_2');
+
         var animation = 'jump_' + this.direction;
         if(this.player.body.velocity.y < -250)
         {
@@ -71,9 +77,19 @@ class PlayerAnimationController
             animation = animation + '_7';
         }
 
-        if()
+        var distanceToGround = this.player.distanceToGround();
+
+        if(distanceToGround < 50)
         {
-            
+            animation = 'jump_' + this.direction + '_5';
+        }
+        else if(distanceToGround < 40)
+        {
+            animation = 'jump_' + this.direction + '_6';            
+        }
+        else if(distanceToGround < 30)
+        {
+            animation = 'jump_' + this.direction + '_7';
         }
 
         this.player.animations.play(animation);
@@ -113,41 +129,18 @@ class PlayerAnimationController
         }
 
         this.player.animations.play('run_' + this.direction + slant);
-/*
-        if(this.player.inputManager.getHorizontalInput() > 0)// if the player is moving right
-        {
-            if(this.player.stateManager.ground.standingDirection == StandingDirection.DOWN)
-            {
-                this.player.animations.play('run_right');
-            }
-            else if(this.player.stateManager.ground.standingDirection == StandingDirection.LEFT)// if I'm on a slant to my right
-            {
-                this.player.animations.play('run_right_up_diagonal');
-            }
-            else// if I'm on a slant to my left
-            {
-                this.player.animations.play('run_right_down_diagonal');
-            }
-        }
-        else if(this.player.inputManager.getHorizontalInput() < 0)// if the player is stationary
-        {
-            
-            if(this.player.stateManager.ground.standingDirection == StandingDirection.DOWN)
-            {
-                this.player.animations.play('run_left');
-            }
-            else if(this.player.stateManager.ground.standingDirection == StandingDirection.RIGHT)// if I'm on a slant to my left
-            {
-                this.player.animations.play('run_left_up_diagonal');
-            }
-            else// if I'm on a slant to my right
-            {
-                this.player.animations.play('run_left_down_diagonal');
-            }
-        }
-        else
-        {
-            this.player.animations.play('stand_still');
-        }*/
     }
+    
+    animateDeath()
+    {
+        this.player.animations.play('shatter');
+        game.add.tween(this.player).to( { alpha: 0 }, 1000, Phaser.Easing.Linear.None, true, 0, 0, false);
+    }
+    
+    animateFireShard()
+    {
+        this.player.animations.play('fire_shard');
+    }
+
+
 }

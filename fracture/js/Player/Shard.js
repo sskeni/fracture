@@ -68,10 +68,17 @@ class Shard extends Phaser.Sprite
         this.body.shard = this;
     }
 
+    isDiagonal()
+    {
+        return this.direction == ShardDirection.BR || this.direction == ShardDirection.BL 
+        || this.direction == ShardDirection.UL || this.direction == ShardDirection.BR;
+    }
+
     onBeginContact(bodyA, bodyB, myShape, theirShape, contactEquation)
     {
         if(bodyA.tag != 'player' && !this.planted)
         {
+
             this.planted = true;
             this.body.dynamic = false;
             this.body.velocity.x = 0;
