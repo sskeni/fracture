@@ -84,6 +84,8 @@ class Jump extends PlayerState
             this.maxHeight = this.player.body.y;
         }
 
+        this.player.animationController.animateJump();
+
         this.ground.move();
 
         if(this.landed)//this.landed
