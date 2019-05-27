@@ -189,7 +189,7 @@ class PlayerAudioManager
         }
         else
         {
-            var waitTime = ((game.time.now - this.fireShardTime) != 0 ? (game.time.now - this.fireShardTime) : Phaser.Timer.SECOND *  0.1);
+            var waitTime = ((game.time.now - this.fireShardTime) != 0 ? (0.3 - (game.time.now - this.fireShardTime)) : Phaser.Timer.SECOND *  0.1);
             game.time.events.add(waitTime, function() {this.playSound('shard_impact', 0.3);}, this);
         }
     }

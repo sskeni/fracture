@@ -4,7 +4,7 @@ class Player extends Phaser.Sprite
     shardCount = 3;// the number of shards the player can fire
     shardLaunchVelocity = 500;// the velocity at which the player is launched when a shard grows right next to them
     raycastRadius = 150;// the radius under which tiles are raycasted. Ensures that tiles we're guaranteed not to hit are not tested 
-    groundRaycastDistance = 18;// the distance to raycast for ground tiles
+    groundRaycastDistance = 20;// the distance to raycast for ground tiles
     groundRaycastWidth = 10;// the horizontal offset to the left and right that raycasts for ground should be made at
 
     // references
@@ -230,9 +230,10 @@ class Player extends Phaser.Sprite
         }
     }
 
-    // restart the level after playing an animation // TODO: stub
+    // restart the level after playing an animation
     die()
     {
+        GamefeelMaster.shakeCamera(0.00004, 0, 100, 0.000001, 0, 0);
         this.audioManager.playSound('shatter', 0.3);
         this.animationController.animateDeath();
         this.dead = true;
