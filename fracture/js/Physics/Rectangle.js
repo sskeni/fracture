@@ -1,14 +1,16 @@
 class Rectangle
 {
     points;
+    tag;
 
-    constructor(pointA, pointB, pointC, pointD)
+    constructor(pointA, pointB, pointC, pointD, tag)
     {
         this.points = new Array();
         this.points.push(pointA);
         this.points.push(pointB);
         this.points.push(pointC);
         this.points.push(pointD);
+        this.tag = tag;
     }
 
     // assumes that the sprite has a p2 Body

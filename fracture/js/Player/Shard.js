@@ -102,6 +102,11 @@ class Shard extends Phaser.Sprite
             // play sound
             this.player.audioManager.playShardImpact();
         }
+
+        if(bodyA.tag == 'button')
+        {
+        	bodyA.hit = true;
+        }
     }
 
     // set this shard to collide with player

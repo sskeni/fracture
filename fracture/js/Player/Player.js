@@ -126,10 +126,12 @@ class Player extends Phaser.Sprite
             {
                 if(Raycast.raycastToRectangle(target.rectangle, leftPosition, direction) != false)
                 {
+                    if(target.tag == 'spike') this.die();
                     return true;
                 }
                 if(Raycast.raycastToRectangle(target.rectangle, rightPosition, direction) != false)
                 {
+                    if(target.tag == 'spike') this.die();
                     return true;
                 }
             }
@@ -230,6 +232,22 @@ class Player extends Phaser.Sprite
         else
         {
             console.error("Error - object cannot be added to raycastTargets because it does not have a rectangle property");
+        }
+    }
+
+    removeRaycastTarget(target)
+    {
+        if('rectangle' in target)
+        {
+            for(var elem of this.raycastTargets) {
+                if(elem == target) {
+                    this.raycastTargets.splice(elem);
+                }
+            }
+        }
+        else
+        {
+            console.error("Error - object cannot be removed from raycastTargets because it does not have a rectangle property");
         }
     }
 

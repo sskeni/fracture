@@ -4,46 +4,163 @@ class TilemapManager
     mapLayer;
     player;
     collisionGroup;
+    tilemapArray;
+    currentLevel;
 
-    constructor(player)
+    BUTTONGID = 31;
+    SPIKEGID = 29;
+    ENDDOORGID = 30;
+    STARTDOORGID = 26;
+    CHECKPOINTGID = 27;
+    DOORID = 28;
+
+    constructor(player, tilemap)
     {
         //save reference to player
         this.player = player;
 
-        //create tileset and set collisions
-        this.tilemap = game.add.tilemap('test');
+        //set level stuff
+        this.currentLevel = 0;
+        this.tilemapArray = new Array();
+        this.tilemapArray.push(tilemap);
+
+        //set tilemap
+        this.tilemap = game.add.tilemap(this.tilemapArray[this.currentLevel]);
+        
+        //set collisionGroup
+        this.collisionGroup = game.physics.p2.createCollisionGroup();
+
+        //setup tilemap
+        this.setupTilemap();
+
+        //create objects from tilemap
+        this.createObjects();
+
+        //create tiles from tilemap
+        this.createTiles();
+    }
+
+    addLevel(tilemap)
+    {
+        this.tilemapArray.push(tilemap);
+    }
+
+    nextLevel()
+    {
+        //reset objects
+        this.resetObjects();
+
+        //reset tilemap
+        this.resetTilemap();
+
+        this.currentLevel++;
+
+        //set tilemap
+        this.tilemap = game.add.tilemap(this.tilemapArray[this.currentLevel]);
+
+        //reload tilemap
+        this.setupTilemap();
+        this.createObjects();
+        this.createTiles();
+    }
+
+    update() {
+        //check if buttons are activated
+        this.buttons.forEach(this.checkButton, this);
+
+        //check if player has reached the end
+        this.enddoors.forEach(this.checkEnd, this, true);
+
+        //check if player has reached checkpoint
+        this.checkpoints.forEach(this.checkCheckpoint, this, true);
+    }
+
+    setupTilemap()
+    {
         this.tilemap.addTilesetImage('testtileset', 'tilesheet');
         this.tilemap.setCollisionByExclusion([]);
+    }
 
+    resetTilemap()
+    {
+        //remove p2 physics bits
+        game.physics.p2.clearTilemapLayerBodies(this.tilemap, this.mapLayer);
+
+        //remove mapLayer
+        this.mapLayer.destroy();
+
+        //remove tilemap
+        this.tilemap.destroy();
+    }
+
+    createObjects()
+    {
+        //add start doors
+        this.startdoors = game.add.group();
+        this.startdoors.enableBody = true;
+        this.startdoors.physicsBodyType = Phaser.Physics.P2JS;
+        this.tilemap.createFromObjects('objects', this.STARTDOORGID, 'startdoor', 0, true, false, this.startdoors);
+
+        //add end doors
+        this.enddoors = game.add.group();
+        this.enddoors.enableBody = true;
+        this.enddoors.physicsBodyType = Phaser.Physics.P2JS;
+        this.tilemap.createFromObjects('objects', this.ENDDOORGID, 'enddoor', 0, true, false, this.enddoors);
+
+        //add buttons
+        this.buttons = game.add.group();
+        this.buttons.enableBody = true;
+        this.buttons.physicsBodyType = Phaser.Physics.P2JS;
+        this.tilemap.createFromObjects('objects', this.BUTTONGID, 'button', 0, true, false, this.buttons);
+
+        //add spikes
+        this.spikes = game.add.group();
+        this.spikes.enableBody = true;
+        this.spikes.physicsBodyType = Phaser.Physics.P2JS;
+        this.tilemap.createFromObjects('objects', this.SPIKEGID, 'spike', 0, true, false, this.spikes);
+
+        //add checkpoints
+        this.checkpoints = game.add.group();
+        this.checkpoints.enableBody = true;
+        this.checkpoints.physicsBodyType = Phaser.Physics.P2JS;
+        this.tilemap.createFromObjects('objects', this.CHECKPOINTGID, 'checkpoint', 0, true, false, this.checkpoints);
+
+        //add doors
+        this.doors = game.add.group();
+        this.doors.enableBody = true;
+        this.doors.physicsBodyType = Phaser.Physics.P2JS;
+        this.tilemap.createFromObjects('objects', this.DOORID, 'door', 0, true, false, this.doors);
+
+        //move objects to account for anchor and configure bodies for raycasting
+        this.startdoors.forEach(this.configureNonCollidableBody, this, true, 'start');
+        this.enddoors.forEach(this.configureNonCollidableBody, this, true, 'end');
+        this.buttons.forEach(this.configureCollidableBody, this, true, 'button');
+        this.spikes.forEach(this.configureCollidableBody, this, true, 'spike');
+        this.checkpoints.forEach(this.configureNonCollidableBody, this, true, 'checkpoint');
+        this.doors.forEach(this.configureCollidableBody, this, true, 'door');
+    }
+
+    resetObjects()
+    {
+        //remove rectangles for collidable bodies
+        this.buttons.forEach(this.deleteBody, this, true);
+        this.spikes.forEach(this.deleteBody, this, true);
+        this.doors.forEach(this.deleteBody, this, true);
+
+        this.startdoors.destroy();
+        this.enddoors.destroy();
+        this.buttons.destroy();
+        this.spikes.destroy();
+        this.checkpoints.destroy();
+        this.doors.destroy();
+    }
+
+    createTiles()
+    {
         //add tilset to map layer
         this.mapLayer = this.tilemap.createLayer('walls');
         this.mapLayer.resizeWorld();
-        
-        this.collisionGroup = game.physics.p2.createCollisionGroup();
-        
-        //add small platforms
-        this.smallplatforms = game.add.group();
-        this.smallplatforms.enableBody = true;
-        this.smallplatforms.physicsBodyType = Phaser.Physics.P2JS;
-        this.tilemap.createFromObjects('smallplatforms', 5, 'smallplatform', 0, true, false, this.smallplatforms);
-        
-        //add medium platforms
-        this.mediumplatforms = game.add.group();
-        this.mediumplatforms.enableBody = true;
-        this.mediumplatforms.physicsBodyType = Phaser.Physics.P2JS;
-        this.tilemap.createFromObjects('mediumplatforms', 6, 'mediumplatform', 0, true, false, this.mediumplatforms);
-        
-        //add large platforms
-        this.largeplatforms = game.add.group();
-        this.largeplatforms.enableBody = true;
-        this.largeplatforms.physicsBodyType = Phaser.Physics.P2JS;
-        this.tilemap.createFromObjects('largeplatforms', 7, 'largeplatform', 0, true, false, this.largeplatforms);
 
-        //move platforms to account for anchor
-        this.smallplatforms.forEach(this.configurePlatform, this);
-        this.mediumplatforms.forEach(this.configurePlatform, this);
-        this.largeplatforms.forEach(this.configurePlatform, this);
-        
         //add p2 physics to tilemap
         this.tilemap.setCollisionByExclusion([]);
         game.physics.p2.convertTilemap(this.tilemap, this.mapLayer);
@@ -58,17 +175,36 @@ class TilemapManager
         }
     }
 
-    configurePlatform(platform)
+    checkButton(button) {
+        //check if any button is hit
+        if(button.body.hit)
+        {
+            //destroy the door
+            this.doors.forEach(this.openDoor, this);
+        }
+    }
+
+    configureCollidableBody(object, tag)
     {
-        this.configureBody(platform.body, platform.width, platform.height);
-        platform.body.x = platform.x+platform.width/2;
-        platform.body.y = platform.y+platform.height/2;
-        platform.angle = platform.body.angle;
+        this.configureBody(object.body, object.width, object.height);
+        object.body.x = object.x + object.width/2;
+        object.body.y = object.y + object.height/2;
 
-        platform.body.kinematic = true;
+        object.body.kinematic = true;
 
-        this.calculateColor(platform);
-        platform.body.tag = 'platform';
+        this.calculateColor(object);
+        object.body.tag = tag;
+    }
+
+    configureNonCollidableBody(object, tag)
+    {
+        object.body.x = object.x + object.width/2;
+        object.body.y = object.y + object.height/2;
+
+        object.body.kinematic = true;
+
+        this.calculateColor(object);
+        object.body.tag = tag;
     }
 
     configureBody(body, width, height)
@@ -76,8 +212,13 @@ class TilemapManager
         body.setCollisionGroup(this.collisionGroup);
         body.collides(this.player.collisionGroup);
         body.collides(this.player.shardCollisionGroup);
-        body.rectangle = Rectangle.createFromBody(body, width, height);
+        body.rectangle = Rectangle.createFromBody(body, width, height, body.tag);
         this.player.addRaycastTarget(body);
+    }
+
+    deleteBody(object)
+    {
+        this.player.removeRaycastTarget(object.body);
     }
 
     calculateColor(sprite)
@@ -88,5 +229,32 @@ class TilemapManager
         this.smallplatforms.setAll('tint', color);
         this.mediumplatforms.setAll('tint', color);
         this.largeplatforms.setAll('tint', color);*/
+    }
+
+    openDoor(door) {
+        door.destroy();
+    }
+
+    checkEnd(door)
+    {
+        var playerBounds = this.player.getBounds();
+        var doorBounds = door.getBounds();
+
+        if(Phaser.Rectangle.intersects(playerBounds, doorBounds))
+        {
+            console.log('next level');
+            this.nextLevel();
+        }
+    }
+
+    checkCheckpoint(checkpoint)
+    {
+        var playerBounds = this.player.getBounds();
+        var checkpointBounds = checkpoint.getBounds();
+
+        if(Phaser.Rectangle.intersects(playerBounds, checkpointBounds))
+        {
+            console.log('checkpoint reached');
+        }
     }
 }
