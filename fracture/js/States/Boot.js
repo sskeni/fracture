@@ -8,6 +8,6 @@ var Boot = {
         Phaser.Canvas.setImageRenderingCrisp(this.game.canvas);
 
 
-        game.state.start('Test');
+        game.state.start('Play');
     }
 }

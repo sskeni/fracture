@@ -38,6 +38,9 @@ class TilemapManager
 
         //create tiles from tilemap
         this.createTiles();
+
+        //move player to start of level
+        this.player.startLevel(this.startdoors.getTop().x + 16, this.startdoors.getTop().y + 16);      
     }
 
     addLevel(tilemap)
@@ -62,6 +65,8 @@ class TilemapManager
         this.setupTilemap();
         this.createObjects();
         this.createTiles();
+
+        this.player.startLevel(this.startdoors.getTop().x + 16, this.startdoors.getTop().y + 16);
     }
 
     update() {

@@ -32,9 +32,10 @@ var Test = {
         game.physics.startSystem(Phaser.Physics.P2JS);
         game.physics.p2.setImpactEvents(true);
         
-        this.player = new Player(game, 100, 200, 'caretaker');
+        this.player = new Player(game, 0, 0);
 
         this.tilemapManager = new TilemapManager(this.player, 'test');
+        this.tilemapManager.addLevel('test');
 
         this.pause = new Pause(game, Phaser.Keyboard.P);
     },

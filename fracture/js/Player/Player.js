@@ -18,6 +18,8 @@ class Player extends Phaser.Sprite
     animationController;
     audioManager;
 
+    spawnPoint;
+
     // flags
     launched;
     standingOnShard;
@@ -70,6 +72,8 @@ class Player extends Phaser.Sprite
         this.launched = false;
         this.standingOnShard = false;
         this.dead = false;
+
+        this.spawnPoint = new Vector(x, y);
     }
 
     // loads all assets used by the player
@@ -137,6 +141,41 @@ class Player extends Phaser.Sprite
             }
         }
         return false;
+    }
+
+
+    startLevel(x, y)
+    {
+        this.body.x = x;
+        this.body.y = y;
+        this.spawnPoint = new Vector(x, y);
+
+        // set flags
+        this.launched = false;
+        this.standingOnShard = false;
+        this.dead = false;
+
+        
+
+        this.clearShards();
+    }
+
+    respawn()
+    {
+        this.body.x = spawnPoint.x;
+        this.body.y = spawnPoint.y;
+
+        this.clearShards();
+    }
+
+    clearShards()
+    {
+        for(var shard of this.shards)
+        {
+            shard.destroy();
+        }
+        this.shardCount = 3;
+        this.shards = new Array();
     }
 
     // returns whether the player should behave like they are on a shard
