@@ -12,11 +12,15 @@ var Test = {
         game.load.image('spike', 'spike.png');
         game.load.image('door', 'door.png');
         game.load.image('checkpoint', 'checkpoint.png');
-        game.load.tilemap('test', 'test.json', null, Phaser.Tilemap.TILED_JSON);
         game.load.spritesheet('tilesheet', 'tileset.png');
 
         //pause assets
         game.load.image('pause', 'pause.png');
+
+        //add levels
+        game.load.path = 'js/Levels/';
+        game.load.tilemap('test', 'test.json', null, Phaser.Tilemap.TILED_JSON);
+        game.load.tilemap('test2', 'test2.json', null, Phaser.Tilemap.TILED_JSON);
     },
 
     create:function()
@@ -27,7 +31,8 @@ var Test = {
         
         this.player = new Player(game, 100, 200, 'caretaker');
 
-        this.tilemapManager = new TilemapManager(this.player);
+        this.tilemapManager = new TilemapManager(this.player, 'test');
+        this.tilemapManager.addLevel('test2');
 
         this.pause = new Pause(game, Phaser.Keyboard.P);
     },

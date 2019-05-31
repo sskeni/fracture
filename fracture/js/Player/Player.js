@@ -156,6 +156,22 @@ class Player extends Phaser.Sprite
         }
     }
 
+    removeRaycastTarget(target)
+    {
+        if('rectangle' in target)
+        {
+            for(var elem of this.raycastTargets) {
+                if(elem == target) {
+                    this.raycastTargets.splice(elem);
+                }
+            }
+        }
+        else
+        {
+            console.error("Error - object cannot be removed from raycastTargets because it does not have a rectangle property");
+        }
+    }
+
     // restart the level after playing an animation // TODO: stub
     die()
     {

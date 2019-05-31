@@ -4,26 +4,97 @@ class TilemapManager
     mapLayer;
     player;
     collisionGroup;
+    tilemapArray;
+    currentLevel;
 
-    BUTTONGID = 26;
-    SPIKEGID = 27;
-    ENDDOORGID = 28;
-    STARTDOORGID = 29;
-    CHECKPOINTGID = 30;
-    DOORID = 31;
+    BUTTONGID = 31;
+    SPIKEGID = 29;
+    ENDDOORGID = 30;
+    STARTDOORGID = 26;
+    CHECKPOINTGID = 27;
+    DOORID = 28;
 
-    constructor(player)
+    constructor(player, tilemap)
     {
         //save reference to player
         this.player = player;
 
-        //create tileset and set collisions
-        this.tilemap = game.add.tilemap('test');
-        this.tilemap.addTilesetImage('testtileset', 'tilesheet');
-        this.tilemap.setCollisionByExclusion([]);
+        //set level stuff
+        this.currentLevel = 0;
+        this.tilemapArray = new Array();
+        this.tilemapArray.push(tilemap);
+
+        //set tilemap
+        this.tilemap = game.add.tilemap(this.tilemapArray[this.currentLevel]);
         
+        //set collisionGroup
         this.collisionGroup = game.physics.p2.createCollisionGroup();
 
+        //setup tilemap
+        this.setupTilemap();
+
+        //create objects from tilemap
+        this.createObjects();
+
+        //create tiles from tilemap
+        this.createTiles();
+    }
+
+    addLevel(tilemap)
+    {
+        this.tilemapArray.push(tilemap);
+    }
+
+    nextLevel()
+    {
+        //reset objects
+        this.resetObjects();
+
+        //reset tilemap
+        this.resetTilemap();
+
+        this.currentLevel++;
+
+        //set tilemap
+        this.tilemap = game.add.tilemap(this.tilemapArray[this.currentLevel]);
+
+        //reload tilemap
+        this.setupTilemap();
+        this.createObjects();
+        this.createTiles();
+    }
+
+    update() {
+        //check if buttons are activated
+        this.buttons.forEach(this.checkButton, this);
+
+        //check if player has reached the end
+        this.enddoors.forEach(this.checkEnd, this, true);
+
+        //check if player has reached checkpoint
+        this.checkpoints.forEach(this.checkCheckpoint, this, true);
+    }
+
+    setupTilemap()
+    {
+        this.tilemap.addTilesetImage('testtileset', 'tilesheet');
+        this.tilemap.setCollisionByExclusion([]);
+    }
+
+    resetTilemap()
+    {
+        //remove p2 physics bits
+        game.physics.p2.clearTilemapLayerBodies(this.tilemap, this.mapLayer);
+
+        //remove mapLayer
+        this.mapLayer.destroy();
+
+        //remove tilemap
+        this.tilemap.destroy();
+    }
+
+    createObjects()
+    {
         //add start doors
         this.startdoors = game.add.group();
         this.startdoors.enableBody = true;
@@ -61,13 +132,31 @@ class TilemapManager
         this.tilemap.createFromObjects('objects', this.DOORID, 'door', 0, true, false, this.doors);
 
         //move objects to account for anchor and configure bodies for raycasting
-        this.startdoors.forEach(this.configureStartDoor, this);
-        this.enddoors.forEach(this.configureEndDoor, this);
-        this.buttons.forEach(this.configureButton, this);
-        this.spikes.forEach(this.configureSpike, this);
-        this.checkpoints.forEach(this.configureCheckpoint, this);
-        this.doors.forEach(this.configureDoor, this);
+        this.startdoors.forEach(this.configureNonCollidableBody, this, true, 'start');
+        this.enddoors.forEach(this.configureNonCollidableBody, this, true, 'end');
+        this.buttons.forEach(this.configureCollidableBody, this, true, 'button');
+        this.spikes.forEach(this.configureCollidableBody, this, true, 'spike');
+        this.checkpoints.forEach(this.configureNonCollidableBody, this, true, 'checkpoint');
+        this.doors.forEach(this.configureCollidableBody, this, true, 'door');
+    }
 
+    resetObjects()
+    {
+        //remove rectangles for collidable bodies
+        this.buttons.forEach(this.deleteBody, this, true);
+        this.spikes.forEach(this.deleteBody, this, true);
+        this.doors.forEach(this.deleteBody, this, true);
+
+        this.startdoors.destroy();
+        this.enddoors.destroy();
+        this.buttons.destroy();
+        this.spikes.destroy();
+        this.checkpoints.destroy();
+        this.doors.destroy();
+    }
+
+    createTiles()
+    {
         //add tilset to map layer
         this.mapLayer = this.tilemap.createLayer('walls');
         this.mapLayer.resizeWorld();
@@ -86,90 +175,36 @@ class TilemapManager
         }
     }
 
-    update() {
-        this.buttons.forEach(this.checkButton, this);
-    }
-
     checkButton(button) {
-        if(button.body.hit) {
+        //check if any button is hit
+        if(button.body.hit)
+        {
+            //destroy the door
             this.doors.forEach(this.openDoor, this);
         }
     }
 
-    openDoor(door) {
-        door.destroy();
+    configureCollidableBody(object, tag)
+    {
+        this.configureBody(object.body, object.width, object.height);
+        object.body.x = object.x + object.width/2;
+        object.body.y = object.y + object.height/2;
+
+        object.body.kinematic = true;
+
+        this.calculateColor(object);
+        object.body.tag = tag;
     }
 
-    configureStartDoor(door)
+    configureNonCollidableBody(object, tag)
     {
-    	door.body.x = door.x + door.width/2;
-    	door.body.y = door.y + door.height/2;
+        object.body.x = object.x + object.width/2;
+        object.body.y = object.y + object.height/2;
 
-    	door.body.kinematic = true;
+        object.body.kinematic = true;
 
-    	this.calculateColor(door);
-    	door.body.tag = 'start';
-    }
-
-    configureEndDoor(door)
-    {
-    	this.configureBody(door.body, door.width, door.height);
-    	door.body.x = door.x + door.width/2;
-    	door.body.y = door.y + door.height/2;
-
-    	door.body.kinematic = true;
-
-    	this.calculateColor(door);
-    	door.body.tag = 'end';
-
-    }
-
-    configureButton(button)
-    {
-    	this.configureBody(button.body, button.width, button.height);
-    	button.body.x = button.x + button.width/2;
-    	button.body.y = button.y + button.height/2;
-
-    	button.body.kinematic = true;
-
-    	this.calculateColor(button);
-    	button.body.tag = 'button';
-        button.body.hit = false;
-    }
-
-    configureSpike(spike)
-    {
-    	this.configureBody(spike.body, spike.width, spike.height);
-    	spike.body.x = spike.x + spike.width/2;
-    	spike.body.y = spike.y + spike.height/2;
-
-    	spike.body.kinematic = true;
-
-    	this.calculateColor(spike);
-    	spike.body.tag = 'spike';
-    }
-
-    configureCheckpoint(checkpoint)
-    {
-    	checkpoint.body.x = checkpoint.x + checkpoint.width/2;
-    	checkpoint.body.y = checkpoint.y + checkpoint.height/2;
-
-    	checkpoint.body.kinematic = true;
-
-    	this.calculateColor(checkpoint);
-    	checkpoint.body.tag = 'checkpoint';
-    }
-
-    configureDoor(door)
-    {
-        this.configureBody(door.body, door.width, door.height);
-    	door.body.x = door.x + door.width/2;
-    	door.body.y = door.y + door.height/2;
-
-    	door.body.kinematic = true;
-
-    	this.calculateColor(door);
-    	door.body.tag = 'door';
+        this.calculateColor(object);
+        object.body.tag = tag;
     }
 
     configureBody(body, width, height)
@@ -181,6 +216,11 @@ class TilemapManager
         this.player.addRaycastTarget(body);
     }
 
+    deleteBody(object)
+    {
+        this.player.removeRaycastTarget(object.body);
+    }
+
     calculateColor(sprite)
     {
         /*//set colors for map
@@ -189,5 +229,32 @@ class TilemapManager
         this.smallplatforms.setAll('tint', color);
         this.mediumplatforms.setAll('tint', color);
         this.largeplatforms.setAll('tint', color);*/
+    }
+
+    openDoor(door) {
+        door.destroy();
+    }
+
+    checkEnd(door)
+    {
+        var playerBounds = this.player.getBounds();
+        var doorBounds = door.getBounds();
+
+        if(Phaser.Rectangle.intersects(playerBounds, doorBounds))
+        {
+            console.log('next level');
+            this.nextLevel();
+        }
+    }
+
+    checkCheckpoint(checkpoint)
+    {
+        var playerBounds = this.player.getBounds();
+        var checkpointBounds = checkpoint.getBounds();
+
+        if(Phaser.Rectangle.intersects(playerBounds, checkpointBounds))
+        {
+            console.log('checkpoint reached');
+        }
     }
 }
