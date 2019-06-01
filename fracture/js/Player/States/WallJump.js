@@ -14,14 +14,17 @@ class WallJump extends PlayerState
     fallAcceleration = 100;// the acceleration at which the player will approach their maximum fall speed
     riseDeceleration = 1000;// the strength of deceleration when the player is moving up
     jumpStrength = 300;// the magnitude of the initial velocity the player gains when jumping from the wall
-    raycastDistance = 20;// the distance under which a wall is close enough to walljump from
+    raycastDistance = 17;// the distance under which a wall is close enough to walljump from
     cooldown = 300;// the length of time that must be waited before this state can be transitioned to again
+    exitWallHoldTime = 0.1;// the length of time the player must hold away from the wall to exit the wall
 
     // runtime variables
     direction;// the direction towards the shard we are attached to
+    directionalInputHeld;
     
     // timers
     timeOfLastDeinitialization;// The time when this state was last transitioned away from
+    timeOfExitDirectionDown;
 
     // references
     jumpState;// the player's jump state
@@ -30,6 +33,8 @@ class WallJump extends PlayerState
     {
         super(stateManager);
         this.timeOfLastDeinitialization = game.time.now - this.cooldown;
+        this.timeOfExitDirectionDown = 0;
+        this.directionalInputHeld = false;
     }
 
     // called every frame
@@ -63,12 +68,43 @@ class WallJump extends PlayerState
         }
 
         // if the player slides off of the wall
-        if(!this.onWall(Vector.createVectorFromAngle((this.direction == WallDirection.RIGHT ? 0 : 180))))
+        if(this.exitWallConditionsMet())
         {
             // start falling
             this.jumpState.initializeFalling = true;
             this.stateManager.transitionToState(this.jumpState);
         }
+    }
+
+    exitWallConditionsMet()
+    {
+        if(!this.onWall(Vector.createVectorFromAngle((this.direction == WallDirection.RIGHT ? 0 : 180))))
+        {
+            return true;
+        }
+
+        var horizontalInput = this.inputManager.getHorizontalInput();
+        if(this.direction == WallDirection.LEFT && horizontalInput > 0)
+        {
+            if(!this.directionalInputHeld)
+            {
+                this.timeOfExitDirectionDown = game.time.now;
+                this.directionalInputHeld = true;
+            }
+        }
+        else if(this.direction == WallDirection.RIGHT && horizontalInput < 0)
+        {
+            if(!this.directionalInputHeld)
+            {
+                this.timeOfExitDirectionDown = game.time.now;
+                this.directionalInputHeld = true;
+            }
+        }
+        else
+        {
+            this.directionalInputHeld = false;
+        }
+        return game.time.now > this.timeOfExitDirectionDown + this.exitWallHoldTime * Phaser.Timer.SECOND && this.directionalInputHeld;
     }
 
     // returns whether there is a wall in the given direction
@@ -98,6 +134,7 @@ class WallJump extends PlayerState
     initialize()
     {
         this.player.body.velocity.x = 0;
+        this.directionalInputHeld = false;
     }
     
     deinitialize()
