@@ -6,6 +6,7 @@ class Player extends Phaser.Sprite
     raycastRadius = 150;// the radius under which tiles are raycasted. Ensures that tiles we're guaranteed not to hit are not tested 
     groundRaycastDistance = 20;// the distance to raycast for ground tiles
     groundRaycastWidth = 10;// the horizontal offset to the left and right that raycasts for ground should be made at
+    respawnTime = 1;// the length of time it takes to respawn in seconds
 
     // references
     inputManager;
@@ -146,24 +147,23 @@ class Player extends Phaser.Sprite
 
     startLevel(x, y)
     {
-        this.body.x = x;
-        this.body.y = y;
         this.spawnPoint = new Vector(x, y);
+
+        this.respawn();
+    }
+
+    respawn()
+    {
+        this.body.x = this.spawnPoint.x;
+        this.body.y = this.spawnPoint.y;
 
         // set flags
         this.launched = false;
         this.standingOnShard = false;
         this.dead = false;
 
-        
-
-        this.clearShards();
-    }
-
-    respawn()
-    {
-        this.body.x = spawnPoint.x;
-        this.body.y = spawnPoint.y;
+        this.cameraController.respawn();
+        this.animationController.animateRespawn();
 
         this.clearShards();
     }
@@ -298,6 +298,7 @@ class Player extends Phaser.Sprite
         this.animationController.animateDeath();
         this.cameraController.die();
         this.dead = true;
-        console.log("Dead");
+
+        game.time.events.add(this.respawnTime * Phaser.Timer.SECOND, this.respawn, this);
     }
 }

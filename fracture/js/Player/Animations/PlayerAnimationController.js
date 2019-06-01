@@ -3,6 +3,8 @@ class PlayerAnimationController
     player;
     direction;
 
+    deathTween;
+
     static load()
     {
         game.load.path = 'assets/';
@@ -142,7 +144,13 @@ class PlayerAnimationController
     animateDeath()
     {
         this.player.animations.play('shatter');
-        game.add.tween(this.player).to( { alpha: 0 }, 1000, Phaser.Easing.Linear.None, true, 0, 0, false);
+        this.deathTween = game.add.tween(this.player).to( { alpha: 0 }, 900, Phaser.Easing.Linear.None, true, 0, 0, false);
+    }
+
+    animateRespawn()
+    {
+        if(this.deathTween != null) this.deathTween.stop();
+        this.player.alpha = 1;
     }
     
     animateFireShard()

@@ -19,5 +19,10 @@ class CameraController
         this.camera.unfollow();
     }
 
+    respawn()
+    {
+        this.camera.follow(this.player);
+    }
+
 
 }
