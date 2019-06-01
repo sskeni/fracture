@@ -24,6 +24,7 @@ var Play = {
         game.load.tilemap('test', 'test.json', null, Phaser.Tilemap.TILED_JSON);
 
         Player.load();
+        AudioManager.load();
     },
 
     create:function()

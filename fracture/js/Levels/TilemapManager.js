@@ -117,6 +117,7 @@ class TilemapManager
         this.buttons.enableBody = true;
         this.buttons.physicsBodyType = Phaser.Physics.P2JS;
         this.tilemap.createFromObjects('objects', this.BUTTONGID, 'button', 0, true, false, this.buttons);
+        this.buttons.setAll("pressed", false);
 
         //add spikes
         this.spikes = game.add.group();
@@ -182,8 +183,10 @@ class TilemapManager
 
     checkButton(button) {
         //check if any button is hit
-        if(button.body.hit)
+        if(button.body.hit && !button.pressed)
         {
+            button.pressed = true;
+            AudioManager.playSound('open_door', 0.3);
             //destroy the door
             this.doors.forEach(this.openDoor, this);
         }

@@ -4,6 +4,7 @@
 class PlayerAudioManager
 {
     warningDistance = 100;
+    volumeModifier = 1;
 
     playedFootstep = false;
     playedShatterAnticipation = false;
@@ -45,7 +46,7 @@ class PlayerAudioManager
     // play a sound with the given key and volume
     playSound(key, volume)
     {
-        var sound = game.add.audio(key, volume);
+        var sound = game.add.audio(key, this.volumeModifier * volume);
         sound.playOnce = true;
         sound.play();
 
@@ -56,7 +57,7 @@ class PlayerAudioManager
     playFootstep()
     {
         var index = game.rnd.integerInRange(1, 4);
-        var sound = game.add.audio('footstep_' + index, 0.3);
+        var sound = game.add.audio('footstep_' + index, this.volumeModifier * 0.3);
         sound.playOnce = true;
         sound.play();
     }
@@ -163,9 +164,7 @@ class PlayerAudioManager
     // plays the windup sound for firing a shard
     playShardWindup()
     {
-        this.shardWindupSound = game.add.audio('begin_fire_shard', 0.3);// save the sound for later
-        this.shardWindupSound.playOnce = true;
-        this.shardWindupSound.play();
+        this.shardWindupSound = this.playSound('begin_fire_shard', 0.3);
     }
 
     // plays the fire shard sound. also cuts off the shard windup sound
