@@ -17,6 +17,7 @@ var Play = {
         Player.load();
         AudioManager.load();
         TilemapManager.load();
+        MusicManager.loadLevels();
     },
 
     create:function()
@@ -31,6 +32,9 @@ var Play = {
         this.tilemapManager.addLevel('test');
 
         this.pause = new Pause(game, Phaser.Keyboard.P);
+
+        this.musicManager = new MusicManager();
+        this.musicManager.playSong('track_2');
     },
 
     update:function()
