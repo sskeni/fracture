@@ -1,4 +1,4 @@
-var Test = {
+var Play = {
     preload:function()
     {
         game.load.path = 'assets/img/';
