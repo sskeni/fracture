@@ -7,15 +7,6 @@ var Play = {
         game.load.image('cursorBase', 'cursorBase.png');
         game.load.image('cursorTip', 'cursorTip.png');
 
-        //tileset assets
-        game.load.image('startdoor', 'startdoor.png');
-        game.load.image('enddoor', 'enddoor.png');
-        game.load.image('button', 'button.png');
-        game.load.image('spike', 'spike.png');
-        game.load.image('door', 'door.png');
-        game.load.image('checkpoint', 'checkpoint.png');
-        game.load.spritesheet('tilesheet', 'tileset.png');
-
         //pause assets
         game.load.image('pause', 'pause.png');
 
@@ -25,6 +16,7 @@ var Play = {
 
         Player.load();
         AudioManager.load();
+        TilemapManager.load();
     },
 
     create:function()

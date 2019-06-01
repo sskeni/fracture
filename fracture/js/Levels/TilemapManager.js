@@ -42,6 +42,23 @@ class TilemapManager
         //move player to start of level
         this.player.startLevel(this.startdoors.getTop().x + 16, this.startdoors.getTop().y + 16);      
     }
+    
+    static load()
+    {
+        var path = game.load.path;
+        game.load.path = 'assets/img/';
+
+        //tileset assets
+        game.load.image('startdoor', 'startdoor.png');
+        game.load.image('enddoor', 'enddoor.png');
+        game.load.image('button', 'button.png');
+        game.load.image('spike', 'spike.png');
+        game.load.spritesheet('door', 'door.png', 16, 32);
+        game.load.image('checkpoint', 'checkpoint.png');
+        game.load.spritesheet('tilesheet', 'tileset.png');
+
+        game.load.path = path;
+    }
 
     addLevel(tilemap)
     {
@@ -136,6 +153,7 @@ class TilemapManager
         this.doors.enableBody = true;
         this.doors.physicsBodyType = Phaser.Physics.P2JS;
         this.tilemap.createFromObjects('objects', this.DOORID, 'door', 0, true, false, this.doors);
+        this.doors.forEach(this.configureDoor, this, false);
 
         //move objects to account for anchor and configure bodies for raycasting
         this.startdoors.forEach(this.configureNonCollidableBody, this, true, 'start');
@@ -146,12 +164,20 @@ class TilemapManager
         this.doors.forEach(this.configureCollidableBody, this, true, 'door');
     }
 
+    configureDoor(door)
+    {
+        console.log(door);
+        door.animations.add('open', null, 6, false);
+        //door.animations.play('open');
+        //door.animations.currentFrame = 0;
+    }
+
     resetObjects()
     {
         //remove rectangles for collidable bodies
         this.buttons.forEach(this.deleteBody, this, true);
         this.spikes.forEach(this.deleteBody, this, true);
-        this.doors.forEach(this.deleteBody, this, true);
+        //this.doors.forEach(this.deleteBody, this, true);
 
         this.startdoors.destroy();
         this.enddoors.destroy();
@@ -187,6 +213,7 @@ class TilemapManager
         {
             button.pressed = true;
             AudioManager.playSound('open_door', 0.3);
+
             //destroy the door
             this.doors.forEach(this.openDoor, this);
         }
@@ -240,7 +267,11 @@ class TilemapManager
     }
 
     openDoor(door) {
-        door.destroy();
+        console.log(door.animations.getAnimation('open'));
+        
+        game.time.events.add(1 * Phaser.Timer.SECOND, function() {this.animations.play('open');}, door);
+        game.time.events.add(1.5 * Phaser.Timer.SECOND, function() {this.body.destroy();}, door);
+        
     }
 
     checkEnd(door)
