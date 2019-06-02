@@ -119,7 +119,7 @@ class TilemapManager
 
     createObjects()
     {
-        var color = 0x0642f6;
+        var color = 0x7597ff;
         //add start doors
         this.startdoors = game.add.group();
         this.startdoors.enableBody = true;
@@ -215,7 +215,7 @@ class TilemapManager
             this.configureBody(body, 16, 16);
         }
 
-        this.mapLayer.tint = 0xf64906;//0xed66ff;
+        this.mapLayer.tint = 0xffab683;//0xed66ff;
     }
 
     checkButton(button) {

@@ -88,6 +88,7 @@ class Player extends Phaser.Sprite
     {
         if(!this.dead)
         {
+            this.alpha = 1;// workaround for bug with alpha tweening
             this.stateManager.update();
             this.inputManager.update();
         }
