@@ -32,7 +32,7 @@ class Player extends Phaser.Sprite
         super(game, x, y, 'player');
         game.add.world.add(this);
 
-        var color = 0xffc956;
+        var color = 0xff89e9;
         this.tint = color;
 
         
