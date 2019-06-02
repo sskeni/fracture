@@ -22,7 +22,8 @@ class PlayerAnimationController
         this.player.animations.add('run_right_up_diagonal', Phaser.Animation.generateFrameNames('run_right_up_diagonal_', 1, 8), 12, true);
         this.player.animations.add('run_right_down_diagonal', Phaser.Animation.generateFrameNames('run_right_down_diagonal_', 1, 8), 12, true);
 
-        this.player.animations.add('stand_still', Phaser.Animation.generateFrameNames('run_right_', 1, 1), 12, true);
+        this.player.animations.add('idle_left', Phaser.Animation.generateFrameNames('idle_left_', 1, 1), 12, true);
+        this.player.animations.add('idle_right', Phaser.Animation.generateFrameNames('idle_right_', 1, 1), 12, true);
         
         this.player.animations.add('run_left', Phaser.Animation.generateFrameNames('run_left_', 1, 8), 12, true);
         this.player.animations.add('run_left_up_diagonal', Phaser.Animation.generateFrameNames('run_left_up_diagonal_', 1, 8), 12, true);
@@ -123,7 +124,7 @@ class PlayerAnimationController
 
         if(this.player.inputManager.getHorizontalInput() == 0)
         {
-            this.player.animations.play('stand_still');
+            this.player.animations.play('idle_' + this.direction);
             return;
         }
         

@@ -66,6 +66,8 @@ class Shard extends Phaser.Sprite
         this.body.fixedRotation = true;
         this.body.tag = 'shard';
         this.body.shard = this;
+
+        this.tint = 0xff89e9;
     }
 
     isDiagonal()
