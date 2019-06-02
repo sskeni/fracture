@@ -40,7 +40,9 @@ class TilemapManager
         this.createTiles();
 
         //move player to start of level
-        this.player.startLevel(this.startdoors.getTop().x + 16, this.startdoors.getTop().y + 16);      
+        this.player.startLevel(this.startdoors.getTop().x + 16, this.startdoors.getTop().y + 16);
+        
+        game.stage.backgroundColor = 0xe0e3e5;
     }
     
     static load()
@@ -94,7 +96,7 @@ class TilemapManager
         this.enddoors.forEach(this.checkEnd, this, true);
 
         //check if player has reached checkpoint
-        this.checkpoints.forEach(this.checkCheckpoint, this, true);
+        //this.checkpoints.forEach(this.checkCheckpoint, this, true);
     }
 
     setupTilemap()
@@ -117,17 +119,20 @@ class TilemapManager
 
     createObjects()
     {
+        var color = 0xf7427b;
         //add start doors
         this.startdoors = game.add.group();
         this.startdoors.enableBody = true;
         this.startdoors.physicsBodyType = Phaser.Physics.P2JS;
         this.tilemap.createFromObjects('objects', this.STARTDOORGID, 'startdoor', 0, true, false, this.startdoors);
+        this.startdoors.setAll('tint', color);
 
         //add end doors
         this.enddoors = game.add.group();
         this.enddoors.enableBody = true;
         this.enddoors.physicsBodyType = Phaser.Physics.P2JS;
         this.tilemap.createFromObjects('objects', this.ENDDOORGID, 'enddoor', 0, true, false, this.enddoors);
+        this.enddoors.setAll('tint', color);
 
         //add buttons
         this.buttons = game.add.group();
@@ -135,18 +140,21 @@ class TilemapManager
         this.buttons.physicsBodyType = Phaser.Physics.P2JS;
         this.tilemap.createFromObjects('objects', this.BUTTONGID, 'button', 0, true, false, this.buttons);
         this.buttons.setAll("pressed", false);
+        this.buttons.setAll('tint', color);
 
         //add spikes
         this.spikes = game.add.group();
         this.spikes.enableBody = true;
         this.spikes.physicsBodyType = Phaser.Physics.P2JS;
         this.tilemap.createFromObjects('objects', this.SPIKEGID, 'spike', 0, true, false, this.spikes);
+        this.spikes.setAll('tint', color);
 
         //add checkpoints
         this.checkpoints = game.add.group();
         this.checkpoints.enableBody = true;
         this.checkpoints.physicsBodyType = Phaser.Physics.P2JS;
         this.tilemap.createFromObjects('objects', this.CHECKPOINTGID, 'checkpoint', 0, true, false, this.checkpoints);
+        this.checkpoints.setAll('tint', color);
 
         //add doors
         this.doors = game.add.group();
@@ -154,6 +162,7 @@ class TilemapManager
         this.doors.physicsBodyType = Phaser.Physics.P2JS;
         this.tilemap.createFromObjects('objects', this.DOORID, 'door', 0, true, false, this.doors);
         this.doors.forEach(this.configureDoor, this, false);
+        this.doors.setAll('tint', color);
 
         //move objects to account for anchor and configure bodies for raycasting
         this.startdoors.forEach(this.configureNonCollidableBody, this, true, 'start');
@@ -205,6 +214,8 @@ class TilemapManager
         {
             this.configureBody(body, 16, 16);
         }
+
+        this.mapLayer.tint = 0x8edaff;//0xed66ff;
     }
 
     checkButton(button) {
@@ -267,8 +278,6 @@ class TilemapManager
     }
 
     openDoor(door) {
-        console.log(door.animations.getAnimation('open'));
-        
         game.time.events.add(1 * Phaser.Timer.SECOND, function() {this.animations.play('open');}, door);
         game.time.events.add(1.5 * Phaser.Timer.SECOND, function() {this.body.destroy();}, door);
         
@@ -281,7 +290,6 @@ class TilemapManager
 
         if(Phaser.Rectangle.intersects(playerBounds, doorBounds))
         {
-            console.log('next level');
             this.nextLevel();
         }
     }

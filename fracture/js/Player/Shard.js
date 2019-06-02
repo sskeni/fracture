@@ -35,7 +35,7 @@ class Shard extends Phaser.Sprite
         this.direction = direction;
         this.player = player;
         // set up physics
-        game.physics.p2.enable(this, true);
+        game.physics.p2.enable(this, false);
         
         // set to collide with tileset
         

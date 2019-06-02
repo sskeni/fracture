@@ -10,6 +10,7 @@ class ButtonSelector
 
 	constructor(game, initialSelection, key)
 	{
+		console.log(initialSelection);
 		this.selections = new Array();
 		this.addSelection(initialSelection);
 
