@@ -5,10 +5,13 @@ class PlayerAnimationController
 
     deathTween;
 
+    flashSprite;
+
     static load()
     {
         game.load.path = 'assets/';
         game.load.atlas('player', 'img/player/player_atlas.png', 'json/player_atlas.json');
+        game.load.image('flash', 'img/heart/ending_whiteout.png');
         //game.load.spritesheet('player_run_right', 'player_run_right', 32, 32);
         //game.load.spritesheet('player_run_left', 'player_run_left', 32, 32);
     }
@@ -51,6 +54,23 @@ class PlayerAnimationController
             this.player.animations.add('jump_left_' + i, Phaser.Animation.generateFrameNames('jump_left_', i, i), 12, true);
         }
 
+        this.flashSprite = game.add.sprite(0, 0, 'flash');
+        this.flashSprite.alpha = 0;
+
+    }
+
+    flashScreen()
+    {
+        if(this.flashTween != null) 
+        {
+            this.flashTween.stop();
+        }
+        this.flashSprite.alpha = 0.9;
+        game.time.events.add(600, function(){this.flashSprite.alpha = 0;}, this);
+        //this.flashTween = game.add.tween(this.flashSprite).to( { alpha: 0 }, 10, Phaser.Easing.Linear.None, true, 0, 0, false);
+        /*this.flashTween.onComplete.add(function(){
+        this.flashTween = game.add.tween(this.flashSprite).to( { alpha: 0 }, 50, Phaser.Easing.Linear.None, true, 0, 0, false);
+        }, this);     */
     }
 
     animateJump()

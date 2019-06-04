@@ -35,7 +35,7 @@ var Play = {
         this.pause = new Pause(game, Phaser.Keyboard.P);
 
         this.musicManager = new MusicManager();
-        this.musicManager.playSong('track_2');
+        //this.musicManager.playSong('track_2');
     },
 
     update:function()

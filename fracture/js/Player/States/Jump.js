@@ -88,6 +88,7 @@ class Jump extends PlayerState
         if(this.fallenTooFar() && !this.anticipatedShatter)
         {
             GamefeelMaster.hitStop(0.5);
+            this.player.animationController.flashScreen();
             this.anticipatedShatter = true;
         }
 

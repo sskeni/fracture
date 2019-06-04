@@ -17,7 +17,7 @@ class GamefeelMaster
     // slows down the game dramatically for the given length
     static hitStop(length)
     {
-        game.time.slowMotion = 20;
+        game.time.slowMotion = 40;
         game.time.events.add(Phaser.Timer.SECOND * length, function() {game.time.slowMotion = 1;}, this);
     }
 }

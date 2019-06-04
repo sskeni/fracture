@@ -7,7 +7,8 @@ var Ending = {
 
         //add levels
         game.load.path = 'js/Levels/';
-        game.load.tilemap('test', 'test.json', null, Phaser.Tilemap.TILED_JSON);
+        //game.load.tilemap('test', 'test.json', null, Phaser.Tilemap.TILED_JSON);
+        game.load.tilemap('ending', 'ending.json', null, Phaser.Tilemap.TILED_JSON);
 
         Player.load();
         AudioManager.load();
@@ -26,7 +27,9 @@ var Ending = {
         
         this.player = new Player(game, 200, 16);
 
-        this.tilemapManager = new TilemapManager(this.player, 'test');
+        this.tilemapManager = new TilemapManager(this.player, 'ending');
+        this.tilemapManager.mapLayer.tint = 0x134b6d;
+        this.tilemapManager.startdoors.setAll('alpha', 0);
         //this.tilemapManager.addLevel('test');
 
         this.musicManager = new MusicManager();
@@ -40,6 +43,11 @@ var Ending = {
     {
         this.tilemapManager.update();
         this.setPlayerTint();
+
+        if(this.player.body.x < 16)
+        {
+            this.player.body.x = 16;
+        }
 
         if(!this.player.dead && this.targetLocation.x - this.player.x < 10)
         {
