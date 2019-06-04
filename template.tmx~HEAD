@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.2" tiledversion="1.2.3" orientation="orthogonal" renderorder="right-down" width="32" height="18" tilewidth="16" tileheight="16" infinite="0" nextlayerid="10" nextobjectid="71">
+ <tileset firstgid="1" name="testtileset" tilewidth="16" tileheight="16" tilecount="25" columns="5">
+  <image source="fracture/assets/img/tileset.png" width="80" height="80"/>
+ </tileset>
+ <tileset firstgid="26" name="startdoor" tilewidth="32" tileheight="32" tilecount="1" columns="1">
+  <image source="fracture/assets/img/startdoor.png" width="32" height="32"/>
+ </tileset>
+ <tileset firstgid="27" name="checkpoint" tilewidth="32" tileheight="48" tilecount="1" columns="1">
+  <image source="fracture/assets/img/checkpoint.png" width="32" height="48"/>
+ </tileset>
+ <tileset firstgid="28" name="door" tilewidth="8" tileheight="32" tilecount="10" columns="10">
+  <image source="fracture/assets/img/door.png" width="80" height="32"/>
+ </tileset>
+ <tileset firstgid="38" name="spike" tilewidth="32" tileheight="10" tilecount="1" columns="1">
+  <image source="fracture/assets/img/spike.png" width="32" height="10"/>
+ </tileset>
+ <tileset firstgid="39" name="enddoor" tilewidth="22" tileheight="31" tilecount="1" columns="1">
+  <image source="fracture/assets/img/enddoor.png" width="22" height="31"/>
+ </tileset>
+ <tileset firstgid="40" name="button" tilewidth="23" tileheight="11" tilecount="1" columns="1">
+  <image source="fracture/assets/img/button.png" width="23" height="11"/>
+ </tileset>
+ <objectgroup id="7" name="objects">
+  <object id="64" name="spike" gid="38" x="167.667" y="272.333" width="32" height="10"/>
+  <object id="65" name="spike" gid="38" x="125.667" y="144.333" width="32" height="10"/>
+  <object id="66" name="button" gid="40" x="60.8333" y="26.8333" width="23" height="11"/>
+  <object id="68" name="startdoor" gid="26" x="15.6667" y="272.333" width="32" height="32"/>
+  <object id="69" name="door" gid="28" x="388.333" y="96" width="8" height="32"/>
+  <object id="70" name="enddoor" gid="39" x="452.667" y="96.5" width="22" height="31"/>
+ </objectgroup>
+ <objectgroup id="9" name="templates">
+  <object id="58" name="button" gid="40" x="23" y="344.333" width="23" height="11"/>
+  <object id="59" name="door" gid="28" x="87.6667" y="346.333" width="8" height="32"/>
+  <object id="60" name="enddoor" gid="39" x="120" y="345.667" width="22" height="31"/>
+  <object id="61" name="spike" gid="38" x="174.333" y="341" width="32" height="10"/>
+  <object id="62" name="startdoor" gid="26" x="242" y="343.667" width="32" height="32"/>
+ </objectgroup>
+ <layer id="1" name="walls" width="32" height="18">
+  <data encoding="csv">
+4,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,14,12,12,12,12,12,12,5,
+8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,23,0,0,0,0,0,0,6,
+8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,23,0,0,0,0,0,0,6,
+8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,22,0,0,0,0,0,0,6,
+8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6,
+8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6,
+8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,16,17,17,17,17,17,17,17,15,
+8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6,
+8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6,
+19,17,17,17,17,17,17,17,17,17,17,17,17,17,17,18,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6,
+8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6,
+8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6,
+8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6,
+8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,2,2,2,2,2,2,2,2,10,
+8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6,7,7,7,7,7,7,7,7,7,7,
+8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6,7,7,7,7,7,7,7,7,7,7,
+8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6,7,7,7,7,7,7,7,7,7,7,
+9,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,10,7,7,7,7,7,7,7,7,7,7
+</data>
+ </layer>
+</map>
