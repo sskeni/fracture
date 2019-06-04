@@ -7,7 +7,6 @@ var Boot = {
         game.renderer.renderSession.roundPixels = true;
         Phaser.Canvas.setImageRenderingCrisp(this.game.canvas);
 
-
         game.state.start('MainMenu');
     }
 }

@@ -7,10 +7,10 @@ class ButtonSelector
 	icon2;
 	downKey;
 	upKey;
+	canNavigate;
 
 	constructor(game, initialSelection, key)
 	{
-		console.log(initialSelection);
 		this.selections = new Array();
 		this.addSelection(initialSelection);
 
@@ -25,43 +25,62 @@ class ButtonSelector
 		this.downKey = game.input.keyboard.addKey(Phaser.Keyboard.DOWN);
 		this.upKey = game.input.keyboard.addKey(Phaser.Keyboard.UP);
 		this.selectKey = game.input.keyboard.addKey(Phaser.Keyboard.Z);
+
+		this.downKey.onDown.add(this.moveDown, this);
+		this.upKey.onDown.add(this.moveUp, this);
+		this.selectKey.onDown.add(this.executeSelection, this);
+
+		this.canNavigate = false;
+		this.updatePosition();
+	}
+
+	moveDown()
+	{	
+		if(this.canNavigate) {
+			if(this.downKey.justDown)
+				{
+				if(this.currentSelection != this.selections[this.selections.length-1])
+				{
+				this.currentSelection = this.selections[++this.selectionNum];
+				}
+			}
+			this.updatePosition();
+		}
+		
+	}
+
+	moveUp()
+	{
+		if(this.canNavigate)
+		{
+			if(this.upKey.justDown)
+			{
+				if(this.currentSelection != this.selections[0])
+				{
+					this.currentSelection = this.selections[--this.selectionNum];
+				}
+			}
+			this.updatePosition();
+		}
 	}
 
 	addSelection(selection) {
 		this.selections.push(selection);
 	}
 
-	update()
-	{
-		this.updatePosition();
-		if(this.downKey.justDown)
-		{
-			if(this.currentSelection != this.selections[this.selections.length-1])
-			{
-				this.currentSelection = this.selections[++this.selectionNum];
-			}
-		}
-		if(this.upKey.justDown)
-		{
-			if(this.currentSelection != this.selections[0])
-			{
-				this.currentSelection = this.selections[--this.selectionNum];
-			}
-		}
-		if(this.selectKey.justDown)
-		{
-			this.executeSelection();
-		}
-	}
-
 	executeSelection()
 	{
-		if('state' in this.currentSelection)
+		if(this.canNavigate)
 		{
-			game.state.start(this.currentSelection.state);
+			if('state' in this.currentSelection)
+			{
+				game.state.start(this.currentSelection.state);
+				if(game.paused) game.paused = false;
+			}
+			if('pause' in this.currentSelection) game.paused = false;
 		}
 	}
-
+	
 	updatePosition()
 	{
 		this.icon1.x = this.currentSelection.x - this.currentSelection.width/2 - 15;
@@ -69,5 +88,11 @@ class ButtonSelector
 
 		this.icon2.x = this.currentSelection.x + this.currentSelection.width/2 + 15;
 		this.icon2.y = this.currentSelection.y - 4;
+	}
+
+	setVisible(condition)
+	{
+		this.icon1.visible = condition;
+		this.icon2.visible = condition;
 	}
 }
