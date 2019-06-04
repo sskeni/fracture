@@ -31,7 +31,7 @@ var Play = {
         
         this.player = new Player(game, 0, 0);
 
-        this.tilemapManager = new TilemapManager(this.player, 'level4');
+        this.tilemapManager = new TilemapManager(this.player, 'level1');
         this.tilemapManager.addLevel('level2');
         this.tilemapManager.addLevel('level3');
         this.tilemapManager.addLevel('level4');
