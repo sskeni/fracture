@@ -31,10 +31,12 @@ var Play = {
         
         this.player = new Player(game, 0, 0);
 
-        this.tilemapManager = new TilemapManager(this.player, 'level1');
+        this.tilemapManager = new TilemapManager(this.player, 'level3');
         this.tilemapManager.addLevel('level2');
         this.tilemapManager.addLevel('level3');
         this.tilemapManager.addLevel('level4');
+
+        this.player.addTilemapManager(this.tilemapManager);
 
         this.pause = new Pause(game, Phaser.Keyboard.P);
 

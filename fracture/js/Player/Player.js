@@ -35,7 +35,6 @@ class Player extends Phaser.Sprite
 
         var color = 0xff89e9;
         this.tint = color;
-
         
         // set anchor to be the center of the sprite
         this.anchor.x = 0.5;
@@ -99,6 +98,11 @@ class Player extends Phaser.Sprite
     {
         this.tilemapCollisionGroup = tilemapCollisionGroup;
         this.body.collides(this.tilemapCollisionGroup);
+    }
+
+    addTilemapManager(tilemapManager)
+    {
+        this.tilemapManager = tilemapManager;
     }
 
     fireShard(direction)
@@ -300,6 +304,7 @@ class Player extends Phaser.Sprite
         this.animationController.animateDeath();
         this.cameraController.die();
         this.dead = true;
+        this.tilemapManager.resetLevel();
 
         game.time.events.add(this.respawnTime * Phaser.Timer.SECOND, this.respawn, this);
     }

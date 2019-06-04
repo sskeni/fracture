@@ -91,7 +91,8 @@ class TilemapManager
 
     resetLevel()
     {
-
+        this.buttons.forEach(this.resetButton, this);
+        this.doors.forEach(this.resetDoor, this);
     }
 
     update() {
@@ -115,7 +116,6 @@ class TilemapManager
     {
         for(let body of this.tilemapBodies)
         {
-            console.log(body);
             this.player.removeRaycastTarget(body);
         }
 
@@ -187,8 +187,8 @@ class TilemapManager
 
     configureDoor(door)
     {
-        console.log(door);
         door.animations.add('open', null, 6, false);
+        door.open = false;
         //door.animations.play('open');
         //door.animations.currentFrame = 0;
     }
@@ -228,18 +228,6 @@ class TilemapManager
         }
 
         this.mapLayer.tint = 0xffab683;//0xed66ff;
-    }
-
-    checkButton(button) {
-        //check if any button is hit
-        if(button.body.hit && !button.pressed)
-        {
-            button.pressed = true;
-            AudioManager.playSound('open_door', 0.3);
-
-            //destroy the door
-            this.doors.forEach(this.openDoor, this);
-        }
     }
 
     configureCollidableBody(object, tag)
@@ -289,10 +277,39 @@ class TilemapManager
         this.largeplatforms.setAll('tint', color);*/
     }
 
+    checkButton(button) {
+        //check if any button is hit
+        if(button.body.hit && !button.pressed)
+        {
+            button.pressed = true;
+            AudioManager.playSound('open_door', 0.3);
+
+            //destroy the door
+            this.doors.forEach(this.openDoor, this);
+        }
+    }
+
+    resetButton(button) {
+        button.body.hit = false;
+        button.pressed = false;
+    }
+
     openDoor(door) {
-        game.time.events.add(1 * Phaser.Timer.SECOND, function() {this.animations.play('open');}, door);
-        game.time.events.add(1.5 * Phaser.Timer.SECOND, function() {this.body.destroy();}, door);
-        
+        if(!door.opened) {
+            game.time.events.add(1 * Phaser.Timer.SECOND, function() {this.animations.play('open');}, door);
+            door.body.destroy();
+            door.opened = true;
+        }
+    }
+
+    resetDoor(door) {
+        door.animations.stop();
+        door.animations.frame = 0;
+        door.opened = false;
+        game.physics.p2.enable(door);
+        this.configureBody(door.body, door.width, door.height);
+        door.body.kinematic = true;
+        door.body.tag = 'door';
     }
 
     checkEnd(door)
