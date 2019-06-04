@@ -6,14 +6,7 @@ class TilemapManager
     collisionGroup;
     tilemapArray;
     currentLevel;
-
-    BUTTONGID = 31;
-    SPIKEGID = 29;
-    ENDDOORGID = 30;
-    STARTDOORGID = 26;
-    CHECKPOINTGID = 27;
-    DOORID = 28;
-
+    
     constructor(player, tilemap)
     {
         //save reference to player
@@ -124,21 +117,21 @@ class TilemapManager
         this.startdoors = game.add.group();
         this.startdoors.enableBody = true;
         this.startdoors.physicsBodyType = Phaser.Physics.P2JS;
-        this.tilemap.createFromObjects('objects', this.STARTDOORGID, 'startdoor', 0, true, false, this.startdoors);
+        this.tilemap.createFromObjects('objects', 'startdoor', 'startdoor', 0, true, false, this.startdoors);
         this.startdoors.setAll('tint', color);
 
         //add end doors
         this.enddoors = game.add.group();
         this.enddoors.enableBody = true;
         this.enddoors.physicsBodyType = Phaser.Physics.P2JS;
-        this.tilemap.createFromObjects('objects', this.ENDDOORGID, 'enddoor', 0, true, false, this.enddoors);
+        this.tilemap.createFromObjects('objects', 'enddoor', 'enddoor', 0, true, false, this.enddoors);
         this.enddoors.setAll('tint', color);
 
         //add buttons
         this.buttons = game.add.group();
         this.buttons.enableBody = true;
         this.buttons.physicsBodyType = Phaser.Physics.P2JS;
-        this.tilemap.createFromObjects('objects', this.BUTTONGID, 'button', 0, true, false, this.buttons);
+        this.tilemap.createFromObjects('objects', 'button', 'button', 0, true, false, this.buttons);
         this.buttons.setAll("pressed", false);
         this.buttons.setAll('tint', color);
 
@@ -146,21 +139,21 @@ class TilemapManager
         this.spikes = game.add.group();
         this.spikes.enableBody = true;
         this.spikes.physicsBodyType = Phaser.Physics.P2JS;
-        this.tilemap.createFromObjects('objects', this.SPIKEGID, 'spike', 0, true, false, this.spikes);
+        this.tilemap.createFromObjects('objects', 'spike', 'spike', 0, true, false, this.spikes);
         this.spikes.setAll('tint', color);
 
         //add checkpoints
         this.checkpoints = game.add.group();
         this.checkpoints.enableBody = true;
         this.checkpoints.physicsBodyType = Phaser.Physics.P2JS;
-        this.tilemap.createFromObjects('objects', this.CHECKPOINTGID, 'checkpoint', 0, true, false, this.checkpoints);
+        this.tilemap.createFromObjects('objects', 'checkpoint', 'checkpoint', 0, true, false, this.checkpoints);
         this.checkpoints.setAll('tint', color);
 
         //add doors
         this.doors = game.add.group();
         this.doors.enableBody = true;
         this.doors.physicsBodyType = Phaser.Physics.P2JS;
-        this.tilemap.createFromObjects('objects', this.DOORID, 'door', 0, true, false, this.doors);
+        this.tilemap.createFromObjects('objects', 'door', 'door', 0, true, false, this.doors);
         this.doors.forEach(this.configureDoor, this, false);
         this.doors.setAll('tint', color);
 
