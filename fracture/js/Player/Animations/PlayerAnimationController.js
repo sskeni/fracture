@@ -29,9 +29,21 @@ class PlayerAnimationController
         this.player.animations.add('run_left_up_diagonal', Phaser.Animation.generateFrameNames('run_left_up_diagonal_', 1, 8), 12, true);
         this.player.animations.add('run_left_down_diagonal', Phaser.Animation.generateFrameNames('run_left_down_diagonal_', 1, 8), 12, true);
                 
-        this.player.animations.add('shatter', Phaser.Animation.generateFrameNames('shatter_', 1, 11), 20, false);
+        this.player.animations.add('shatter', Phaser.Animation.generateFrameNames('shatter_', 1, 11), 10, false);
         
         this.player.animations.add('fire_shard', Phaser.Animation.generateFrameNames('fire_shard_', 1, 5), 12, false);
+
+        this.player.animations.add('ending', 
+        [
+            'ending_1',
+            'ending_2',
+            'ending_3',
+            'ending_4',
+            'ending_5'
+        ],
+        6,
+        false);
+        
 
         for(let i = 1; i < 8; i++)
         {

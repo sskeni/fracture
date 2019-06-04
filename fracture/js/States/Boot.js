@@ -9,5 +9,6 @@ var Boot = {
 
 
         game.state.start('MainMenu');
+        //game.state.start('Ending');
     }
 }

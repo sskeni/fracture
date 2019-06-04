@@ -2,10 +2,6 @@ var Play = {
     preload:function()
     {
         game.load.path = 'assets/img/';
-        game.load.image('caretaker', 'Caretaker.png');
-        game.load.image('shard', 'Shard.png');
-        game.load.image('cursorBase', 'cursorBase.png');
-        game.load.image('cursorTip', 'cursorTip.png');
 
         //pause assets
         game.load.image('pause', 'pause.png');
@@ -40,13 +36,5 @@ var Play = {
     update:function()
     {
         this.tilemapManager.update();
-    },
-
-    //move each platform to account for anchor
-    changeBody:function(platform)
-    {
-        platform.body.x = platform.x+platform.width/2;
-        platform.body.y = platform.y+platform.height/2;
-        platform.angle = platform.body.angle;
     }
 }

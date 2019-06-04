@@ -80,8 +80,14 @@ class Player extends Phaser.Sprite
     // loads all assets used by the player
     static load()
     {
+        var path = game.load.path;
+        game.load.path = 'assets/img/';
+        game.load.image('cursorBase', 'cursorBase.png');
+        game.load.image('cursorTip', 'cursorTip.png');
+        game.load.image('shard', 'Shard.png');
         PlayerAnimationController.load();
         PlayerAudioManager.load();
+        game.load.path = path;
     }
 
     update()
@@ -301,5 +307,13 @@ class Player extends Phaser.Sprite
         this.dead = true;
 
         game.time.events.add(this.respawnTime * Phaser.Timer.SECOND, this.respawn, this);
+    }
+
+    playEndingCutscene()
+    {
+        this.dead = true;// stop doing things
+        this.body.velocity.x = 0;
+        this.body.velocity.y = 0;
+        this.animations.play('ending');
     }
 }
