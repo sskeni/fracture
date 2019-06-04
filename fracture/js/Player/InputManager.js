@@ -6,10 +6,12 @@ class InputManager
     directionKeys;
     jumpButton;
     shardButton;
+    resetButton;
 
     // justDown by frame
     shardJustDown;
     jumpJustDown;
+    resetJustDown;
 
     constructor(game)
     {
@@ -17,12 +19,14 @@ class InputManager
         this.directionKeys = game.input.keyboard.createCursorKeys();
         this.jumpButton = game.input.keyboard.addKey(Phaser.KeyCode.X);
         this.shardButton = game.input.keyboard.addKey(Phaser.KeyCode.Z);
+        this.resetButton = game.input.keyboard.addKey(Phaser.KeyCode.R);
     }
 
     update()
     {
         this.shardJustDown = this.shardButton.justDown;
         this.jumpJustDown = this.jumpButton.justDown;
+        this.resetJustDown = this.resetButton.justDown;
     }
 
     // returns a value in the range [-1, 1] representing the horizontal direction of player input
@@ -130,5 +134,10 @@ class InputManager
     shardButtonJustDown()
     {
         return this.shardJustDown;
+    }
+
+    resetButtonJustDown()
+    {
+        return this.resetJustDown;
     }
 }
