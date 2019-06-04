@@ -1,6 +1,7 @@
 class TilemapManager
 {
     tilemap;
+    tilemapBodies;
     mapLayer;
     player;
     collisionGroup;
@@ -88,6 +89,11 @@ class TilemapManager
         this.player.startLevel(this.startdoors.getTop().x + 16, this.startdoors.getTop().y + 16);
     }
 
+    resetLevel()
+    {
+
+    }
+
     update() {
         //check if buttons are activated
         this.buttons.forEach(this.checkButton, this);
@@ -107,6 +113,12 @@ class TilemapManager
 
     resetTilemap()
     {
+        for(let body of this.tilemapBodies)
+        {
+            console.log(body);
+            this.player.removeRaycastTarget(body);
+        }
+
         //remove p2 physics bits
         game.physics.p2.clearTilemapLayerBodies(this.tilemap, this.mapLayer);
 

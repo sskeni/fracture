@@ -11,6 +11,7 @@ class Player extends Phaser.Sprite
     // references
     inputManager;
     stateManager;
+    tilemapManager;
     collisionGroup;
     tilemapCollisionGroup;
     shardCollisionGroup;

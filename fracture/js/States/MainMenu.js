@@ -25,10 +25,9 @@ var MainMenu = {
 		creditsButton.state = 'Credits';
 
 		this.buttonSelector = new ButtonSelector(game, startButton, 'buttonSelector');
-		this.buttonSelector.addSelection(creditsButton);
-
-		
+		this.buttonSelector.addSelection(creditsButton);		
 	},
+
 	update:function()
 	{
 		this.buttonSelector.update();
