@@ -8,7 +8,10 @@ var Play = {
 
         //add levels
         game.load.path = 'js/Levels/';
-        game.load.tilemap('test', 'test.json', null, Phaser.Tilemap.TILED_JSON);
+        game.load.tilemap('level1', 'Ariana1.json', null, Phaser.Tilemap.TILED_JSON);
+        game.load.tilemap('level2', 'Ariana3.json', null, Phaser.Tilemap.TILED_JSON);
+        game.load.tilemap('level3', 'Ariana2.json', null, Phaser.Tilemap.TILED_JSON);
+        game.load.tilemap('level4', 'Sanchit1.json', null, Phaser.Tilemap.TILED_JSON);
 
         Player.load();
         AudioManager.load();
@@ -24,8 +27,10 @@ var Play = {
         
         this.player = new Player(game, 0, 0);
 
-        this.tilemapManager = new TilemapManager(this.player, 'test');
-        this.tilemapManager.addLevel('test');
+        this.tilemapManager = new TilemapManager(this.player, 'level1');
+        this.tilemapManager.addLevel('level2');
+        this.tilemapManager.addLevel('level3');
+        this.tilemapManager.addLevel('level4');
 
         this.pause = new Pause(game, Phaser.Keyboard.P);
 
