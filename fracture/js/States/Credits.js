@@ -23,10 +23,11 @@ var Credits = {
 		sounds.lineSpacing = -8;
 
 		this.buttonSelector = new ButtonSelector(game, backButton, 'buttonSelector');
+		this.buttonSelector.canNavigate = true;
 	},
 
 	update:function()
 	{
-		this.buttonSelector.update();
+		
 	}
 }

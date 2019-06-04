@@ -10,6 +10,8 @@ var MainMenu = {
 
 	create:function()
 	{
+		game.stage.backgroundColor = '#000';
+
 		background = game.add.sprite(game.world.width, game.world.height, 'background');
 		background.anchor.set(1);
 
@@ -25,11 +27,12 @@ var MainMenu = {
 		creditsButton.state = 'Credits';
 
 		this.buttonSelector = new ButtonSelector(game, startButton, 'buttonSelector');
-		this.buttonSelector.addSelection(creditsButton);		
+		this.buttonSelector.addSelection(creditsButton);
+		this.buttonSelector.canNavigate = true;
 	},
 
 	update:function()
 	{
-		this.buttonSelector.update();
+
 	}
 }

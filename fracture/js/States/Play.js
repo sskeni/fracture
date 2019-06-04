@@ -31,7 +31,7 @@ var Play = {
         
         this.player = new Player(game, 0, 0);
 
-        this.tilemapManager = new TilemapManager(this.player, 'level3');
+        this.tilemapManager = new TilemapManager(this.player, 'level1');
         this.tilemapManager.addLevel('level2');
         this.tilemapManager.addLevel('level3');
         this.tilemapManager.addLevel('level4');
@@ -47,6 +47,11 @@ var Play = {
     update:function()
     {
         this.tilemapManager.update();
+    },
+
+    render:function()
+    {
+        this.pause.update();
     },
 
     //move each platform to account for anchor
