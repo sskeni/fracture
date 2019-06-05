@@ -165,7 +165,6 @@ class Player extends Phaser.Sprite
         this.bringToTop();
         this.shardCounter.bringToTop();
         this.spawnPoint = new Vector(x, y);
-
         this.respawn();
     }
 
@@ -313,6 +312,7 @@ class Player extends Phaser.Sprite
     {
         GamefeelMaster.shakeCamera(0.00004, 0, 100, 0.000001, 0, 0);
         this.audioManager.playSound('shatter', 0.3);
+        AudioManager.playSound('begin_level', 0.7);
         this.animationController.animateDeath();
         this.cameraController.die();
         this.dead = true;

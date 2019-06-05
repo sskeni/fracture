@@ -36,6 +36,8 @@ class ButtonSelector
 		this.updatePosition();
 		if(this.downKey.justDown)
 		{
+			AudioManager.playSound('swap_selection', 0.5);
+
 			if(this.currentSelection != this.selections[this.selections.length-1])
 			{
 				this.currentSelection = this.selections[++this.selectionNum];
@@ -43,6 +45,8 @@ class ButtonSelector
 		}
 		if(this.upKey.justDown)
 		{
+			AudioManager.playSound('swap_selection', 0.5);
+
 			if(this.currentSelection != this.selections[0])
 			{
 				this.currentSelection = this.selections[--this.selectionNum];
@@ -50,6 +54,7 @@ class ButtonSelector
 		}
 		if(this.selectKey.justDown)
 		{
+			AudioManager.playSound('select', 0.5);			
 			this.executeSelection();
 		}
 	}
@@ -59,6 +64,11 @@ class ButtonSelector
 		if('state' in this.currentSelection)
 		{
 			game.state.start(this.currentSelection.state);
+			if(this.currentSelection.state == "Play")
+			{
+				console.log(this.currentSelection.state);
+				AudioManager.playSound('start_game', 0.5);
+			}
 		}
 	}
 

@@ -27,6 +27,9 @@ class PlayerAnimationController
 
         this.player.animations.add('idle_left', Phaser.Animation.generateFrameNames('idle_left_', 1, 1), 12, true);
         this.player.animations.add('idle_right', Phaser.Animation.generateFrameNames('idle_right_', 1, 1), 12, true);
+
+        this.player.animations.add('wall_jump_left', Phaser.Animation.generateFrameNames('wall_jump_left_', 1, 1), 12, true);
+        this.player.animations.add('wall_jump_right', Phaser.Animation.generateFrameNames('wall_jump_right_', 1, 1), 12, true);
         
         this.player.animations.add('run_left', Phaser.Animation.generateFrameNames('run_left_', 1, 8), 12, true);
         this.player.animations.add('run_left_up_diagonal', Phaser.Animation.generateFrameNames('run_left_up_diagonal_', 1, 8), 12, true);
@@ -186,6 +189,21 @@ class PlayerAnimationController
     animateFireShard()
     {
         this.player.animations.play('fire_shard');
+    }
+
+    animateWallJump()
+    {
+        if(this.player.stateManager.wallJump.direction == WallDirection.LEFT)
+        {
+            this.direction = 'left';
+        }
+        else
+        {
+            this.direction = 'right';
+        }
+
+        console.log("sup");
+        this.player.animations.play('wall_jump_' + this.direction);
     }
 
 

@@ -6,6 +6,9 @@ var MainMenu = {
 		game.load.image('background', 'mainMenuBackground.png');
 		game.load.image('logo', 'logo.png');
 		game.load.image('buttonSelector', 'buttonSelector.png');
+		
+		AudioManager.loadUI();
+		MusicManager.loadMainMenu();
 	},
 
 	create:function()
@@ -27,10 +30,16 @@ var MainMenu = {
 		this.buttonSelector = new ButtonSelector(game, startButton, 'buttonSelector');
 		this.buttonSelector.addSelection(creditsButton);
 
-		
+		this.musicManager = new MusicManager();
+        this.musicManager.playSong('main_menu');
 	},
 	update:function()
 	{
 		this.buttonSelector.update();
+	},
+
+	shutdown:function()
+	{
+		this.musicManager.stop();
 	}
 }

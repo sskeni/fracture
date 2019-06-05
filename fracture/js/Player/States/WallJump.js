@@ -80,6 +80,7 @@ class WallJump extends PlayerState
     {
         if(!this.onWall(Vector.createVectorFromAngle((this.direction == WallDirection.RIGHT ? 0 : 180))))
         {
+            this.player.audioManager.playSound('jump', 0.3);
             return true;
         }
 
@@ -135,6 +136,8 @@ class WallJump extends PlayerState
     {
         this.player.body.velocity.x = 0;
         this.directionalInputHeld = false;
+        this.player.audioManager.playSound('land', 0.3);
+        this.player.animationController.animateWallJump();
     }
     
     deinitialize()

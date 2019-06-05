@@ -128,6 +128,15 @@ class MusicManager
         this.currentAudio.pause();
     }
 
+    // stop the current song entirely
+    stop()
+    {
+        console.log('hello');
+
+        this.currentAudio.onStop.removeAll();
+        this.currentAudio.stop();
+    }
+
     // resume the current song
     resume()
     {

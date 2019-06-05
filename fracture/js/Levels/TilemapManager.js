@@ -85,6 +85,7 @@ class TilemapManager
         this.createObjects();
         this.createTiles();
 
+
         this.player.startLevel(this.startdoors.getTop().x + 16, this.startdoors.getTop().y + 16);
     }
 

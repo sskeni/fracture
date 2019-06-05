@@ -21,12 +21,17 @@ class Pause extends Phaser.Sprite
 
 	doPause() {
 		game.paused = !game.paused;
+		
 		if(game.paused) {
 			this.visible = true;
 			this.pauseText.visible = true;
-		} else {
+			AudioManager.playPauseSound();
+		} 
+		else 
+		{
 			this.visible = false;
 			this.pauseText.visible = false;
+			AudioManager.playResumeSound();
 		}
 	}
 }
