@@ -5,6 +5,7 @@ var Play = {
 
         //pause assets
         game.load.image('pause', 'pause.png');
+        game.load.image('pauseBorder', 'pauseBorder.png');
 
         //add levels
         game.load.path = 'js/Levels/';
@@ -12,9 +13,11 @@ var Play = {
         game.load.tilemap('level2', 'Ariana3.json', null, Phaser.Tilemap.TILED_JSON);
         game.load.tilemap('level3', 'Ariana2.json', null, Phaser.Tilemap.TILED_JSON);
         game.load.tilemap('level4', 'Sanchit1.json', null, Phaser.Tilemap.TILED_JSON);
+        game.load.tilemap('level5', 'Sanchit2.json', null, Phaser.Tilemap.TILED_JSON);
 
         Player.load();
         AudioManager.load();
+        AudioManager.loadUI();
         TilemapManager.load();
         MusicManager.loadLevels();
     },
@@ -31,6 +34,7 @@ var Play = {
         this.tilemapManager.addLevel('level2');
         this.tilemapManager.addLevel('level3');
         this.tilemapManager.addLevel('level4');
+        this.tilemapManager.addLevel('level5');
 
         this.player.addTilemapManager(this.tilemapManager);
 
@@ -56,5 +60,10 @@ var Play = {
         platform.body.x = platform.x+platform.width/2;
         platform.body.y = platform.y+platform.height/2;
         platform.angle = platform.body.angle;
+    },
+
+    shutdown:function()
+    {
+        this.musicManager.stop();
     }
 }

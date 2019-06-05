@@ -37,14 +37,8 @@ var MainMenu = {
 		this.buttonSelector.canNavigate = true;
 	},
 
-	update:function()
-	{
-		
-	},
-
 	shutdown:function()
 	{
 		this.musicManager.stop();
-
 	}
 }

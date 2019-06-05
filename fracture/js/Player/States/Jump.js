@@ -114,7 +114,7 @@ class Jump extends PlayerState
     // returns whether the player should shatter if they land on the ground from the current height
     fallenTooFar()
     {
-        return this.player.body.y - this.maxHeight > this.calculateMaxFallHeight() && !this.player.standingOnShard;
+        return this.player.body.y - this.maxHeight > this.calculateMaxFallHeight() && !this.player.standingOnShard && !this.player.justReset;
     }
 
     // returns how far the player can fall before shattering

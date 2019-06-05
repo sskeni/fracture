@@ -63,24 +63,28 @@ class TilemapManager
 
     nextLevel()
     {
-        //reset objects
-        this.resetObjects();
+        if(++this.currentLevel == this.tilemapArray.length)
+        {
+            game.state.start('Credits');
+        } else 
+        {
+            //reset objects
+            this.resetObjects();
 
-        //reset tilemap
-        this.resetTilemap();
+            //reset tilemap
+            this.resetTilemap();
 
-        this.currentLevel++;
+            //set tilemap
+            this.tilemap = game.add.tilemap(this.tilemapArray[this.currentLevel]);
 
-        //set tilemap
-        this.tilemap = game.add.tilemap(this.tilemapArray[this.currentLevel]);
-
-        //reload tilemap
-        this.setupTilemap();
-        this.createObjects();
-        this.createTiles();
+            //reload tilemap
+            this.setupTilemap();
+            this.createObjects();
+            this.createTiles();
 
 
-        this.player.startLevel(this.startdoors.getTop().x + 16, this.startdoors.getTop().y + 16);
+            this.player.startLevel(this.startdoors.getTop().x + 16, this.startdoors.getTop().y + 16);
+        }
     }
 
     resetLevel()
@@ -221,7 +225,7 @@ class TilemapManager
             this.configureBody(body, 16, 16);
         }
 
-        this.mapLayer.tint = 0xffab683;//0xed66ff;
+        //this.mapLayer.tint = 0xffab683;//0xed66ff;
     }
 
     configureCollidableBody(object, tag)

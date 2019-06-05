@@ -27,6 +27,7 @@ class Player extends Phaser.Sprite
     launched;
     standingOnShard;
     dead;
+    justReset;
 
     constructor(game, x, y, key) 
     {
@@ -182,12 +183,15 @@ class Player extends Phaser.Sprite
         this.launched = false;
         this.standingOnShard = false;
         this.dead = false;
+        this.justReset = true;
 
         this.cameraController.respawn();
         this.animationController.animateRespawn();
 
         this.clearShards();
         this.shardCounter.reset();
+
+        game.time.events.add(0.1 * Phaser.Timer.SECOND, function() {this.justReset = false;}, this);
     }
 
     clearShards()

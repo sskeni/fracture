@@ -1,15 +1,15 @@
-class Pause extends Phaser.Sprite
+class Pause
 {
 	pause;
 	pauseText;
 	pauseButton;
+	pauseBorder;
 
 	constructor(game, key)
 	{
-		super(game, 0, 0, 'pause');
-		game.add.world.add(this);
-		this.visible = false;
-		this.alpha = 0.5;
+		this.pauseBorder = game.add.sprite(game.world.centerX, game.world.centerY, 'pauseBorder');
+		this.pauseBorder.anchor.set(0.5);
+		this.pauseBorder.visible = false;
 
 		this.pause = game.add.text(game.world.centerX, game.world.centerY - 50, 'PAUSED', {fill : '#fff', align : 'center'});
 		this.pause.anchor.set(0.5);
@@ -36,12 +36,13 @@ class Pause extends Phaser.Sprite
 	update()
 	{
 		if(game.paused) {
-			this.visible = true;
+			//this.visible = true;
 			this.pause.visible = true;
 			this.pauseText.visible = true;
 			this.mainMenuText.visible = true;
 			this.buttonSelector.setVisible(true);
 			this.buttonSelector.canNavigate = true;
+			this.pauseBorder.visible = true;
 		} else {
 			this.visible = false;
 			this.pause.visible = false;
@@ -49,6 +50,7 @@ class Pause extends Phaser.Sprite
 			this.mainMenuText.visible = false;
 			this.buttonSelector.setVisible(false);
 			this.buttonSelector.canNavigate = false;
+			this.pauseBorder.visible = false;
 		}
 	}
 
