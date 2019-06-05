@@ -33,7 +33,7 @@ class HeartManager
         'ending_crack_5', 'ending_crack_5', 'ending_crack_5', 'ending_crack_5', 'ending_crack_5', 'ending_crack_5', 
         'ending_crack_6', 'ending_crack_6', 'ending_crack_6', 'ending_crack_6', 'ending_crack_6', 'ending_crack_6', 
         'ending_crack_7',],
-        24,
+        12,
         false);
 
         this.brightLight = game.add.sprite(0, 0, 'ending_bright_light');// ending background with shining light
@@ -79,6 +79,7 @@ class HeartManager
     // fades out the light background
     goDark()
     {
+        EndingMusicManager.playHeartbeat();
         if(this.lightTween != null) 
         {
             this.lightTween.stop();
@@ -102,8 +103,8 @@ class HeartManager
     playAnimation()
     {
         GamefeelMaster.shakeCamera(0.00002, 0, 100, 0.000001, 100, 100);
-        game.time.events.add(1000, function(){GamefeelMaster.shakeCamera(0.00002, 0, 100, 0.000001, 100, 100);}, this);
-        game.time.events.add(1800, function(){GamefeelMaster.shakeCamera(0.00004, 0, 3000, 0.000001, 200, 200);}, this);
+        game.time.events.add(2000, function(){GamefeelMaster.shakeCamera(0.00002, 0, 100, 0.000001, 100, 100);}, this);
+        game.time.events.add(3600, function(){GamefeelMaster.shakeCamera(0.00005, 0, 6000, 0.000001, 200, 200);}, this);
         
         if(this.lightTween != null)
         {
@@ -121,7 +122,7 @@ class HeartManager
     goBright()
     {
         //this.shatterAnimation.alpha = 0;
-        this.brightTween = game.add.tween(this.brightLight).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.None, true, 0, 0, false);
+        this.brightTween = game.add.tween(this.brightLight).to( { alpha: 1 }, 2000, Phaser.Easing.Linear.None, true, 0, 0, false);
         this.brightTween.onComplete.addOnce(this.startWhiteout, this);
     }
 
@@ -129,7 +130,7 @@ class HeartManager
     startWhiteout()
     {
         this.whiteout.bringToTop();
-        this.whiteoutTween = game.add.tween(this.whiteout).to( { alpha: 1 }, 2000, Phaser.Easing.Linear.None, true, 0, 0, false);
+        this.whiteoutTween = game.add.tween(this.whiteout).to( { alpha: 1 }, 4000, Phaser.Easing.Linear.None, true, 0, 0, false);
         this.whiteoutTween.onComplete.addOnce(this.completeWhiteout, this);
     }
 
