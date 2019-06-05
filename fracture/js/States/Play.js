@@ -32,6 +32,8 @@ var Play = {
         this.tilemapManager.addLevel('level3');
         this.tilemapManager.addLevel('level4');
 
+        this.player.addTilemapManager(this.tilemapManager);
+
         this.pause = new Pause(game, Phaser.Keyboard.P);
 
         this.musicManager = new MusicManager();
@@ -41,5 +43,18 @@ var Play = {
     update:function()
     {
         this.tilemapManager.update();
+    },
+
+    render:function()
+    {
+        this.pause.update();
+    },
+
+    //move each platform to account for anchor
+    changeBody:function(platform)
+    {
+        platform.body.x = platform.x+platform.width/2;
+        platform.body.y = platform.y+platform.height/2;
+        platform.angle = platform.body.angle;
     }
 }

@@ -5,4 +5,5 @@ game.state.add('Boot', Boot);
 game.state.add('Play', Play);
 game.state.add('Ending', Ending);
 game.state.add('MainMenu', MainMenu);
+game.state.add('Credits', Credits);
 game.state.start('Boot');

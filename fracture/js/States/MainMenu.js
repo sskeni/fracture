@@ -13,6 +13,8 @@ var MainMenu = {
 
 	create:function()
 	{
+		game.stage.backgroundColor = '#000';
+
 		background = game.add.sprite(game.world.width, game.world.height, 'background');
 		background.anchor.set(1);
 
@@ -32,7 +34,9 @@ var MainMenu = {
 
 		this.musicManager = new MusicManager();
         this.musicManager.playSong('main_menu');
+		this.buttonSelector.canNavigate = true;
 	},
+
 	update:function()
 	{
 		this.buttonSelector.update();

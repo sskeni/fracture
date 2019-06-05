@@ -84,6 +84,12 @@ class Ground extends PlayerState
                 this.player.body.force.x = -Math.sign(this.player.body.velocity.x) * this.stationaryDeceleration;
             }
         }
+
+        //reset the player
+        if(this.inputManager.resetButtonJustDown())
+        {
+            this.player.die();
+        }
     }
 
     moveSlanted(standingDirection)
