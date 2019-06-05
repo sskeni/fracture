@@ -24,10 +24,16 @@ var Credits = {
 
 		this.buttonSelector = new ButtonSelector(game, backButton, 'buttonSelector');
 		this.buttonSelector.canNavigate = true;
+
+        this.backKey = game.input.keyboard.addKey(Phaser.KeyCode.X);
 	},
 
 	update:function()
 	{
-		
+		if(this.backKey.isDown)
+		{
+			AudioManager.playSound('back', 0.3);
+			game.state.start('MainMenu');
+		}
 	}
 }
