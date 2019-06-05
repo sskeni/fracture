@@ -295,8 +295,12 @@ class TilemapManager
     openDoor(door) {
         if(!door.opened) {
             game.time.events.add(1 * Phaser.Timer.SECOND, function() {this.animations.play('open');}, door);
-            door.body.destroy();
-            door.opened = true;
+            game.time.events.add(1.5 * Phaser.Timer.SECOND, function() {
+            	if(!door.opened)
+            	{
+            		door.body.destroy();
+            		door.opened = true;
+            	}})
         }
     }
 
