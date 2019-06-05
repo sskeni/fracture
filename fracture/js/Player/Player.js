@@ -18,6 +18,7 @@ class Player extends Phaser.Sprite
     shards;
     animationController;
     audioManager;
+    shardCounter;
 
     spawnPoint;
 
@@ -58,6 +59,9 @@ class Player extends Phaser.Sprite
         // set up camera controller
         this.cameraController = new CameraController(this);
 
+        // set up shard counter
+        this.shardCounter = new ShardCounter();
+
         // set up physics
         game.physics.p2.enable(this, false);
         this.body.setCircle(15);
@@ -87,6 +91,7 @@ class Player extends Phaser.Sprite
         game.load.image('shard', 'Shard.png');
         PlayerAnimationController.load();
         PlayerAudioManager.load();
+        ShardCounter.load();
         game.load.path = path;
     }
 
@@ -116,6 +121,9 @@ class Player extends Phaser.Sprite
 
             // play firing sound
             this.audioManager.playFireShard();
+
+            // update the counter
+            this.shardCounter.fireShard();
 
             // shake the camera
             GamefeelMaster.shakeCamera(0.00002, 0, 100, 0.000001, 100, 100);
@@ -154,6 +162,8 @@ class Player extends Phaser.Sprite
 
     startLevel(x, y)
     {
+        this.bringToTop();
+        this.shardCounter.bringToTop();
         this.spawnPoint = new Vector(x, y);
 
         this.respawn();
@@ -173,6 +183,7 @@ class Player extends Phaser.Sprite
         this.animationController.animateRespawn();
 
         this.clearShards();
+        this.shardCounter.reset();
     }
 
     clearShards()

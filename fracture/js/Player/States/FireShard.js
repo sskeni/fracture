@@ -82,6 +82,9 @@ class FireShard extends PlayerState
 
         // play animation
         this.player.animationController.animateFireShard();
+        
+        // play shard counter animation
+        this.player.shardCounter.beginFireShard();
     }
 
     deinitialize()

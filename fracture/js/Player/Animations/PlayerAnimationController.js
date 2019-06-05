@@ -68,10 +68,6 @@ class PlayerAnimationController
         this.flashSprite.bringToTop();
         this.flashSprite.alpha = 0.5;
         game.time.events.add(600, function(){this.flashSprite.alpha = 0;}, this);
-        //this.flashTween = game.add.tween(this.flashSprite).to( { alpha: 0 }, 10, Phaser.Easing.Linear.None, true, 0, 0, false);
-        /*this.flashTween.onComplete.add(function(){
-        this.flashTween = game.add.tween(this.flashSprite).to( { alpha: 0 }, 50, Phaser.Easing.Linear.None, true, 0, 0, false);
-        }, this);     */
     }
 
     animateJump()
