@@ -11,6 +11,7 @@ var MainMenu = {
 		game.load.image('mainMenuText', 'mainMenuText.png');
 		game.load.image('resumeText', 'resumeText.png');
 		game.load.image('pauseText', 'pauseText.png');
+		game.load.image('credits', 'credits.png');
 		
 		AudioManager.loadUI();
 		MusicManager.loadMainMenu();
