@@ -6,6 +6,11 @@ var MainMenu = {
 		game.load.image('background', 'mainMenuBackground.png');
 		game.load.image('logo', 'logo.png');
 		game.load.image('buttonSelector', 'buttonSelector.png');
+		game.load.image('startText', 'startText.png');
+		game.load.image('creditsText', 'creditsText.png');
+		game.load.image('mainMenuText', 'mainMenuText.png');
+		game.load.image('resumeText', 'resumeText.png');
+		game.load.image('pauseText', 'pauseText.png');
 		
 		AudioManager.loadUI();
 		MusicManager.loadMainMenu();
@@ -21,11 +26,11 @@ var MainMenu = {
 		logo = game.add.sprite(game.world.centerX, game.world.centerY - 60, 'logo');
 		logo.anchor.set(0.5);
 
-		startButton = game.add.text(game.world.centerX, game.world.centerY + 10, 'START', {fill : '#fff'});
+		startButton = game.add.sprite(game.world.centerX, game.world.centerY + 10, 'startText');
 		startButton.anchor.set(0.5);
 		startButton.state = 'Play';
 
-		creditsButton = game.add.text(game.world.centerX, game.world.centerY + 50, 'CREDITS', {fill : '#fff'});
+		creditsButton = game.add.sprite(game.world.centerX, game.world.centerY + 50, 'creditsText');
 		creditsButton.anchor.set(0.5);
 		creditsButton.state = 'Credits';
 

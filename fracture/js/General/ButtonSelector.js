@@ -94,10 +94,10 @@ class ButtonSelector
 	updatePosition()
 	{
 		this.icon1.x = this.currentSelection.x - this.currentSelection.width/2 - 15;
-		this.icon1.y = this.currentSelection.y - 4;
+		this.icon1.y = this.currentSelection.y;
 
 		this.icon2.x = this.currentSelection.x + this.currentSelection.width/2 + 15;
-		this.icon2.y = this.currentSelection.y - 4;
+		this.icon2.y = this.currentSelection.y;
 	}
 
 	setVisible(condition)

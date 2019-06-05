@@ -6,7 +6,7 @@ var Credits = {
 		logo = game.add.sprite(game.world.centerX, 30, 'logo');
 		logo.anchor.set(0.5);
 
-		backButton = game.add.text(game.world.centerX, game.world.centerY + 120, 'MAIN MENU', {fill: '#fff'});
+		backButton = game.add.sprite(game.world.centerX, game.world.centerY + 120, 'mainMenuText');
 		backButton.anchor.set(0.5);
 		backButton.state = 'MainMenu';
 
