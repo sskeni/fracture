@@ -39,11 +39,12 @@ var MainMenu = {
 
 	update:function()
 	{
-		this.buttonSelector.update();
+		
 	},
 
 	shutdown:function()
 	{
 		this.musicManager.stop();
+
 	}
 }

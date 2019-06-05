@@ -77,6 +77,8 @@ class ButtonSelector
 		{
 			if('state' in this.currentSelection)
 			{
+				AudioManager.playSound('select', 0.5);	
+				
 				game.state.start(this.currentSelection.state);
 				if(game.paused) game.paused = false;
 
