@@ -13,8 +13,9 @@ var Ending = {
         Player.load();
         AudioManager.load();
         TilemapManager.load();
-        MusicManager.loadLevels();
+        //MusicManager.loadLevels();
         HeartManager.load();
+        EndingMusicManager.load();
     },
 
     create:function()
@@ -32,8 +33,8 @@ var Ending = {
         this.tilemapManager.startdoors.setAll('alpha', 0);
         //this.tilemapManager.addLevel('test');
 
-        this.musicManager = new MusicManager();
-        this.musicManager.playSong('track_2');
+        this.musicManager = new EndingMusicManager();
+        //this.musicManager.playSong('track_2');
 
         //
         this.targetLocation = new Vector(216, 256);
@@ -73,6 +74,7 @@ var Ending = {
             this.player.body.x = this.targetLocation.x;
             this.player.body.y = this.targetLocation.y;
             this.player.animations.getAnimation('ending').onComplete.addOnce(function(){
+                this.musicManager.touch();
                 game.time.events.add(1000, this.heartManager.playAnimation, this.heartManager);
             }, this);
         }

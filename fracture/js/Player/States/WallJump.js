@@ -57,6 +57,8 @@ class WallJump extends PlayerState
         // jump off the wall if the player asks to
         if(this.inputManager.jumpButtonJustDown())
         {
+            this.player.audioManager.playSound('jump', 0.3);
+
             // gain momentum based on direction of wall and transition to jump
             var initialVelocity = Vector.createVectorFromAngle(this.direction).setMagnitude(this.jumpStrength);
 
@@ -80,7 +82,6 @@ class WallJump extends PlayerState
     {
         if(!this.onWall(Vector.createVectorFromAngle((this.direction == WallDirection.RIGHT ? 0 : 180))))
         {
-            this.player.audioManager.playSound('jump', 0.3);
             return true;
         }
 
