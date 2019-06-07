@@ -25,11 +25,12 @@ var Play = {
 
         
         this.tilemapManager = new TilemapManager(this.player, 'Jake1');
-        //this.tilemapManager = new TilemapManager(this.player, 'level1');
         this.tilemapManager.addLevel('Ariana2');
+        this.tilemapManager.addLevel('Ariana1');
         this.tilemapManager.addLevel('Ariana3');
         this.tilemapManager.addLevel('Sanchit1');
         this.tilemapManager.addLevel('Sanchit2');
+        this.tilemapManager.addLevel('Jake2');
         
         this.player.addTilemapManager(this.tilemapManager);
         

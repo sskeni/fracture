@@ -62,6 +62,7 @@ class TilemapManager
         game.load.tilemap('Sanchit1', 'Sanchit1.json', null, Phaser.Tilemap.TILED_JSON);
         game.load.tilemap('Sanchit2', 'Sanchit2.json', null, Phaser.Tilemap.TILED_JSON);
         game.load.tilemap('Jake1', 'Jake1.json', null, Phaser.Tilemap.TILED_JSON);
+        game.load.tilemap('Jake2', 'Jake2.json', null, Phaser.Tilemap.TILED_JSON);
 
         game.load.path = path;
     }
