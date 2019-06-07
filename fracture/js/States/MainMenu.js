@@ -1,3 +1,5 @@
+"use strict"
+
 var MainMenu = {
 
 	preload:function()
@@ -19,24 +21,25 @@ var MainMenu = {
 
 	create:function()
 	{
+		game.world.resize(512, 288);
+
 		game.stage.backgroundColor = '#000';
 
-		background = game.add.sprite(game.world.width, game.world.height, 'background');
-		background.anchor.set(1);
+		this.background = game.add.sprite(0, 0, 'background');
+		
+		this.logo = game.add.sprite(512/2, (288/2) - 60, 'logo');
+		this.logo.anchor.set(0.5);
 
-		logo = game.add.sprite(game.world.centerX, game.world.centerY - 60, 'logo');
-		logo.anchor.set(0.5);
+		this.startButton = game.add.sprite(512/2, (288/2) + 10, 'startText');
+		this.startButton.anchor.set(0.5);
+		this.startButton.state = 'Play';
 
-		startButton = game.add.sprite(game.world.centerX, game.world.centerY + 10, 'startText');
-		startButton.anchor.set(0.5);
-		startButton.state = 'Play';
+		this.creditsButton = game.add.sprite(512/2, (288/2) + 50, 'creditsText');
+		this.creditsButton.anchor.set(0.5);
+		this.creditsButton.state = 'Credits';
 
-		creditsButton = game.add.sprite(game.world.centerX, game.world.centerY + 50, 'creditsText');
-		creditsButton.anchor.set(0.5);
-		creditsButton.state = 'Credits';
-
-		this.buttonSelector = new ButtonSelector(game, startButton, 'buttonSelector');
-		this.buttonSelector.addSelection(creditsButton);
+		this.buttonSelector = new ButtonSelector(game, this.startButton, 'buttonSelector');
+		this.buttonSelector.addSelection(this.creditsButton);
 
 		this.musicManager = new MusicManager();
         this.musicManager.playSong('main_menu');

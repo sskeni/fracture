@@ -9,8 +9,6 @@ class CameraController
         this.player = player;
         this.camera = game.camera;
 
-        console.log("hey");
-
         this.camera.follow(this.player);
     }
 

@@ -7,14 +7,6 @@ var Play = {
         game.load.image('pause', 'pause.png');
         game.load.image('pauseBorder', 'pauseBorder.png');
 
-        //add levels
-        game.load.path = 'js/Levels/';
-        game.load.tilemap('level1', 'Ariana1.json', null, Phaser.Tilemap.TILED_JSON);
-        game.load.tilemap('level2', 'Ariana3.json', null, Phaser.Tilemap.TILED_JSON);
-        game.load.tilemap('level3', 'Ariana2.json', null, Phaser.Tilemap.TILED_JSON);
-        game.load.tilemap('level4', 'Sanchit1.json', null, Phaser.Tilemap.TILED_JSON);
-        game.load.tilemap('level5', 'Sanchit2.json', null, Phaser.Tilemap.TILED_JSON);
-
         Player.load();
         AudioManager.load();
         AudioManager.loadUI();
@@ -30,11 +22,12 @@ var Play = {
         
         this.player = new Player(game, 0, 0);
 
-        this.tilemapManager = new TilemapManager(this.player, 'level1');
-        this.tilemapManager.addLevel('level2');
-        this.tilemapManager.addLevel('level3');
-        this.tilemapManager.addLevel('level4');
-        this.tilemapManager.addLevel('level5');
+        this.tilemapManager = new TilemapManager(this.player, 'Jake1');
+        //this.tilemapManager = new TilemapManager(this.player, 'level1');
+        this.tilemapManager.addLevel('Ariana2');
+        this.tilemapManager.addLevel('Ariana3');
+        this.tilemapManager.addLevel('Sanchit1');
+        this.tilemapManager.addLevel('Sanchit2');
 
         this.player.addTilemapManager(this.tilemapManager);
 

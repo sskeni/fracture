@@ -59,10 +59,11 @@ class PlayerAnimationController
 
         this.flashSprite = game.add.sprite(0, 0, 'flash');
         this.flashSprite.alpha = 0;
+        this.flashSprite.fixedToCamera = true;
 
     }
 
-    flashScreen()
+    flashScreen(length)
     {
         if(this.flashTween != null) 
         {
@@ -70,7 +71,7 @@ class PlayerAnimationController
         }
         this.flashSprite.bringToTop();
         this.flashSprite.alpha = 0.5;
-        game.time.events.add(600, function(){this.flashSprite.alpha = 0;}, this);
+        game.time.events.add(Phaser.Timer.SECOND * length, function(){this.flashSprite.alpha = 0;}, this);
     }
 
     animateJump()
@@ -201,8 +202,6 @@ class PlayerAnimationController
         {
             this.direction = 'right';
         }
-
-        console.log("sup");
         this.player.animations.play('wall_jump_' + this.direction);
     }
 

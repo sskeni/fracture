@@ -136,6 +136,7 @@ class HeartManager
 
     completeWhiteout()
     {
-        //this.onComplete();
+		game.stage.backgroundColor = '#ffffff';
+        game.state.start('Credits', true, false, true);
     }
 }

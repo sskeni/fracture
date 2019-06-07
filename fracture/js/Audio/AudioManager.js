@@ -3,18 +3,20 @@
 class AudioManager
 {
     static volumeModifier = 1;
-    pauseAudio;
+    static pauseAudio;
+    static resumeAudio;
 
     static load()
     {
         // load non-phaser audio element for pausing
         this.pauseAudio = new Audio('assets/audio/sfx/ui/pause.mp3');
+        this.resumeAudio = new Audio('assets/audio/sfx/ui/checkpoint.mp3');
 
         var path = game.load.path;
 
         game.load.path = 'assets/audio/sfx/levels/';
         game.load.audio('open_door', 'open_door.mp3');
-        game.load.audio('checkpoint', '../ui/checkpoint.mp3');
+        //game.load.audio('checkpoint', '../ui/checkpoint.mp3');
         game.load.audio('begin_level', '../ui/begin_level.mp3');
         game.load.audio('complete_level', '../ui/complete_level.mp3');
 
@@ -56,6 +58,6 @@ class AudioManager
 
     static playResumeSound()
     {
-        this.playSound('checkpoint', 0.3);
+        this.resumeAudio.play();
     }
 }

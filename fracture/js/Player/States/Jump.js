@@ -52,7 +52,7 @@ class Jump extends PlayerState
         {          
             if(this.player.body.velocity.y < -this.maxVelocity)
             {
-                this.player.body.force.y = -this.maxVelocity;
+                this.player.body.velocity.y = -this.maxVelocity;
             }
             else
             {
@@ -87,8 +87,8 @@ class Jump extends PlayerState
         this.player.animationController.animateJump();
         if(this.fallenTooFar() && !this.anticipatedShatter)
         {
-            GamefeelMaster.hitStop(0.5);
-            this.player.animationController.flashScreen();
+            GamefeelMaster.hitStop(0.2);
+            this.player.animationController.flashScreen(0.2);
             this.anticipatedShatter = true;
         }
 

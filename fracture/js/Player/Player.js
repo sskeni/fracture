@@ -63,6 +63,10 @@ class Player extends Phaser.Sprite
         // set up shard counter
         this.shardCounter = new ShardCounter();
 
+        this.blackout = game.add.sprite(0, 0, 'blackout');
+        this.blackout.fixedToCamera = true;
+        this.blackout.alpha = 0;
+
         // set up physics
         game.physics.p2.enable(this, false);
         this.body.setCircle(15);
@@ -89,6 +93,7 @@ class Player extends Phaser.Sprite
         game.load.path = 'assets/img/';
         game.load.image('cursorBase', 'cursorBase.png');
         game.load.image('cursorTip', 'cursorTip.png');
+        game.load.image('blackout', 'blackout.png');
         game.load.image('shard', 'Shard.png');
         PlayerAnimationController.load();
         PlayerAudioManager.load();
@@ -121,7 +126,8 @@ class Player extends Phaser.Sprite
     {
         if(this.shardCount > 0)
         {
-            var shard = new Shard(game, this.body.x, this.body.y, this, direction);
+            var playerVelocity = new Vector(this.body.velocity.x, this.body.velocity.y);
+            var shard = new Shard(game, this.body.x, this.body.y, this, direction, playerVelocity);
             this.shards.push(shard);
             this.shardCount -= 1;
 
@@ -175,9 +181,11 @@ class Player extends Phaser.Sprite
     }
 
     respawn()
-    {
+    {        
         this.body.x = this.spawnPoint.x;
         this.body.y = this.spawnPoint.y;
+
+        this.stateManager.transitionToState(this.stateManager.ground);
 
         // set flags
         this.launched = false;
@@ -187,6 +195,10 @@ class Player extends Phaser.Sprite
 
         this.cameraController.respawn();
         this.animationController.animateRespawn();
+        var fadeTime = (this.respawnTime/2) * Phaser.Timer.SECOND;
+        this.blackout.bringToTop();
+        this.blackout.alpha = 1;
+        this.blackoutTween = game.add.tween(this.blackout).to( { alpha: 0 }, fadeTime, Phaser.Easing.Linear.None, true, 0, 0, false);
 
         this.clearShards();
         this.shardCounter.reset();
@@ -325,9 +337,11 @@ class Player extends Phaser.Sprite
         this.animationController.animateDeath();
         this.cameraController.die();
         this.dead = true;
-        this.tilemapManager.resetLevel();
 
-        game.time.events.add(this.respawnTime * Phaser.Timer.SECOND, this.respawn, this);
+        game.time.events.add(this.respawnTime * Phaser.Timer.SECOND, function(){
+            this.tilemapManager.resetLevel();
+            this.respawn();
+        }, this);
     }
 
     playEndingCutscene()

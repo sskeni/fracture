@@ -9,6 +9,8 @@ class ShardCounter
     constructor()
     {
         this.background = game.add.sprite(0, 0, 'shard_counter_background');
+        this.background.fixedToCamera = true;
+
 
         this.tokens = new Array();
         this.tokens.push(game.add.sprite(6, 3, 'shard_token'));
@@ -23,6 +25,7 @@ class ShardCounter
         for(var token of this.tokenFlashes)
         {
             token.alpha = 0;
+            token.fixedToCamera = true;
         }
 
         for(var token of this.tokens)
@@ -62,6 +65,7 @@ class ShardCounter
             'crack_1',],
             12, false);
 
+            token.fixedToCamera = true;
             token.animations.play('whole');
         }
 

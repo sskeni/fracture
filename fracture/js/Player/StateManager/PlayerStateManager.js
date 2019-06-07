@@ -36,6 +36,12 @@ class PlayerStateManager
     {
         this.currentState.run();// run the current state's behavior
         this.transitionUnderConditions(this.currentState);// check to see if we need to transition to a new state
+
+        //reset the player
+        if(this.inputManager.resetButtonJustDown())
+        {
+            this.player.die();
+        }
     }
 
     // checks the current state's adjacents states for their transition conditions and transition if they are met

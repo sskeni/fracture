@@ -8,6 +8,5 @@ var Boot = {
         Phaser.Canvas.setImageRenderingCrisp(this.game.canvas);
 
         game.state.start('SplashScreen');
-        //game.state.start('Ending');
     }
 }

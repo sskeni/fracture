@@ -53,6 +53,16 @@ class TilemapManager
         game.load.image('checkpoint', 'checkpoint.png');
         game.load.spritesheet('tilesheet', 'tileset.png');
 
+
+        //load levels
+        game.load.path = 'js/Levels/';
+        game.load.tilemap('Ariana1', 'Ariana1.json', null, Phaser.Tilemap.TILED_JSON);
+        game.load.tilemap('Ariana3', 'Ariana3.json', null, Phaser.Tilemap.TILED_JSON);
+        game.load.tilemap('Ariana2', 'Ariana2.json', null, Phaser.Tilemap.TILED_JSON);
+        game.load.tilemap('Sanchit1', 'Sanchit1.json', null, Phaser.Tilemap.TILED_JSON);
+        game.load.tilemap('Sanchit2', 'Sanchit2.json', null, Phaser.Tilemap.TILED_JSON);
+        game.load.tilemap('Jake1', 'Jake1.json', null, Phaser.Tilemap.TILED_JSON);
+
         game.load.path = path;
     }
 
@@ -65,7 +75,7 @@ class TilemapManager
     {
         if(++this.currentLevel == this.tilemapArray.length)
         {
-            game.state.start('Credits');
+            game.state.start('Ending');
         } else 
         {
             //reset objects

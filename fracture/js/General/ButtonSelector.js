@@ -22,6 +22,7 @@ class ButtonSelector
 		this.icon2 = game.add.sprite(0, 0, key);
 		this.icon2.anchor.set(0.5);
 
+
 		this.downKey = game.input.keyboard.addKey(Phaser.Keyboard.DOWN);
 		this.upKey = game.input.keyboard.addKey(Phaser.Keyboard.UP);
 		this.selectKey = game.input.keyboard.addKey(Phaser.Keyboard.Z);
@@ -95,8 +96,18 @@ class ButtonSelector
 					AudioManager.playSound('start_game', 0.5);	
 				}
 			}
-			if('pause' in this.currentSelection) game.paused = false;
+			if('pause' in this.currentSelection) 
+			{
+				AudioManager.playResumeSound();
+				game.paused = false;
+			}
 		}
+	}
+
+	bringToTop()
+	{
+		this.icon1.bringToTop();
+		this.icon2.bringToTop();
 	}
 	
 	updatePosition()

@@ -27,7 +27,7 @@ class Shard extends Phaser.Sprite
     // flags
     planted = false;// whether this shard has planted itself in wall
 
-    constructor(game, x, y, player, direction)
+    constructor(game, x, y, player, direction, playerVelocity)
     {
         super(game, x, y, 'shard');
         game.add.world.add(this);
@@ -52,6 +52,11 @@ class Shard extends Phaser.Sprite
         // set velocity
         this.body.velocity.x = Math.cos((direction) * Math.PI / 180) * this.velocity;
         this.body.velocity.y = Math.sin((direction) * Math.PI / 180) * this.velocity;
+
+        if(direction == ShardDirection.BM)
+        {
+            this.body.velocity.y += playerVelocity.y;
+        }
         
         // set position
         this.body.x += Math.cos((direction) * Math.PI / 180) * 20;
