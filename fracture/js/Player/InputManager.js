@@ -2,6 +2,8 @@ class InputManager
 {
     game;
 
+    disabled = false;
+
     // keyboard controls
     directionKeys;
     jumpButton;
@@ -29,9 +31,24 @@ class InputManager
         this.resetJustDown = this.resetButton.justDown;
     }
 
+    disable()
+    {
+        this.disabled = true;
+    }
+    
+    enable()
+    {
+        this.disabled = false;
+    }
+
     // returns a value in the range [-1, 1] representing the horizontal direction of player input
     getHorizontalInput()
     {
+        if(this.disabled)
+        {
+            return 0;
+        }
+
         var inputValue = 0;
 
         if(this.directionKeys.left.isDown)
@@ -50,6 +67,11 @@ class InputManager
     // returns a value in the range [-1, 1] representing the vertical direction of player input
     getVerticalInput()
     {
+        if(this.disabled)
+        {
+            return 0;
+        }
+
         var inputValue = 0;
 
         if(this.directionKeys.up.isDown)
@@ -68,7 +90,14 @@ class InputManager
     // returns a ShardDirection representation of the player's input direction
     getInputAsShardDirection()
     {
+        if(this.disabled)
+        {
+            return 0;
+        }
+        
         var horizontalInput = this.getHorizontalInput()
+
+
         if(this.directionKeys.up.isDown)
         {
             if(horizontalInput > 0)
@@ -118,26 +147,26 @@ class InputManager
 
     jumpButtonIsDown()
     {
-        return this.jumpButton.isDown;
+        return this.jumpButton.isDown && !this.disabled;
     }
 
     jumpButtonJustDown()
     {
-        return this.jumpJustDown;
+        return this.jumpJustDown && !this.disabled;
     }
     
     shardButtonIsDown()
     {
-        return this.shardButton.isDown;
+        return this.shardButton.isDown && !this.disabled;
     }
 
     shardButtonJustDown()
     {
-        return this.shardJustDown;
+        return this.shardJustDown && !this.disabled;
     }
 
     resetButtonJustDown()
     {
-        return this.resetJustDown;
+        return this.resetJustDown && !this.disabled;
     }
 }

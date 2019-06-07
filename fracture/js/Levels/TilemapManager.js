@@ -91,6 +91,11 @@ class TilemapManager
             this.setupTilemap();
             this.createObjects();
             this.createTiles();
+            
+            if(Play.tutorialManager != null)
+            {
+                Play.tutorialManager.nextTutorial();
+            }
 
 
             this.player.startLevel(this.startdoors.getTop().x + 16, this.startdoors.getTop().y + 16);
@@ -109,9 +114,6 @@ class TilemapManager
 
         //check if player has reached the end
         this.enddoors.forEach(this.checkEnd, this, true);
-
-        //check if player has reached checkpoint
-        //this.checkpoints.forEach(this.checkCheckpoint, this, true);
     }
 
     setupTilemap()
@@ -197,8 +199,6 @@ class TilemapManager
     {
         door.animations.add('open', null, 6, false);
         door.open = false;
-        //door.animations.play('open');
-        //door.animations.currentFrame = 0;
     }
 
     resetObjects()
@@ -206,7 +206,6 @@ class TilemapManager
         //remove rectangles for collidable bodies
         this.buttons.forEach(this.deleteBody, this, true);
         this.spikes.forEach(this.deleteBody, this, true);
-        //this.doors.forEach(this.deleteBody, this, true);
 
         this.startdoors.destroy();
         this.enddoors.destroy();

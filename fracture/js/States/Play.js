@@ -8,6 +8,7 @@ var Play = {
         game.load.image('pauseBorder', 'pauseBorder.png');
 
         Player.load();
+        TutorialManager.load();
         AudioManager.load();
         AudioManager.loadUI();
         TilemapManager.load();
@@ -22,24 +23,28 @@ var Play = {
         
         this.player = new Player(game, 0, 0);
 
+        
         this.tilemapManager = new TilemapManager(this.player, 'Jake1');
         //this.tilemapManager = new TilemapManager(this.player, 'level1');
         this.tilemapManager.addLevel('Ariana2');
         this.tilemapManager.addLevel('Ariana3');
         this.tilemapManager.addLevel('Sanchit1');
         this.tilemapManager.addLevel('Sanchit2');
-
+        
         this.player.addTilemapManager(this.tilemapManager);
-
+        
         this.pause = new Pause(game, Phaser.Keyboard.P);
-
+        
         this.musicManager = new MusicManager();
         this.musicManager.playSong('track_2');
+
+        this.tutorialManager = new TutorialManager(this.player);
     },
 
     update:function()
     {
         this.tilemapManager.update();
+        this.tutorialManager.update();
     },
 
     render:function()
