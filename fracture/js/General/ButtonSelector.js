@@ -41,9 +41,9 @@ class ButtonSelector
 		{
 			if(this.downKey.justDown)
 			{
-				AudioManager.playSound('swap_selection', 0.5);
 				if(this.currentSelection != this.selections[this.selections.length-1])
 				{
+					AudioManager.playSwapSound();
 					this.currentSelection = this.selections[++this.selectionNum];
 				}
 			}
@@ -58,9 +58,9 @@ class ButtonSelector
 		{
 			if(this.upKey.justDown)
 			{
-				AudioManager.playSound('swap_selection', 0.5);
 				if(this.currentSelection != this.selections[0])
 				{
+					AudioManager.playSwapSound();
 					this.currentSelection = this.selections[--this.selectionNum];
 				}
 			}

@@ -25,8 +25,20 @@ class AudioManager
         game.load.path = path;
     }
 
+    static loadBeginning()
+    {
+        var path = game.load.path;
+
+        game.load.path = 'assets/audio/music/';
+        game.load.audio('beginning', 'beginning.mp3');
+
+        game.load.path = path;
+    }
+
     static loadUI()
     {
+        this.swapAudio = new Audio('assets/audio/sfx/ui/swap_selection.mp3');
+
         var path = game.load.path;
 
         game.load.path = 'assets/audio/sfx/ui/';
@@ -59,5 +71,11 @@ class AudioManager
     static playResumeSound()
     {
         this.resumeAudio.play();
+    }
+
+    static playSwapSound()
+    {
+        this.swapAudio.play();
+        this.swapAudio = new Audio('assets/audio/sfx/ui/swap_selection.mp3');
     }
 }

@@ -29,21 +29,34 @@ class TutorialManager
 
     restartMessageVisible = false;
 
-    constructor(player)
+    constructor(player, type)
     {
         this.player = player;
+        this.type = type;
 
         this.previousPlayerPosition = new Vector(0, 0);
 
-        this.tutorialStates = new Array();
-        this.tutorialStates.push(this.beginMovementTutorial);
-        this.tutorialStates.push(this.updateMovementTutorial);
-        this.tutorialStates.push(this.beginJumpTutorial);
-        this.tutorialStates.push(this.updateJumpTutorial);
-        this.tutorialStates.push(this.beginShootTutorial);
-        this.tutorialStates.push(this.updateShootTutorial);
-        this.tutorialStates.push(this.beginButtonTutorial);
-        this.tutorialStates.push(this.updateButtonTutorial);
+
+        if(type == 1)
+        {
+            this.tutorialStates = new Array();
+            this.tutorialStates.push(this.beginMovementTutorial);
+            this.tutorialStates.push(this.updateMovementTutorial);
+        }
+        else if(type == 2)
+        {
+            this.tutorialStates = new Array();
+            /*this.tutorialStates.push(this.beginMovementTutorial);
+            this.tutorialStates.push(this.updateMovementTutorial);*/
+            this.tutorialStates.push(this.pauseTutorial);
+            this.tutorialStates.push(this.beginJumpTutorial);
+            this.tutorialStates.push(this.updateJumpTutorial);
+            this.tutorialStates.push(this.beginShootTutorial);
+            this.tutorialStates.push(this.updateShootTutorial);
+            this.tutorialStates.push(this.beginButtonTutorial);
+            this.tutorialStates.push(this.updateButtonTutorial);
+        }
+
 
         this.moveMessage = game.add.sprite(0, 0, 'keys_tutorial');
         this.moveMessage.alpha = 0;
@@ -56,33 +69,7 @@ class TutorialManager
         this.buttonMessage = game.add.sprite(0, 0, 'button_tutorial');
         this.buttonMessage.alpha = 0;
     
-        // blackout everything, disable character movement, and display how to pause before fading into the game
-        this.blackout = game.add.sprite(0, 0, 'blackout');
-        this.pauseMessage = game.add.sprite(0, 0, 'pause_tutorial');
         
-        this.player.inputManager.disable();
-
-        // wait a bit, fade out the message, then fade out the blackout
-        game.time.events.add(2000, function(){
-            // fade message out
-            var pauseTween = game.add.tween(this.pauseMessage).to( { alpha: 0 }, 1000, Phaser.Easing.Linear.None, true, 0, 0, false);
-            
-            // when fading is done
-            pauseTween.onComplete.addOnce(function(){
-                
-                // fade out the background
-                var blackoutTween = game.add.tween(this.blackout).to( { alpha: 0 }, 1000, Phaser.Easing.Linear.None, true, 0, 0, false);
-                
-                // when fading out the blackout is done
-                blackoutTween.onComplete.addOnce(function(){
-
-                    // allow the player to move again
-                    this.player.inputManager.enable();
-                    this.timeOfLastMove = game.time.now;
-
-                }, this);
-            }, this);
-        }, this);
     }
 
     static load()
@@ -105,25 +92,28 @@ class TutorialManager
     
     update()
     {
-        // determine if player has stood still for too long
-        // if so display restart message
-        var playerPosition = new Vector(this.player.body.x, this.player.body.y);
-        if(playerPosition.distance(this.previousPlayerPosition) > this.stationaryDistanceThreshold)
+        
+        if(this.type == 2)
         {
-            this.setRestartMessageVisible(false);
-            this.previousPlayerPosition = playerPosition;
-            this.timeOfLastMove = game.time.now;
+            // determine if player has stood still for too long
+            // if so display restart message
+            var playerPosition = new Vector(this.player.body.x, this.player.body.y);
+            if(playerPosition.distance(this.previousPlayerPosition) > this.stationaryDistanceThreshold)
+            {
+                this.setRestartMessageVisible(false);
+                this.previousPlayerPosition = playerPosition;
+                this.timeOfLastMove = game.time.now;
+            }
+            else if(game.time.now > this.timeOfLastMove + (this.stationaryWaitTime * Phaser.Timer.SECOND))
+            {
+                this.setRestartMessageVisible(true);
+            }
+    
+            if(this.player.inputManager.resetButtonJustDown())
+            {
+                this.setRestartMessageVisible(false);
+            }
         }
-        else if(game.time.now > this.timeOfLastMove + (this.stationaryWaitTime * Phaser.Timer.SECOND))
-        {
-            this.setRestartMessageVisible(true);
-        }
-
-        if(this.player.inputManager.resetButtonJustDown())
-        {
-            this.setRestartMessageVisible(false);
-        }
-
 
         if(this.currentTutorialIndex == -1)
         {
@@ -131,6 +121,39 @@ class TutorialManager
         }
 
         this.tutorialStates[this.currentTutorialIndex](this);
+    }
+
+    pauseTutorial(context)
+    {
+        // blackout everything, disable character movement, and display how to pause before fading into the game
+        context.blackout = game.add.sprite(0, 0, 'blackout');
+        context.pauseMessage = game.add.sprite(0, 0, 'pause_tutorial');
+        
+        context.player.inputManager.disable();
+
+        // wait a bit, fade out the message, then fade out the blackout
+        game.time.events.add(2000, function(){
+            // fade message out
+            var pauseTween = game.add.tween(this.pauseMessage).to( { alpha: 0 }, 1000, Phaser.Easing.Linear.None, true, 0, 0, false);
+            
+            // when fading is done
+            pauseTween.onComplete.addOnce(function(){
+                
+                // fade out the background
+                var blackoutTween = game.add.tween(this.blackout).to( { alpha: 0 }, 1000, Phaser.Easing.Linear.None, true, 0, 0, false);
+                
+                // when fading out the blackout is done
+                blackoutTween.onComplete.addOnce(function(){
+
+                    // allow the player to move again
+                    this.player.inputManager.enable();
+                    this.timeOfLastMove = game.time.now;
+
+                }, context);
+            }, context);
+        }, context);
+
+        context.nextTutorial();
     }
 
     setRestartMessageVisible(visible)
@@ -143,6 +166,7 @@ class TutorialManager
         this.restartMessageVisible = visible;
         if(visible)
         {
+            this.restartMessage.bringToTop();
             if(this.restartTween != null) this.restartTween.stop();
             this.restartTween = game.add.tween(this.restartMessage).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.None, true, 0, 0, false);
         }
@@ -156,7 +180,7 @@ class TutorialManager
     nextTutorial()
     {
         this.currentTutorialIndex++;
-        this.button = Play.tilemapManager.buttons.getTop();
+        if('tilemapManager' in game.state.getCurrentState()) this.button = game.state.getCurrentState().tilemapManager.buttons.getTop();
 
         if(this.currentTutorialIndex == this.tutorialStates.length || this.currentTutorialIndex == 0)
         {

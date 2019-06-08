@@ -38,7 +38,7 @@ var Play = {
         this.musicManager = new MusicManager();
         this.musicManager.playSong('track_2');
 
-        this.tutorialManager = new TutorialManager(this.player);
+        this.tutorialManager = new TutorialManager(this.player, 2);
     },
 
     update:function()

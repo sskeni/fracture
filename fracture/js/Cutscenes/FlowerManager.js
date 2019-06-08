@@ -16,8 +16,10 @@ class FlowerManager
 	glow3tween;
 	glow4tween;
 
-	constructor()
+	constructor(player)
 	{
+		this.player = player;
+
 		this.whiteout = game.add.sprite(0, 0, 'beginning_whiteout');
 		this.whiteout.alpha = 0;
 
@@ -36,7 +38,10 @@ class FlowerManager
 
 		this.bloomAnimation = game.add.sprite(100, 100, 'flower_bloom');
 		this.bloomAnimation.animations.add('bloom',
-			['flower-0', 'flower-1', 'flower-1', 'flower-1', 'flower-0', 'flower-0', 'flower-0', 'flower-1', 'flower-1', 'flower-1', 'flower-1', 'flower-1', 'flower-2', 'flower-2', 'flower-2', 'flower-2'], 12, false);
+			['flower-0', 'flower-0', 'flower-0', 'flower-1', 
+			'flower-1', 'flower-1', 'flower-1', 
+			'flower-1', 'flower-1', 'flower-1', 'flower-1', 'flower-1', 
+			'flower-2', 'flower-2', 'flower-2', 'flower-2'], 12, false);
 	}
 
 	static load()
@@ -46,8 +51,8 @@ class FlowerManager
 		game.load.path = "assets/";
 		game.load.atlas('flower_bloom', 'img/flower/flower_animation.png', 'json/flower_animation.json');
 
-		game.load.path = "assets/img/flower/";
-		game.load.image('beginning_whiteout', 'beginning_whiteout.png');
+		//game.load.path = "assets/img/flower/";
+		game.load.image('beginning_whiteout', 'img/blackout.png');
 
 		game.load.path = path;
 	}
@@ -66,10 +71,12 @@ class FlowerManager
 
 	glow0out()
 	{
+		this.music = AudioManager.playSound('beginning', 0.3);
 		if(this.glow0tween != null)
 			this.glow0tween.stop();
-		this.glow0tween = game.add.tween(this.glow0).to( {alpha: 0}, 400, Phaser.Easing.Linear.None, true, 0, 0, false);
-		this.glow0tween.onComplete.addOnce(this.glow1in, this);
+		this.glow0tween = game.add.tween(this.glow0).to( {alpha: 0}, 600, Phaser.Easing.Linear.None, true, 0, 0, false);
+		//this.glow0tween.onComplete.addOnce(this.glow1in, this);
+		this.glow1in();
 	}
 
 	glow1in()
@@ -83,8 +90,9 @@ class FlowerManager
 	{
 		if(this.glow1tween != null)
 			this.glow1tween.stop();
-		this.glow1tween = game.add.tween(this.glow1).to( {alpha: 0}, 400, Phaser.Easing.Linear.None, true, 0, 0, false);
-		this.glow1tween.onComplete.addOnce(this.glow2in, this);
+		this.glow1tween = game.add.tween(this.glow1).to( {alpha: 0}, 600, Phaser.Easing.Linear.None, true, 0, 0, false);
+		//this.glow1tween.onComplete.addOnce(this.glow2in, this);
+		this.glow2in();
 	}
 
 	glow2in()
@@ -98,8 +106,9 @@ class FlowerManager
 	{
 		if(this.glow2tween != null)
 			this.glow2tween.stop();
-		this.glow2tween = game.add.tween(this.glow2).to( {alpha: 0}, 400, Phaser.Easing.Linear.None, true, 0, 0, false);
-		this.glow2tween.onComplete.addOnce(this.glow3in, this);
+		this.glow2tween = game.add.tween(this.glow2).to( {alpha: 0}, 600, Phaser.Easing.Linear.None, true, 0, 0, false);
+		//this.glow2tween.onComplete.addOnce(this.glow3in, this);
+		this.glow3in();
 	}
 
 	glow3in()
@@ -113,14 +122,15 @@ class FlowerManager
 	{
 		if(this.glow3tween != null)
 			this.glow3tween.stop();
-		this.glow3tween = game.add.tween(this.glow3).to( {alpha: 0}, 400, Phaser.Easing.Linear.None, true, 0, 0, false);
-		this.glow3tween.onComplete.addOnce(this.glow4in, this);
+		this.glow3tween = game.add.tween(this.glow3).to( {alpha: 0}, 600, Phaser.Easing.Linear.None, true, 0, 0, false);
+		//this.glow3tween.onComplete.addOnce(this.glow4in, this);
+		this.glow4in();
 	}
 
 	glow4in()
 	{
 		this.glow4.bringToTop();
-		this.glow4tween = game.add.tween(this.glow4).to( {alpha: 1}, 400, Phaser.Easing.Linear.None, true, 0, 0, false);
+		this.glow4tween = game.add.tween(this.glow4).to( {alpha: 1}, 800, Phaser.Easing.Linear.None, true, 0, 0, false);
 		this.glow4tween.onComplete.addOnce(this.glow4out, this);
 	}
 
@@ -128,7 +138,7 @@ class FlowerManager
 	{
 		if(this.glow4tween != null)
 			this.glow4tween.stop();
-		this.glow4tween = game.add.tween(this.glow4).to( {alpha: 0}, 400, Phaser.Easing.Linear.None, true, 0, 0, false);
+		this.glow4tween = game.add.tween(this.glow4).to( {alpha: 0.2}, 600, Phaser.Easing.Linear.None, true, 0, 0, false);
 		this.glow4tween.onComplete.addOnce(this.playBloom, this);
 	}
 
@@ -136,6 +146,10 @@ class FlowerManager
 	{
 		this.flower.destroy();
 		this.bloomAnimation.animations.play('bloom');
+		this.bloomAnimation.animations.getAnimation('bloom').onComplete.addOnce(function(){
+			this.player.inputManager.enable();
+			Beginning.createTutorialManager();
+		}, this);
 	}
 
 	startWhiteout()
@@ -147,7 +161,8 @@ class FlowerManager
 
 	completeWhiteout()
 	{
-		game.stage.backgroundColor = '#ffffff';
+		this.music.stop();
+		game.stage.backgroundColor = '#000000';
 		game.state.start('Play');
 	}
 }
