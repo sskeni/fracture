@@ -344,6 +344,17 @@ class Player extends Phaser.Sprite
         }, this);
     }
 
+    playBeginningCutscene()
+    {
+        this.dead = true;
+        game.time.events.add(8000, this.undead, this);
+    }
+
+    undead()
+    {
+        this.dead = false;
+    }
+
     playEndingCutscene()
     {
         this.dead = true;// stop doing things

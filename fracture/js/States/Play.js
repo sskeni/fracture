@@ -20,10 +20,9 @@ var Play = {
         //set up physics
         game.physics.startSystem(Phaser.Physics.P2JS);
         game.physics.p2.setImpactEvents(true);
-        
+
         this.player = new Player(game, 0, 0);
 
-        
         this.tilemapManager = new TilemapManager(this.player, 'Jake1');
         this.tilemapManager.addLevel('Ariana2');
         this.tilemapManager.addLevel('Ariana1');

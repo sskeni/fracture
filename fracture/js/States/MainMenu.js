@@ -32,7 +32,7 @@ var MainMenu = {
 
 		this.startButton = game.add.sprite(512/2, (288/2) + 10, 'startText');
 		this.startButton.anchor.set(0.5);
-		this.startButton.state = 'Play';
+		this.startButton.state = 'Beginning';
 
 		this.creditsButton = game.add.sprite(512/2, (288/2) + 50, 'creditsText');
 		this.creditsButton.anchor.set(0.5);

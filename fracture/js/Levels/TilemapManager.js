@@ -56,6 +56,7 @@ class TilemapManager
 
         //load levels
         game.load.path = 'js/Levels/';
+        game.load.tilemap('beginning', 'beginning.json', null, Phaser.Tilemap.TILED_JSON);
         game.load.tilemap('Ariana1', 'Ariana1.json', null, Phaser.Tilemap.TILED_JSON);
         game.load.tilemap('Ariana3', 'Ariana3.json', null, Phaser.Tilemap.TILED_JSON);
         game.load.tilemap('Ariana2', 'Ariana2.json', null, Phaser.Tilemap.TILED_JSON);
