@@ -1,33 +1,33 @@
 "use strict";
 
+// manager that manages dynamic transitions between sections of level audio
 class MusicManager 
 {
-    game;
-
     currentSongKey;// The name of the current song
     currentSectionKey;// The name of the current section of the current song
     currentAudio;// The current Phaser.Sound instance
     nextAudio;// The next Phaser.Sound instance
 
-    constructor()
-    {
-    }
-
+    // loads assets used for the main menu soundtrack
     static loadMainMenu()
     {
         var path = game.load.path;
+
         game.load.path = 'assets/audio/music/';
         game.load.audio('main_menu_intro', 'main_menu_intro.ogg');
         game.load.audio('main_menu_body', 'main_menu_body.ogg');
+
         game.load.path = path;
     }
 
+    // loads assets used for the level soundtrack
     static loadLevels()
     {
         var path = game.load.path;
+
         game.load.path = 'assets/audio/music/';
-        game.load.audio('track_1_body', 'track_1.ogg');
         game.load.audio('track_2_body', 'track_2.ogg');
+
         game.load.path = path;
     }
 
@@ -90,11 +90,13 @@ class MusicManager
         this.playSection(key);
     }
 
+    // loads the given section of music ahead of time
     loadSection(key)
     {
         this.nextAudio = game.add.audio(this.currentSongKey + "_" + key);
     }
 
+    // transitions the music to the cued section immediately
     playNextSection()
     {
         if(typeof this.currentAudio !== "undefined")
@@ -122,20 +124,20 @@ class MusicManager
         this.currentAudio.play('', 0, 0.5, true);
     }
 
-    // pause the current song
+    // pauses the current song
     pause()
     {
         this.currentAudio.pause();
     }
 
-    // stop the current song entirely
+    // stops the current song entirely
     stop()
     {
         this.currentAudio.onStop.removeAll();
         this.currentAudio.stop();
     }
 
-    // resume the current song
+    // resumes the current song
     resume()
     {
         this.currentAudio.resume();

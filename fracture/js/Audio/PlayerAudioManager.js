@@ -3,17 +3,17 @@
 // plays player sound effects
 class PlayerAudioManager
 {
-    warningDistance = 100;
-    volumeModifier = 1;
+    warningDistance = 100;// the vertical distance from the ground at which the fall damage warning sound will play
+    volumeModifier = 1;// a value for global volume
 
-    playedFootstep = false;
-    playedShatterAnticipation = false;
+    playedFootstep = false;// tracks whether we've already played a footstep sound for the current heeltouch
+    playedShatterAnticipation = false;// tracks whether we've already played the warning sound for fall damage
 
-    shardWindupSound;
-    shardFlySound;
-    fallingSound;
+    shardWindupSound;// a phaser sound for when the player begins firing a shard
+    shardFlySound;// a phaser sound for when a shard is flying through the air
+    fallingSound;// a phaser sound for when the player begins to fall too far
 
-    fireShardTime;
+    fireShardTime;// the time when the last shard was fired
 
     constructor(player)
     {
@@ -43,7 +43,7 @@ class PlayerAudioManager
         game.load.path = path;
     }
 
-    // play a sound with the given key and volume
+    // plays a sound with the given key and volume
     playSound(key, volume)
     {
         var sound = game.add.audio(key, this.volumeModifier * volume);
@@ -53,7 +53,7 @@ class PlayerAudioManager
         return sound;
     }
 
-    // select and play a random footstep sound
+    // selects and plays a random footstep sound
     playFootstep()
     {
         var index = game.rnd.integerInRange(1, 4);
@@ -62,12 +62,12 @@ class PlayerAudioManager
         sound.play();
     }
 
+    // manages which sounds to play during the player's jump state
     updateJump()
     {
         var jump = this.player.stateManager.jump;
 
-
-        // if falling to the platform could kill the player, warn them
+        // if falling to the platform could kill the player, fade in a preliminary warning
         if(this.player.body.y - jump.maxHeight + this.player.distanceToGround() > jump.calculateMaxFallHeight())
         {
             this.fallingSound.volume = (this.player.body.y - jump.maxHeight)/jump.calculateMaxFallHeight();
@@ -77,6 +77,7 @@ class PlayerAudioManager
             this.fallingSound.volume = 0;
         }
         
+        // determines whether to play the shatter anticipation sound
         if(jump.fallenTooFar() && !this.aboveShard() && !this.playedShatterAnticipation)
         {
             this.fallingSound.stop();

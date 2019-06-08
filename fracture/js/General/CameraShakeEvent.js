@@ -1,3 +1,6 @@
+"use strict";
+
+// shakes the camera with an envelope based on the ADSR model
 class CameraShakeEvent
 {
     intensity;// the maximum camera shake intensity
@@ -8,7 +11,8 @@ class CameraShakeEvent
     release;// the amount of time it takes to reach no shake after the sustain period ends
     resolution;// how often to update the camera shake value
 
-    startTime;
+    startTime;// the time when the shaking started 
+
 
     constructor(intensity, attack, decay, sustain, sustainLength, release, resolution)
     {
@@ -36,27 +40,27 @@ class CameraShakeEvent
         }
     }
 
+    // determine the current camera shake intensity based on how long it's been since the shake started
     calculateCurrentIntensity()
     {
         var lerpBetween = new Array();
-        if(game.time.now - this.startTime < this.attack)
+        if(game.time.now - this.startTime < this.attack)// the attack phase
         {
             lerpBetween.push(0);
             lerpBetween.push(this.intensity);
             return Phaser.Math.linearInterpolation(lerpBetween, ((game.time.now - this.startTime)/this.attack));
         }
-        else if(game.time.now - this.startTime < this.attack + this.decay)
+        else if(game.time.now - this.startTime < this.attack + this.decay)// the decay phase
         {
             lerpBetween.push(this.intensity);
             lerpBetween.push(this.sustain);
             return Phaser.Math.linearInterpolation(lerpBetween, ((game.time.now - this.startTime - this.attack)/this.decay));
-            //return ((game.time.now - this.startTime - this.attack)/this.decay) * this.intensity;
         }
-        else if(game.time.now - this.startTime < this.attack + this.decay + this.sustainLength)
+        else if(game.time.now - this.startTime < this.attack + this.decay + this.sustainLength)// the sustain phase
         {
             return this.sustain;
         }
-        else
+        else// the release phase
         {
             lerpBetween.push(this.sustain);
             lerpBetween.push(0);

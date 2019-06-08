@@ -1,3 +1,6 @@
+"use strict";
+
+// helper class for all things game-feel
 class GamefeelMaster
 {
     static cameraShakeResolution = 100;// with what frequency the camera shake adjusts intensity
@@ -14,7 +17,7 @@ class GamefeelMaster
         var shakeEvent = new CameraShakeEvent(intensity, attack, decay, sustain, sustainLength, release, GamefeelMaster.cameraShakeResolution);
     }
 
-    // slows down the game dramatically for the given length
+    // slows down the game dramatically for the given length (given in seconds)
     static hitStop(length)
     {
         game.time.slowMotion = 40;

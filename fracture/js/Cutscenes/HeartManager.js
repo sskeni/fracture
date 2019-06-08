@@ -1,16 +1,17 @@
 "use strict";
 
+// manages a series of one-off behaviors for the ending cutscene 
 class HeartManager
 {
-    shatterAnimation;
-    noLight;
-    light;
-    brightLight;
-    whiteout;
+    shatterAnimation;// a sprite for the cracking/shattering animation for the heart
+    noLight;// a sprite for the version of the heart image that isn't glowing
+    light;// a sprite for the version of the heart image that is glowing
+    brightLight;// a sprite for the bright heart image after the heart cracks
+    whiteout;// a sprite for the fade to solid white at the end of the cutscene
 
-    lightTween;
-    brightTween;
-    whiteoutTween;
+    lightTween;// a reference to the tween that fades in the heart with light
+    brightTween;// a reference to the tween that fades in the heart with bright light after shattering
+    whiteoutTween;// a reference to the tween that fades in the solid white at the end of the cutscene
 
     onComplete;// a function to call when the whiteout animation completes
 
@@ -20,7 +21,7 @@ class HeartManager
         
         this.light = game.add.sprite(0, 0, 'ending_light');// ending background with shining light
         this.light.alpha = 0;
-        this.goLight();
+        this.goLight();// begin the heartbeat/glow animation
 
         // create shatter animation. this will play during the ending cutscene
         this.shatterAnimation = game.add.sprite(0, 0, 'heart_shatter');
@@ -44,6 +45,7 @@ class HeartManager
 
     }
 
+    // load images for use in the cutscene
     static load()
     {
         var path = game.load.path;
@@ -58,11 +60,6 @@ class HeartManager
         game.load.image('ending_whiteout', 'ending_whiteout.png');
 
         game.load.path = path;
-    }
-
-    update()
-    {
-
     }
 
     // fades in the light background
@@ -94,18 +91,15 @@ class HeartManager
 
     }
 
-    update()
-    {
-
-    }
-
     // plays the shatter animation
     playAnimation()
     {
+        // some camera shake at different times
         GamefeelMaster.shakeCamera(0.00002, 0, 100, 0.000001, 100, 100);
         game.time.events.add(2000, function(){GamefeelMaster.shakeCamera(0.00002, 0, 100, 0.000001, 100, 100);}, this);
         game.time.events.add(3600, function(){GamefeelMaster.shakeCamera(0.00005, 0, 6000, 0.000001, 200, 200);}, this);
         
+        // stop the heartbeat/glow animation
         if(this.lightTween != null)
         {
             this.lightTween.onComplete.removeAll(this);
@@ -113,6 +107,7 @@ class HeartManager
         }
         this.light.alpha = 0;
 
+        // and an animation to play along with the camera shake
         this.shatterAnimation.alpha = 1;
         this.shatterAnimation.animations.getAnimation('shatter').onComplete.addOnce(this.goBright, this);
         this.shatterAnimation.animations.play('shatter');
@@ -134,6 +129,7 @@ class HeartManager
         this.whiteoutTween.onComplete.addOnce(this.completeWhiteout, this);
     }
 
+    // we're done with the cutscene and we're ready to go to credits
     completeWhiteout()
     {
 		game.stage.backgroundColor = '#ffffff';
