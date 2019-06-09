@@ -1,33 +1,42 @@
+"use strict";
+
+//class for shard ui
 class ShardCounter
 {
+    //image variables
     tokens;
     tokenFlashes;
     background;
 
+    //shard gem count, initially full (2)
     currTokenIndex = 2;
 
     constructor()
     {
+        //create background
         this.background = game.add.sprite(0, 0, 'shard_counter_background');
         this.background.fixedToCamera = true;
 
-
+        //create shard gems
         this.tokens = new Array();
         this.tokens.push(game.add.sprite(6, 3, 'shard_token'));
         this.tokens.push(game.add.sprite(27, 3, 'shard_token'));
         this.tokens.push(game.add.sprite(48, 3, 'shard_token'));
 
+        //create flashes for shard gems
         this.tokenFlashes = new Array();
         this.tokenFlashes.push(game.add.sprite(6, 3, 'token_flash'));
         this.tokenFlashes.push(game.add.sprite(27, 3, 'token_flash'));
         this.tokenFlashes.push(game.add.sprite(48, 3, 'token_flash'));
 
+        //make flashes invisible and fixed to camera
         for(var token of this.tokenFlashes)
         {
             token.alpha = 0;
             token.fixedToCamera = true;
         }
 
+        //add animations and fix to camera
         for(var token of this.tokens)
         {
             token.broken = false;
@@ -66,6 +75,8 @@ class ShardCounter
             12, false);
 
             token.fixedToCamera = true;
+
+            //start with shard gems as whole
             token.animations.play('whole');
         }
 
@@ -73,6 +84,7 @@ class ShardCounter
 
     static load()
     {
+        //load assets
         var path = game.load.path;
         game.load.path = 'assets/img/shard_counter/';
 
@@ -83,15 +95,20 @@ class ShardCounter
         game.load.path = path;
     }
 
+    //reset shard counter ui
     reset()
     {
+        //resets shard gem count
         this.currTokenIndex = 2;
+
+        //play animation and reset behavior boolean
         for(var token of this.tokens)
         {
             token.animations.play('reset');
             token.broken = false;
         }
 
+        //after playing reset, set to whole and play flash animation
         this.tokens[0].animations.getAnimation('reset').onComplete.addOnce(function(){
             for(var token of this.tokens)
             {
@@ -104,6 +121,7 @@ class ShardCounter
         }, this);
     }
 
+    //behavior for when shard is fired
     beginFireShard()
     {
         if(this.currTokenIndex >= 0)
@@ -112,12 +130,14 @@ class ShardCounter
             {
                 if(i == this.currTokenIndex)
                 {
+                    //play crack animation when shot
                     this.tokens[i].animations.play('crack');
                 }
                 else
                 {
                     if(!this.tokens[i].broken)
                     {
+                        //otherwise play flash animation
                         this.tokens[i].animations.play('flash');
                     }
                 }
@@ -125,6 +145,7 @@ class ShardCounter
         }
     }
 
+    //puts shard counter ui on top of other game elements
     bringToTop()
     {
         this.background.bringToTop();
@@ -134,12 +155,14 @@ class ShardCounter
         }
     }
 
+    //behavior for when firing shard
     fireShard()
     {
         for(let i = 0; i < 3; i++)
         {
             if(i == this.currTokenIndex)
             {
+                //play broken animation
                 this.tokens[i].animations.play('broken');
                 this.tokens[i].broken = true;
             }
@@ -147,6 +170,7 @@ class ShardCounter
             {
                 if(!this.tokens[i].broken)
                 {
+                    //else play flash animation
                     this.flashToken(i);
                 }
             }
@@ -154,6 +178,7 @@ class ShardCounter
         this.currTokenIndex -= 1;
     }
 
+    //play flash animation
     flashToken(index)
     {
         this.tokens[index].animations.play('whole');

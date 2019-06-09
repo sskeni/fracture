@@ -1,5 +1,8 @@
 "use strict";
 
+
+//manages level parsing from Tiled tilemap jsons
+//also checks for object behavior of level objects
 class TilemapManager
 {
     tilemap;
