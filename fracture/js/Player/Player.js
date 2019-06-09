@@ -90,7 +90,7 @@ class Player extends Phaser.Sprite
     static load()
     {
         var path = game.load.path;
-        game.load.path = 'assets/img/';
+        game.load.path = 'fracture/assets/img/';
         game.load.image('cursorBase', 'cursorBase.png');
         game.load.image('cursorTip', 'cursorTip.png');
         game.load.image('blackout', 'blackout.png');

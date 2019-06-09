@@ -6,7 +6,7 @@ var MainMenu = {
 	preload:function()
 	{
 		//load assets for menu
-		game.load.path = 'assets/img/';
+		game.load.path = 'fracture/assets/img/';
 		game.load.image('background', 'mainMenuBackground.png');
 		game.load.image('logo', 'logo.png');
 		game.load.image('buttonSelector', 'buttonSelector.png');

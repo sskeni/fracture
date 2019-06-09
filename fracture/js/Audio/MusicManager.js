@@ -13,7 +13,7 @@ class MusicManager
     {
         var path = game.load.path;
 
-        game.load.path = 'assets/audio/music/';
+        game.load.path = 'fracture/assets/audio/music/';
         game.load.audio('main_menu_intro', 'main_menu_intro.ogg');
         game.load.audio('main_menu_body', 'main_menu_body.ogg');
 
@@ -25,7 +25,7 @@ class MusicManager
     {
         var path = game.load.path;
 
-        game.load.path = 'assets/audio/music/';
+        game.load.path = 'fracture/assets/audio/music/';
         game.load.audio('track_2_body', 'track_2.ogg');
 
         game.load.path = path;

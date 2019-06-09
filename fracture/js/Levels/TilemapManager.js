@@ -47,7 +47,7 @@ class TilemapManager
     static load()
     {
         var path = game.load.path;
-        game.load.path = 'assets/img/';
+        game.load.path = 'fracture/assets/img/';
 
         //tileset assets
         game.load.image('startdoor', 'startdoor.png');
@@ -60,7 +60,7 @@ class TilemapManager
 
 
         //load levels
-        game.load.path = 'js/Levels/';
+        game.load.path = 'fracture/js/Levels/';
         game.load.tilemap('beginning', 'beginning.json', null, Phaser.Tilemap.TILED_JSON);
         game.load.tilemap('Ariana1', 'Ariana1.json', null, Phaser.Tilemap.TILED_JSON);
         game.load.tilemap('Ariana3', 'Ariana3.json', null, Phaser.Tilemap.TILED_JSON);

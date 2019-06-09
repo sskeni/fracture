@@ -19,7 +19,7 @@ class EndingMusicManager
     {
         var path = game.load.path;
 
-        game.load.path = 'assets/audio/music/';
+        game.load.path = 'fracture/assets/audio/music/';
         game.load.audio('ending_bass_ambiant', 'ending_bass_ambiant.mp3');
         game.load.audio('ending_bass_body', 'ending_bass_body.mp3');
         game.load.audio('ending_body', 'ending_body.mp3');

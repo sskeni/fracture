@@ -59,7 +59,7 @@ class FlowerManager
 	{
 		var path = game.load.path;
 
-		game.load.path = "assets/";
+		game.load.path = "fracture/assets/";
 		game.load.atlas('flower_bloom', 'img/flower/flower_animation.png', 'json/flower_animation.json');
 		game.load.image('blackout', 'img/blackout.png');
 

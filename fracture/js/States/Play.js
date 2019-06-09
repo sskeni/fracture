@@ -4,7 +4,7 @@
 var Play = {
     preload:function()
     {
-        game.load.path = 'assets/img/';
+        game.load.path = 'fracture/assets/img/';
 
         //pause assets
         game.load.image('pause', 'pause.png');
