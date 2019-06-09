@@ -84,7 +84,11 @@ class Jump extends PlayerState
         {
             this.maxHeight = this.player.body.y;
         }
+
+        // play the correct animations
         this.player.animationController.animateJump();
+
+        // if I'm about do die, warn the player
         if(this.fallenTooFar() && !this.anticipatedShatter)
         {
             GamefeelMaster.hitStop(0.2);
@@ -92,6 +96,7 @@ class Jump extends PlayerState
             this.anticipatedShatter = true;
         }
 
+        // allow the player horizontal control
         this.ground.move();
 
         this.player.audioManager.updateJump();

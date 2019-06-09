@@ -1,19 +1,21 @@
+"use stict";
+
+// manages which player animations should be playing at a given time
 class PlayerAnimationController
 {
-    player;
-    direction;
+    player;// a reference to the player
+    direction;// the player's current facing (left or right)
 
-    deathTween;
+    deathTween;// a tween for the player fading to nothing when dying
 
-    flashSprite;
+    flashSprite;// a white screen for flashing the screen when the player is about to fall to their death
 
+    // loads the player's texture atlas as well as the flash screen image
     static load()
     {
         game.load.path = 'assets/';
         game.load.atlas('player', 'img/player/player_atlas.png', 'json/player_atlas.json');
         game.load.image('flash', 'img/heart/ending_whiteout.png');
-        //game.load.spritesheet('player_run_right', 'player_run_right', 32, 32);
-        //game.load.spritesheet('player_run_left', 'player_run_left', 32, 32);
     }
 
     constructor(player)
@@ -21,6 +23,8 @@ class PlayerAnimationController
         this.player = player;
         this.direction = 'right';
 
+
+        // add all player animations
         this.player.animations.add('run_right', Phaser.Animation.generateFrameNames('run_right_', 1, 8), 12, true);
         this.player.animations.add('run_right_up_diagonal', Phaser.Animation.generateFrameNames('run_right_up_diagonal_', 1, 8), 12, true);
         this.player.animations.add('run_right_down_diagonal', Phaser.Animation.generateFrameNames('run_right_down_diagonal_', 1, 8), 12, true);
@@ -57,12 +61,13 @@ class PlayerAnimationController
             this.player.animations.add('jump_left_' + i, Phaser.Animation.generateFrameNames('jump_left_', i, i), 12, true);
         }
 
+        // create the flash sprite
         this.flashSprite = game.add.sprite(0, 0, 'flash');
         this.flashSprite.alpha = 0;
         this.flashSprite.fixedToCamera = true;
-
     }
 
+    // lightens the screen using the flash sprite for the given length of time in seconds
     flashScreen(length)
     {
         if(this.flashTween != null) 
@@ -74,6 +79,7 @@ class PlayerAnimationController
         game.time.events.add(Phaser.Timer.SECOND * length, function(){this.flashSprite.alpha = 0;}, this);
     }
 
+    // update loop for player animations while jumping
     animateJump()
     {
         if(this.player.stateManager.currentState != this.player.stateManager.jump)
@@ -83,6 +89,7 @@ class PlayerAnimationController
 
         this.calculateDirection();
 
+        // the frame is based on the character's vertical velocity
         var animation = 'jump_' + this.direction;
         if(this.player.body.velocity.y < -250)
         {
@@ -115,6 +122,7 @@ class PlayerAnimationController
 
         var distanceToGround = this.player.distanceToGround();
 
+        // unless the player is close to ground, when they should be playing the animation like they're landing
         if(this.player.body.velocity.y > 0)
         {
             if(distanceToGround < 50)
@@ -134,6 +142,7 @@ class PlayerAnimationController
         this.player.animations.play(animation);
     }
 
+    // determine which direction the player should be facing
     calculateDirection()
     {
         if(this.player.inputManager.getHorizontalInput() > 0)
@@ -146,6 +155,7 @@ class PlayerAnimationController
         }
     }
 
+    // update loop for player animations while on the ground
     animateGround()
     {
         if(this.player.stateManager.currentState != this.player.stateManager.ground)
@@ -155,12 +165,15 @@ class PlayerAnimationController
 
         this.calculateDirection();
 
+        // play the idle animation if the player is stationary
         if(this.player.inputManager.getHorizontalInput() == 0)
         {
             this.player.animations.play('idle_' + this.direction);
             return;
         }
         
+
+        // determine the slant of the ground
         var slant = '';
 
         if(this.player.stateManager.ground.standingDirection == StandingDirection.LEFT)// if I'm on a slant to my right
@@ -175,23 +188,27 @@ class PlayerAnimationController
         this.player.animations.play('run_' + this.direction + slant);
     }
     
+    // plays the death animation
     animateDeath()
     {
         this.player.animations.play('shatter');
         this.deathTween = game.add.tween(this.player).to( { alpha: 0 }, 900, Phaser.Easing.Linear.None, true, 0, 0, false);
     }
 
+    // does housecleaning for respawn
     animateRespawn()
     {
         if(this.deathTween != null) this.deathTween.stop();
         this.player.alpha = 1;
     }
     
+    // plays the fire shard animation
     animateFireShard()
     {
         this.player.animations.play('fire_shard');
     }
 
+    // plays the wall jump animation
     animateWallJump()
     {
         if(this.player.stateManager.wallJump.direction == WallDirection.LEFT)

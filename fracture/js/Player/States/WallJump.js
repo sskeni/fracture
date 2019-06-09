@@ -78,6 +78,7 @@ class WallJump extends PlayerState
         }
     }
 
+    // returns whether the player should exit the wall jump state
     exitWallConditionsMet()
     {
         if(!this.onWall(Vector.createVectorFromAngle((this.direction == WallDirection.RIGHT ? 0 : 180))))

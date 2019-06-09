@@ -86,6 +86,7 @@ class Ground extends PlayerState
         }
     }
 
+    // like move, but with slanted movement
     moveSlanted(standingDirection)
     {
         var velocityVector = new Vector(this.player.body.velocity.x, this.player.body.velocity.y);

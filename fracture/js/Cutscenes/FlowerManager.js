@@ -1,15 +1,21 @@
+"use strict";
+
+// manager class for the game's opening cutscene
 class FlowerManager
 {
-	whiteout;
+	blackout;
 	bloomAnimation;
 
-	flower;
+	flower;// a sprite for the animation of the flower opening
+
+	// a series of sprites for use creating the glowing animations before the flower opens
 	glow0;
 	glow1;
 	glow2;
 	glow3;
 	glow4;
 
+	// a series of tweens to manage the glowing animations
 	glow0tween;
 	glow1tween;
 	glow2tween;
@@ -20,11 +26,14 @@ class FlowerManager
 	{
 		this.player = player;
 
-		this.whiteout = game.add.sprite(0, 0, 'beginning_whiteout');
-		this.whiteout.alpha = 0;
+		// add a solid black sprite to fade the game to black during the transtion to the play state
+		this.blackout = game.add.sprite(0, 0, 'blackout');
+		this.blackout.alpha = 0;
 
+		// add the flower animation sprite
 		this.flower = game.add.sprite(100, 100, 'flower_bloom', 'flower-0');
 
+		// add the images for the flower's different glow states
 		this.glow0 = game.add.sprite(100, 100, 'flower_bloom', 'glow-0');
 		this.glow0.alpha = 0;
 		this.glow1 = game.add.sprite(100, 100, 'flower_bloom', 'glow-1');
@@ -36,6 +45,7 @@ class FlowerManager
 		this.glow4 = game.add.sprite(100, 100, 'flower_bloom', 'glow-4');
 		this.glow4.alpha = 0;
 
+		//setup the animtion for the flower blooming
 		this.bloomAnimation = game.add.sprite(100, 100, 'flower_bloom');
 		this.bloomAnimation.animations.add('bloom',
 			['flower-0', 'flower-0', 'flower-0', 'flower-1', 
@@ -44,23 +54,25 @@ class FlowerManager
 			'flower-2', 'flower-2', 'flower-2', 'flower-2'], 12, false);
 	}
 
+	// load images
 	static load()
 	{
 		var path = game.load.path;
 
 		game.load.path = "assets/";
 		game.load.atlas('flower_bloom', 'img/flower/flower_animation.png', 'json/flower_animation.json');
-
-		//game.load.path = "assets/img/flower/";
-		game.load.image('beginning_whiteout', 'img/blackout.png');
+		game.load.image('blackout', 'img/blackout.png');
 
 		game.load.path = path;
 	}
 
+	// begin the chain of animations that play during the beginning cutscene
 	playAnimation()
 	{
 		game.time.events.add(1000, this.glow0in, this);
 	}
+
+	// chain through each glow state, with their beginnings and endings overlapped 
 
 	glow0in()
 	{
@@ -134,6 +146,7 @@ class FlowerManager
 		this.glow4tween.onComplete.addOnce(this.glow4out, this);
 	}
 
+	// this is the final glow before the bloom
 	glow4out()
 	{
 		if(this.glow4tween != null)
@@ -142,24 +155,31 @@ class FlowerManager
 		this.glow4tween.onComplete.addOnce(this.playBloom, this);
 	}
 
+	// plays the flower's bloom animation and gives the player control so that they can start the game
 	playBloom()
 	{
 		this.flower.destroy();
+		
+		// play the bloom animation
 		this.bloomAnimation.animations.play('bloom');
+
+		// once the bloom animation finishes, start the tutorial and allow the player to move
 		this.bloomAnimation.animations.getAnimation('bloom').onComplete.addOnce(function(){
 			this.player.inputManager.enable();
 			Beginning.createTutorialManager();
 		}, this);
 	}
 
-	startWhiteout()
+	// begins the transition to the first level by fading to black
+	startBlackout()
 	{
-		this.whiteout.bringToTop();
-		this.whiteoutTween = game.add.tween(this.whiteout).to( { alpha: 1 }, 300, Phaser.Easing.Linear.None, true, 0, 0, false);
-		this.whiteoutTween.onComplete.addOnce(this.completeWhiteout, this);
+		this.blackout.bringToTop();
+		this.blackoutTween = game.add.tween(this.blackout).to( { alpha: 1 }, 300, Phaser.Easing.Linear.None, true, 0, 0, false);
+		this.blackoutTween.onComplete.addOnce(this.completeBlackout, this);// once the blackout is complete, move on to the next state
 	}
 
-	completeWhiteout()
+	// sets everything up to transition to the first level
+	completeBlackout()
 	{
 		this.music.stop();
 		game.stage.backgroundColor = '#000000';

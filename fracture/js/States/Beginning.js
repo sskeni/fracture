@@ -41,7 +41,7 @@ var Beginning = {
 		if(this.player.body.x > 480 && !this.player.dead)
 		{
 			this.player.inputManager.disable();
-			this.flowerManager.startWhiteout();
+			this.flowerManager.startBlackout();
 		}
 	},
 

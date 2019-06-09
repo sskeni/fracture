@@ -1,3 +1,5 @@
+"use strict";
+
 class TilemapManager
 {
     tilemap;
@@ -197,12 +199,14 @@ class TilemapManager
         this.doors.forEach(this.configureCollidableBody, this, true, 'door');
     }
 
+    // sets up door with animations
     configureDoor(door)
     {
         door.animations.add('open', null, 6, false);
         door.open = false;
     }
 
+    // clears all current objects in the level
     resetObjects()
     {
         //remove rectangles for collidable bodies
@@ -217,9 +221,10 @@ class TilemapManager
         this.doors.destroy();
     }
 
+    // create physics for all tiles
     createTiles()
     {
-        //add tilset to map layer
+        //add tileset to map layer
         this.mapLayer = this.tilemap.createLayer('walls');
         this.mapLayer.resizeWorld();
 
@@ -235,10 +240,9 @@ class TilemapManager
         {
             this.configureBody(body, 16, 16);
         }
-
-        //this.mapLayer.tint = 0xffab683;//0xed66ff;
     }
 
+    // setup physics for an object that is meant to be collidable
     configureCollidableBody(object, tag)
     {
         this.configureBody(object.body, object.width, object.height);
@@ -246,22 +250,20 @@ class TilemapManager
         object.body.y = object.y + object.height/2;
 
         object.body.kinematic = true;
-
-        this.calculateColor(object);
         object.body.tag = tag;
     }
 
+    // sets up physics for an object that is meant to be non-collidable
     configureNonCollidableBody(object, tag)
     {
         object.body.x = object.x + object.width/2;
         object.body.y = object.y + object.height/2;
 
         object.body.kinematic = true;
-
-        this.calculateColor(object);
         object.body.tag = tag;
     }
 
+    // sets up collision groups and rectangles for raycasting on the given body
     configureBody(body, width, height)
     {
         body.setCollisionGroup(this.collisionGroup);
@@ -271,38 +273,35 @@ class TilemapManager
         this.player.addRaycastTarget(body);
     }
 
+    // removes the given body from the list of raycast targets for the player
     deleteBody(object)
     {
         this.player.removeRaycastTarget(object.body);
     }
 
-    calculateColor(sprite)
-    {
-        /*//set colors for map
-        color = Math.random() * 0xffffff;
-        this.mapLayer.tint = color;
-        this.smallplatforms.setAll('tint', color);
-        this.mediumplatforms.setAll('tint', color);
-        this.largeplatforms.setAll('tint', color);*/
-    }
 
-    checkButton(button) {
+    // determine whether any buttons have been hit by shard and opens its door
+    checkButton(button) 
+    {
         //check if any button is hit
         if(button.body.hit && !button.pressed)
         {
             button.pressed = true;
             AudioManager.playSound('open_door', 0.3);
 
-            //destroy the door
+            //open the door
             this.doors.forEach(this.openDoor, this);
         }
     }
 
-    resetButton(button) {
+    // reset a button to its default state
+    resetButton(button) 
+    {
         button.body.hit = false;
         button.pressed = false;
     }
 
+    // plays the given door's opening animation, then removes its collider
     openDoor(door) {
         if(!door.opened) {
             game.time.events.add(1 * Phaser.Timer.SECOND, function() {this.animations.play('open');}, door);
@@ -315,7 +314,9 @@ class TilemapManager
         }
     }
 
-    resetDoor(door) {
+    // resets a door back to its default state
+    resetDoor(door) 
+    {
         door.animations.stop();
         door.animations.frame = 0;
         door.opened = false;
@@ -325,6 +326,7 @@ class TilemapManager
         door.body.tag = 'door';
     }
 
+    // determines whether the player has reached the given end door, and if so transitions to the next level
     checkEnd(door)
     {
         var playerBounds = this.player.getBounds();
@@ -333,17 +335,6 @@ class TilemapManager
         if(Phaser.Rectangle.intersects(playerBounds, doorBounds))
         {
             this.nextLevel();
-        }
-    }
-
-    checkCheckpoint(checkpoint)
-    {
-        var playerBounds = this.player.getBounds();
-        var checkpointBounds = checkpoint.getBounds();
-
-        if(Phaser.Rectangle.intersects(playerBounds, checkpointBounds))
-        {
-            console.log('checkpoint reached');
         }
     }
 }
