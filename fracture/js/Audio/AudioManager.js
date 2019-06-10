@@ -11,11 +11,11 @@ class AudioManager
     static load()
     {
         // load non-phaser audio elements for pausing and unpausing
-        this.pauseAudio = new Audio('fracture/assets/audio/sfx/ui/pause.mp3');
-        this.resumeAudio = new Audio('fracture/assets/audio/sfx/ui/checkpoint.mp3');
+        this.pauseAudio = new Audio('assets/audio/sfx/ui/pause.mp3');
+        this.resumeAudio = new Audio('assets/audio/sfx/ui/checkpoint.mp3');
 
         var path = game.load.path;
-        game.load.path = 'fracture/assets/audio/sfx/levels/';
+        game.load.path = 'assets/audio/sfx/levels/';
 
         game.load.audio('open_door', 'open_door.mp3');
         game.load.audio('begin_level', '../ui/begin_level.mp3');
@@ -28,7 +28,7 @@ class AudioManager
     {
         var path = game.load.path;
 
-        game.load.path = 'fracture/assets/audio/music/';
+        game.load.path = 'assets/audio/music/';
         game.load.audio('beginning', 'beginning.mp3');
 
         game.load.path = path;
@@ -38,10 +38,10 @@ class AudioManager
     static loadUI()
     {
         // load non-phaser audio element for swapping selections in the pause menu
-        this.swapAudio = new Audio('fracture/assets/audio/sfx/ui/swap_selection.mp3');
+        this.swapAudio = new Audio('assets/audio/sfx/ui/swap_selection.mp3');
 
         var path = game.load.path;
-        game.load.path = 'fracture/assets/audio/sfx/ui/';
+        game.load.path = 'assets/audio/sfx/ui/';
 
         game.load.audio('back', 'back.mp3');
         game.load.audio('start_game', 'start_game.mp3');
@@ -77,6 +77,6 @@ class AudioManager
     static playSwapSound()
     {
         this.swapAudio.play();
-        this.swapAudio = new Audio('fracture/assets/audio/sfx/ui/swap_selection.mp3');
+        this.swapAudio = new Audio('assets/audio/sfx/ui/swap_selection.mp3');
     }
 }

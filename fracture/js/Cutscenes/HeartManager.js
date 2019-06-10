@@ -49,11 +49,11 @@ class HeartManager
     static load()
     {
         var path = game.load.path;
-        game.load.path = "fracture/assets/";
+        game.load.path = "assets/";
         
         game.load.atlas('heart_shatter', 'img/heart/heart_shatter_atlas.png', 'json/heart_shatter_atlas.json');
         
-        game.load.path = "fracture/assets/img/heart/";
+        game.load.path = "assets/img/heart/";
         game.load.image('ending_no_light', 'ending_no_light.png');
         game.load.image('ending_light', 'ending_light.png');
         game.load.image('ending_bright_light', 'ending_bright_light.png');

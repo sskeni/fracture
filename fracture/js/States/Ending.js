@@ -4,10 +4,10 @@
 var Ending = {
     preload:function()
     {
-        game.load.path = 'fracture/assets/img/';
+        game.load.path = 'assets/img/';
 
         //add levels
-        game.load.path = 'fracture/js/Levels/';
+        game.load.path = 'js/Levels/';
         //game.load.tilemap('test', 'test.json', null, Phaser.Tilemap.TILED_JSON);
         game.load.tilemap('ending', 'ending.json', null, Phaser.Tilemap.TILED_JSON);
 

@@ -13,7 +13,7 @@ var Credits = {
 		//used for transitioning to credits from end of game
 		if(this.startWithFade)
 		{
-			game.load.path = 'fracture/assets/img/heart/'
+			game.load.path = 'assets/img/heart/'
 			game.load.image('whiteout', 'ending_whiteout.png');
 		}
 	},

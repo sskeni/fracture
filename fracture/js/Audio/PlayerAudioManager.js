@@ -25,7 +25,7 @@ class PlayerAudioManager
     {
         var path = game.load.path;
 
-        game.load.path = 'fracture/assets/audio/sfx/player/';
+        game.load.path = 'assets/audio/sfx/player/';
         game.load.audio('begin_fire_shard', 'begin_fire_shard.mp3');
         game.load.audio('falling', 'falling.mp3');
         game.load.audio('fire_shard', 'fire_shard.mp3');

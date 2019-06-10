@@ -79,7 +79,7 @@ class TutorialManager
     static load()
     {
         var path = game.load.path;
-        game.load.path = 'fracture/assets/img/tutorial/'
+        game.load.path = 'assets/img/tutorial/'
         
         game.load.image('jump_tutorial', 'Jump.png');
         game.load.image('keys_tutorial', 'Keys.png');

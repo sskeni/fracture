@@ -13,7 +13,7 @@ class PlayerAnimationController
     // loads the player's texture atlas as well as the flash screen image
     static load()
     {
-        game.load.path = 'fracture/assets/';
+        game.load.path = 'assets/';
         game.load.atlas('player', 'img/player/player_atlas.png', 'json/player_atlas.json');
         game.load.image('flash', 'img/heart/ending_whiteout.png');
     }

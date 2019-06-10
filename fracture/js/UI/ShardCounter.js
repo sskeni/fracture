@@ -86,7 +86,7 @@ class ShardCounter
     {
         //load assets
         var path = game.load.path;
-        game.load.path = 'fracture/assets/img/shard_counter/';
+        game.load.path = 'assets/img/shard_counter/';
 
         game.load.image('shard_counter_background', 'shard_counter_background.png');
         game.load.image('token_flash', 'token_flash.png');
