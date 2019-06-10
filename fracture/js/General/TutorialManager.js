@@ -146,13 +146,13 @@ class TutorialManager
         game.time.events.add(2000, function(){
             // fade message out
             var pauseTween = game.add.tween(this.pauseMessage).to( { alpha: 0 }, 1000, Phaser.Easing.Linear.None, true, 0, 0, false);
-            
+            this.timeOfLastMove = game.time.now;
             // when fading is done
             pauseTween.onComplete.addOnce(function(){
                 
                 // fade out the background
                 var blackoutTween = game.add.tween(this.blackout).to( { alpha: 0 }, 1000, Phaser.Easing.Linear.None, true, 0, 0, false);
-                
+                this.timeOfLastMove = game.time.now;
                 // when fading out the blackout is done
                 blackoutTween.onComplete.addOnce(function(){
 
