@@ -3,6 +3,7 @@
 // manages fading in and out tutorial text at the appropriate times
 class TutorialManager
 {
+    /*
     player;// a reference to the player
 
     stationaryDistanceThreshold = 20;// how far the player must move from their previous position in the time limit to be considered not stuck
@@ -29,11 +30,14 @@ class TutorialManager
     
     currentTutorialIndex = 0;// the index of the current tutorial state
     tutorialStates;// this is an array of update methods representing the correct tutorial behavior at any given time
+    */
     
     restartMessageVisible = false;// keeps track of whether the restart message is visable
 
     constructor(player, type)
     {
+        this.currentTutorialIndex = 0;
+
         this.player = player;
         this.type = type;
 

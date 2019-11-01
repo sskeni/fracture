@@ -1,7 +1,9 @@
 class Rectangle
 {
+    /*
     points;
     tag;
+    */
 
     constructor(pointA, pointB, pointC, pointD, tag)
     {

@@ -3,9 +3,10 @@
 // manager for camera behavior
 class CameraController
 {   
+    /*
     player;// a reference to the player
     camera;// a reference to the game's camera
-
+    */
 
     constructor(player)
     {

@@ -3,12 +3,14 @@
 // all player behavior code should inherit and follow this form
 class PlayerState 
 {
+    /*
     // references
     player;// the player this state is connected to
     stateManager;// the player's state manager
     inputManager;// the player's input manager
 
     adjacentStates;// a list of states which should check conditions for transition from this one
+    */
 
     
     constructor(stateManager) 

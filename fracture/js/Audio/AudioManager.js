@@ -3,13 +3,16 @@
 // manager class for playing general audio
 class AudioManager
 {
-    static volumeModifier = 1;
+    /*static volumeModifier = 1;
     static pauseAudio;
-    static resumeAudio;
+    static resumeAudio;*/
 
     // loads audio assets for levels
     static load()
     {
+        this.volumeModifier = 1;
+
+
         // load non-phaser audio elements for pausing and unpausing
         this.pauseAudio = new Audio('assets/audio/sfx/ui/pause.mp3');
         this.resumeAudio = new Audio('assets/audio/sfx/ui/checkpoint.mp3');

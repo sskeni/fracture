@@ -3,11 +3,12 @@
 // manager that manages dynamic transitions between sections of level audio
 class MusicManager 
 {
+    /*
     currentSongKey;// The name of the current song
     currentSectionKey;// The name of the current section of the current song
     currentAudio;// The current Phaser.Sound instance
     nextAudio;// The next Phaser.Sound instance
-
+    */
     // loads assets used for the main menu soundtrack
     static loadMainMenu()
     {

@@ -3,6 +3,7 @@
 // manages a series of one-off behaviors for the ending cutscene 
 class HeartManager
 {
+    /*
     shatterAnimation;// a sprite for the cracking/shattering animation for the heart
     noLight;// a sprite for the version of the heart image that isn't glowing
     light;// a sprite for the version of the heart image that is glowing
@@ -14,6 +15,7 @@ class HeartManager
     whiteoutTween;// a reference to the tween that fades in the solid white at the end of the cutscene
 
     onComplete;// a function to call when the whiteout animation completes
+    */
 
     constructor()
     {

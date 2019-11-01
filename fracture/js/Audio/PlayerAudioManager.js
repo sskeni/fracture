@@ -3,6 +3,7 @@
 // plays player sound effects
 class PlayerAudioManager
 {
+    /*
     warningDistance = 100;// the vertical distance from the ground at which the fall damage warning sound will play
     volumeModifier = 1;// a value for global volume
 
@@ -14,9 +15,15 @@ class PlayerAudioManager
     fallingSound;// a phaser sound for when the player begins to fall too far
 
     fireShardTime;// the time when the last shard was fired
+    */
 
     constructor(player)
     {
+        this.warningDistance = 100;// the vertical distance from the ground at which the fall damage warning sound will play
+        this.volumeModifier = 1;// a value for global volume
+
+        this.playedFootstep = false;// tracks whether we've already played a footstep sound for the current heeltouch
+        this.playedShatterAnticipation = false;// tracks whether we've already played the warning sound for fall damage
         this.player = player;
     }
 

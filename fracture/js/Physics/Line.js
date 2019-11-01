@@ -1,7 +1,9 @@
 class Line
 {
+    /*
     origin;
     direction;
+    */
 
     constructor(origin, direction)
     {

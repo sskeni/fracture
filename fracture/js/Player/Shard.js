@@ -11,6 +11,7 @@ var ShardDirection = {
 
 class Shard extends Phaser.Sprite
 {
+    /*
     // behavior variables
     velocity = 500;// the velocity at which to fly
     launchDistance = 45;// the distance from the player under which we should launch the player when we plant ourselves
@@ -26,11 +27,22 @@ class Shard extends Phaser.Sprite
 
     // flags
     planted = false;// whether this shard has planted itself in wall
-
+    */
+   
     constructor(game, x, y, player, direction, playerVelocity)
     {
         super(game, x, y, 'shard');
         game.add.world.add(this);
+
+        // behavior variables
+        this.velocity = 500;// the velocity at which to fly
+        this.launchDistance = 45;// the distance from the player under which we should launch the player when we plant ourselves
+
+        this.hitboxWidth = 64;
+        this.hitboxHeight = 15;
+
+        this.planted = false;// whether this shard has planted itself in wall
+
 
         this.direction = direction;
         this.player = player;

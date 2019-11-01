@@ -3,6 +3,7 @@
 // manager class for the game's opening cutscene
 class FlowerManager
 {
+	/*
 	blackout;
 	bloomAnimation;
 
@@ -21,6 +22,7 @@ class FlowerManager
 	glow2tween;
 	glow3tween;
 	glow4tween;
+	*/
 
 	constructor(player)
 	{

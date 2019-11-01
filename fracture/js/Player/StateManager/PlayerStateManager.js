@@ -4,6 +4,7 @@
 class PlayerStateManager 
 {
  
+    /*
     // references
     currentState;// the currently running state
     previousState;// the state currentState was transitioned from
@@ -16,7 +17,7 @@ class PlayerStateManager
     jump;
     fireShard;
     wallJump;
-
+    */
 
     constructor(player) 
     {

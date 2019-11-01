@@ -1,5 +1,6 @@
 class InputManager
 {
+    /*
     game;
 
     disabled = false;
@@ -14,9 +15,10 @@ class InputManager
     shardJustDown;
     jumpJustDown;
     resetJustDown;
-
+    */
     constructor(game)
     {
+        this.disabled = false;
         this.game = game;
         this.directionKeys = game.input.keyboard.createCursorKeys();
         this.jumpButton = game.input.keyboard.addKey(Phaser.KeyCode.X);

@@ -3,6 +3,7 @@
 // shakes the camera with an envelope based on the ADSR model
 class CameraShakeEvent
 {
+    /*
     intensity;// the maximum camera shake intensity
     attack;// the time it takes to reach max intensity
     decay;// the amount of time it takes to reach the sustained intensity
@@ -12,6 +13,7 @@ class CameraShakeEvent
     resolution;// how often to update the camera shake value
 
     startTime;// the time when the shaking started 
+    */
 
 
     constructor(intensity, attack, decay, sustain, sustainLength, release, resolution)

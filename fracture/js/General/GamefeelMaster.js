@@ -3,7 +3,17 @@
 // helper class for all things game-feel
 class GamefeelMaster
 {
-    static cameraShakeResolution = 100;// with what frequency the camera shake adjusts intensity
+    //static cameraShakeResolution = 100;// with what frequency the camera shake adjusts intensity
+
+
+    constructor(player)
+    {
+        this.cameraShakeResolution = 100
+        this.player = player;
+        this.camera = game.camera;
+
+        this.camera.follow(this.player);// follow the player
+    }
 
     // shakes the camera with the given envelope
     // intensity: the maximum camera shake intensity

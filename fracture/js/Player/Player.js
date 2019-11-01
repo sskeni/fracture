@@ -1,5 +1,6 @@
 class Player extends Phaser.Sprite
 {
+/*
     // behavior values
     shardCount = 3;// the number of shards the player can fire
     shardLaunchVelocity = 500;// the velocity at which the player is launched when a shard grows right next to them
@@ -28,12 +29,20 @@ class Player extends Phaser.Sprite
     standingOnShard;
     dead;
     justReset;
-
+*/
     constructor(game, x, y, key) 
     {
         // properly inherit Phaser.Sprite
         super(game, x, y, 'player');
         game.add.world.add(this);
+
+        // behavior values
+        this.shardCount = 3;// the number of shards the player can fire
+        this.shardLaunchVelocity = 500;// the velocity at which the player is launched when a shard grows right next to them
+        this.raycastRadius = 150;// the radius under which tiles are raycasted. Ensures that tiles we're guaranteed not to hit are not tested 
+        this.groundRaycastDistance = 20;// the distance to raycast for ground tiles
+        this.groundRaycastWidth = 10;// the horizontal offset to the left and right that raycasts for ground should be made at
+        this.respawnTime = 1;// the length of time it takes to respawn in seconds
 
         var color = 0xff89e9;
         this.tint = color;

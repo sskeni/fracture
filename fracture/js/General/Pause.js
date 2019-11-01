@@ -3,6 +3,7 @@
 // manages pause behavior, including the pause menu
 class Pause
 {
+	/*
 	backKey;// a phaser key that closes the pause menu
 	pauseKey;// a phaser key that closes the pause menu
 
@@ -12,6 +13,7 @@ class Pause
 	mainMenuText;// a sprite for the main menu button
 	
 	buttonSelector;// a reference to the button selector for this pause menu
+	*/
 
 	constructor(game, key)
 	{

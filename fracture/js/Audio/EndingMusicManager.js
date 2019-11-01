@@ -3,10 +3,11 @@
 // manages dynamic transitions for the ending cutscene's music
 class EndingMusicManager 
 {
+    /*
     ambiantBass;// a phaser sound holding the drone that plays before the cutscene begins
     bassBody;// a phaser sound holding the bass portion of the ending cutscene score
     body;// a phaser sound holding the melody and sfx portion of the ending score
-
+    */
     constructor()
     {
         // start the drone right away

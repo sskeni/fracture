@@ -3,6 +3,7 @@
 // manages visuals and functionality for menu selection through the arrow keys
 class ButtonSelector
 {
+	/*
 	currentSelection;// the currently selected button; holds information about what action to take when it is selected
 	selections;// an array of all selections offered by this button manager
 	selectionNum;// the index of the current selection in selections
@@ -12,6 +13,7 @@ class ButtonSelector
 	upKey;// the phaser key that moves selection up by one
 	selectKey;// the phaser key that confirms a selection
 	canNavigate;// whether the button selector is currently active and taking input
+	*/
 
 	constructor(game, initialSelection, key)
 	{

@@ -9,6 +9,7 @@ var WallDirection = {
 // Behavior for when the player is firing a shard.
 class WallJump extends PlayerState
 {
+    /*
     // behavior variables
     fallSpeed = 100;// the maximum speed at which the player can fall
     fallAcceleration = 100;// the acceleration at which the player will approach their maximum fall speed
@@ -28,10 +29,22 @@ class WallJump extends PlayerState
 
     // references
     jumpState;// the player's jump state
+    */
 
     constructor(stateManager) 
     {
         super(stateManager);
+
+
+        // behavior variables
+        this.fallSpeed = 100;// the maximum speed at which the player can fall
+        this.fallAcceleration = 100;// the acceleration at which the player will approach their maximum fall speed
+        this.riseDeceleration = 1000;// the strength of deceleration when the player is moving up
+        this.jumpStrength = 300;// the magnitude of the initial velocity the player gains when jumping from the wall
+        this.raycastDistance = 17;// the distance under which a wall is close enough to walljump from
+        this.cooldown = 300;// the length of time that must be waited before this state can be transitioned to again
+        this.exitWallHoldTime = 0.1;// the length of time the player must hold away from the wall to exit the wall
+
         this.timeOfLastDeinitialization = game.time.now - this.cooldown;
         this.timeOfExitDirectionDown = 0;
         this.directionalInputHeld = false;

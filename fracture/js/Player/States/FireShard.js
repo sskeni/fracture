@@ -3,6 +3,7 @@
 // Behavior for when the player is firing a shard.
 class FireShard extends PlayerState
 {
+    /*
     // loading variables
     cursorBaseKey = 'cursorBase';
     cursorTipKey = 'cursorTip';
@@ -24,10 +25,21 @@ class FireShard extends PlayerState
     cursorBase;// the Phaser image for one half of the player's cursor
     cursorTip;// the Phaser image for the other half of the player's cursor
     jumpState;// a reference to the player's jump state
+    */
 
     constructor(stateManager) 
     {
         super(stateManager);
+        // loading variables
+        this.cursorBaseKey = 'cursorBase';
+        this.cursorTipKey = 'cursorTip';
+
+        // behavior variables
+        this.duration = 500;// The amount of time in ms that the state will wait before automatically firing the shard
+        this.cursorOffset = 32;// the offset of the base cursor's position from the center of the player
+        this.cursorTipMoveDistance = 10;// determines how far the cursor tip will move in the time it takes for the state to finish
+        this.slowMotionFactor = 4;// The ratio of real time to game time while in this state(2.0 = half speed)
+
 
         this.createCursor();
         this.previousInputAngle = 0;

@@ -3,6 +3,7 @@
 // Behavior for when the player is jumping or falling through the air
 class Jump extends PlayerState
 {
+    /*
     // behavior variables
     initialVelocity = 300;
     upGravity = 1100;// The gravity to apply while the player is going up
@@ -23,10 +24,18 @@ class Jump extends PlayerState
 
     // runtime variables
     maxHeight;// the lowest y value (greatest height) the player has had while jumping
-    
+    */
+   
     constructor(stateManager) 
     {
         super(stateManager);
+
+        this.initialVelocity = 300;
+        this.upGravity = 1100;// The gravity to apply while the player is going up
+        this.upHoldGravity = 500;// The gravity to apply while the player is going up and the jump button is held
+        this.downGravity = 1300;// The gravity to apply while the player is falling
+        this.maxVelocity = 200;// the maximum velocity the player can fall at
+        this.fallDamageHeight = 30;// the height the player can fall before taking fall damage (will be multiplied by the current number of shards)
     }
 
     // called every frame

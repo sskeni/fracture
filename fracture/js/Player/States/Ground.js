@@ -9,6 +9,7 @@ var StandingDirection = {
 // Behavior for when the player is on the ground and walking around.
 class Ground extends PlayerState
 {
+    /*
     // behavior variables
     maxSpeed = 200;// maximum movement velocity
     acceleration = 700;// force to apply when accelerating to max speed
@@ -18,11 +19,18 @@ class Ground extends PlayerState
     gravity = 1000;// the force of gravity on the player
 
     standingDirection;// an enum representation of where the ground is
-
+    */
 
     constructor(stateManager) 
     {
         super(stateManager);
+        this.maxSpeed = 200;// maximum movement velocity
+        this.acceleration = 700;// force to apply when accelerating to max speed
+        this.deceleration = 2000;// force to apply when input is counter to the current velocity
+        this.stationaryDeceleration = 1000;// force to apply against motion when player is giving no input
+        this.velocityThreshold = 20;// the speed under which the player's velocity should be set directly to zero
+        this.gravity = 1000;// the force of gravity on the player
+
         this.standingDirection = StandingDirection.DOWN;
     }
 

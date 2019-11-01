@@ -3,6 +3,7 @@
 //class for shard ui
 class ShardCounter
 {
+    /*
     //image variables
     tokens;
     tokenFlashes;
@@ -10,9 +11,12 @@ class ShardCounter
 
     //shard gem count, initially full (2)
     currTokenIndex = 2;
+    */
 
     constructor()
     {
+        this.currTokenIndex = 2;
+
         //create background
         this.background = game.add.sprite(0, 0, 'shard_counter_background');
         this.background.fixedToCamera = true;

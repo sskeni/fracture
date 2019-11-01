@@ -3,12 +3,14 @@
 // manages which player animations should be playing at a given time
 class PlayerAnimationController
 {
+    /*
     player;// a reference to the player
     direction;// the player's current facing (left or right)
 
     deathTween;// a tween for the player fading to nothing when dying
 
     flashSprite;// a white screen for flashing the screen when the player is about to fall to their death
+    */
 
     // loads the player's texture atlas as well as the flash screen image
     static load()
